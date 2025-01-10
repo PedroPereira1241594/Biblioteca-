@@ -47,6 +47,6 @@ public class Utentes {
 
     @Override
     public String toString() {
-        return "Nome: " + nome + "\n" + "NIF: " + nif + "\n" + "Genero: " + (genero ? "Masculino" : "Feminino") + "\n" + "Contacto: " + contacto;
+        return "Nome: " + nome + "\n" + "NIF: " + nif + "\n" + "Genero: " + (genero ? "M" : "F") + "\n" + "Contacto: " + contacto;
     }
 }

@@ -1,36 +1,39 @@
 package View;
 
 import Model.Livro;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class LivroView {
-    private final Scanner scanner;
 
-    public LivroView() {
-        this.scanner = new Scanner(System.in);
+    public void exibirLivros(ArrayList<Livro> livros) {
+        if (livros.isEmpty()) {
+            System.out.println("Nenhum livro cadastrado.");
+        } else {
+            System.out.println("Lista de Livros:");
+            for (int i = 0; i < livros.size(); i++) {
+                Livro livro = livros.get(i);
+                System.out.println("Índice: " + i);
+                System.out.println("Título: " + livro.getNome());
+                System.out.println("Autor: " + livro.getAutor());
+                System.out.println("Editora: " + livro.getEditora());
+                System.out.println("Categoria: " + livro.getCategoria());
+                System.out.println("Ano: " + livro.getAno());
+                System.out.println("----------------------");
+            }
+        }
     }
 
-    public Livro capturarDadosLivro() {
-        System.out.println("Digite o nome do livro:");
-        String nome = scanner.nextLine();
-        System.out.println("Digite a editora:");
-        String editora = scanner.nextLine();
-        System.out.println("Digite a categoria:");
-        String categoria = scanner.nextLine();
-        System.out.println("Digite o ano de publicação:");
-        int ano = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
-        System.out.println("Digite o autor:");
-        String autor = scanner.nextLine();
-
-        return new Livro(nome, editora, categoria, ano, autor);
+    public void exibirLivroDetalhado(Livro livro) {
+        System.out.println("Detalhes do Livro:");
+        System.out.println("Título: " + livro.getNome());
+        System.out.println("Autor: " + livro.getAutor());
+        System.out.println("Editora: " + livro.getEditora());
+        System.out.println("Categoria: " + livro.getCategoria());
+        System.out.println("Ano: " + livro.getAno());
+        System.out.println("----------------------");
     }
 
-    public void exibirLivro(Livro livro) {
-        System.out.println(livro.toString());
-    }
-
-    public void exibirMensagem(String mensagem) {
+    public void mensagem(String mensagem) {
         System.out.println(mensagem);
     }
 }

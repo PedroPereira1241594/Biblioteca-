@@ -1,25 +1,26 @@
 import Controller.LivroController;
 import Controller.UtenteController;
-import Model.Biblioteca;
-import Model.ModificarUtentes;
+import Model.Livro;
+import Model.Utentes;
 import View.LivroView;
 import View.UtenteView;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Inicialização dos modelos
-        Biblioteca biblioteca = new Biblioteca();
-        ModificarUtentes modificarUtentes = new ModificarUtentes();
+        // Listas para armazenar livros e utentes
+        ArrayList<Livro> livros = new ArrayList<>();
+        ArrayList<Utentes> utentes = new ArrayList<>();
 
         // Inicialização das views
         LivroView livroView = new LivroView();
         UtenteView utenteView = new UtenteView();
 
         // Inicialização dos controladores
-        LivroController livroController = new LivroController(biblioteca, livroView);
-        UtenteController utenteController = new UtenteController(modificarUtentes, utenteView);
+        LivroController livroController = new LivroController(livros, livroView);
+        UtenteController utenteController = new UtenteController(utentes, utenteView);
 
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
