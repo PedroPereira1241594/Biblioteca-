@@ -7,12 +7,11 @@ public class UtenteView {
 
     public void exibirUtentes(ArrayList<Utentes> utentes) {
         if (utentes.isEmpty()) {
-            System.out.println("Nenhum utente cadastrado.");
+            System.out.println("Nenhum utente Registado.");
         } else {
             System.out.println("Lista de Utentes:");
             for (int i = 0; i < utentes.size(); i++) {
                 Utentes utente = utentes.get(i);
-                System.out.println("Índice: " + i);
                 System.out.println("Nome: " + utente.getNome());
                 System.out.println("NIF: " + utente.getNif());
                 System.out.println("Gênero: " + (utente.getGenero() ? "Masculino" : "Feminino"));

@@ -73,14 +73,10 @@ public class Main {
                     livroController.listarLivros();
                     break;
                 case 3:
-                    System.out.print("Digite o índice do livro a editar: ");
-                    int indiceEditar = scanner.nextInt();
-                    livroController.editarLivro(indiceEditar);
+                    livroController.editarLivro();
                     break;
                 case 4:
-                    System.out.print("Digite o índice do livro a remover: ");
-                    int indiceRemover = scanner.nextInt();
-                    livroController.removerLivro(indiceRemover);
+                    livroController.removerLivro();
                     break;
                 case 0:
                     System.out.println("Voltando ao menu principal...");
@@ -112,14 +108,10 @@ public class Main {
                     utenteController.listarUtentes();
                     break;
                 case 3:
-                    System.out.print("Digite o índice do utente a editar: ");
-                    int indiceEditar = scanner.nextInt();
-                    utenteController.editarUtente(indiceEditar);
+                    utenteController.editarUtente();
                     break;
                 case 4:
-                    System.out.print("Digite o índice do utente a remover: ");
-                    int indiceRemover = scanner.nextInt();
-                    utenteController.removerUtente(indiceRemover);
+                    utenteController.removerUtente();
                     break;
                 case 0:
                     System.out.println("Voltando ao menu principal...");
