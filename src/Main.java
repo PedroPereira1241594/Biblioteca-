@@ -1,6 +1,7 @@
 import Controller.EmprestimosController;
 import Controller.LivroController;
 import Controller.UtenteController;
+import Model.Jornal;
 import Model.Livro;
 import Model.Utentes;
 import View.EmprestimosView;
@@ -10,15 +11,18 @@ import View.UtenteView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
 
+import static Controller.ExportarDados.*;
 import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {  // Lançar IOException aqui
         // Listas para armazenar livros e utentes
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
+        ArrayList<Jornal> jornals = new ArrayList<>();
 
         // Inicialização das views
         LivroView livroView = new LivroView();
@@ -54,11 +58,22 @@ public class Main {
                 case 3:
                     gerirUtentes(utenteController, scanner);
                     break;
-                //case 4:
-                    //emprestimosView.exibirMenu();
-                   // break;
                 case 0:
-                    System.out.println("Saindo do sistema...");
+                    System.out.print("Tem certeza de que deseja sair? (S/N): ");
+                    char confirmacao = scanner.next().toUpperCase().charAt(0);
+                    if (confirmacao == 'S') {
+                        // Definir os caminhos dos arquivos de exportação
+                        String caminhoLivros = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\livros.txt";
+                        String caminhoUtentes = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\utentes.txt";
+                        String caminhoJornal = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\jornal.txt";
+                        // Chamar os métodos para exportar livros e utentes
+                        exportarLivros(caminhoLivros, livros);  // Exporta livros
+                        exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
+                        exportarJornal(caminhoJornal, jornals);
+                        System.out.println("Saindo do sistema...");
+                    } else {
+                        opcao = -1; // Continua o loop
+                    }
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -67,5 +82,4 @@ public class Main {
 
         scanner.close();
     }
-
 }
