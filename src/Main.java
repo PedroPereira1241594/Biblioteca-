@@ -18,7 +18,7 @@ import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
 
 public class Main {
-    public static void main(String[] args) throws IOException {  // Lançar IOException aqui
+    public static void main(String[] args) throws IOException {
         // Listas para armazenar livros e utentes
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
@@ -67,6 +67,9 @@ public class Main {
                     break;
                 case 3:
                     gerirUtentes(utenteController, scanner);
+                    break;
+                case 4:
+                    emprestimosView.exibirMenu();  // Chamando a exibição do menu de empréstimos
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
