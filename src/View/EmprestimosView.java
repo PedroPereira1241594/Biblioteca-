@@ -62,7 +62,7 @@ public class EmprestimosView {
         int contacto = scanner.nextInt();
         scanner.nextLine();
 
-        Utentes utente = new Utentes(nomeUtente, nif, genero, contacto);
+        //Utentes utente = new Utentes(nomeUtente, nif, genero, contacto);
 
         List<String> titulosLivros = new ArrayList<>();
         System.out.print("Quantos livros no empréstimo? ");
@@ -79,7 +79,7 @@ public class EmprestimosView {
         System.out.print("Data Prevista de Devolução (dd/MM/yyyy): ");
         String dataPrevistaDevolucao = scanner.nextLine();
 
-        emprestimosController.criarEmprestimo(numero, utente, titulosLivros, dataInicio, dataPrevistaDevolucao);
+        //emprestimosController.criarEmprestimo(numero, utente, titulosLivros, dataInicio, dataPrevistaDevolucao);
     }
 
 
