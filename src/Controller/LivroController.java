@@ -21,6 +21,15 @@ public class LivroController {
 
     public void adicionarLivro() {
         Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite o ISBN: ");
+        String isbn = scanner.nextLine();
+        for (Livro livro : livros){
+            if (livro.getIsbn().equals(isbn)){
+                System.out.println("Já Existe um Livro com o Mesmo ISBN");
+                return;
+            }
+        }
         System.out.print("Digite o nome do livro: ");
         String nome = scanner.nextLine();
         System.out.print("Digite a editora: ");
@@ -32,8 +41,6 @@ public class LivroController {
         scanner.nextLine();
         System.out.print("Digite o autor: ");
         String autor = scanner.nextLine();
-        System.out.print("Digite o ISBN: ");
-        String isbn = scanner.nextLine();
 
         Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn);
         livros.add(livro);

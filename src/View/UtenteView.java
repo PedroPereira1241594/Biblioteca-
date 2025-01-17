@@ -1,7 +1,9 @@
 package View;
 
+import Controller.UtenteController;
 import Model.Utentes;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class UtenteView {
 
@@ -32,5 +34,40 @@ public class UtenteView {
 
     public void mensagem(String mensagem) {
         System.out.println(mensagem);
+    }
+
+    public static void gerirUtentes(UtenteController utenteController, Scanner scanner) {
+        int opcao;
+
+        do {
+            System.out.println("\n=== Gestão de Utentes ===");
+            System.out.println("1. Adicionar Utente");
+            System.out.println("2. Listar Utentes");
+            System.out.println("3. Editar Utente");
+            System.out.println("4. Remover Utente");
+            System.out.println("0. Voltar ao menu principal");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    utenteController.adicionarUtente();
+                    break;
+                case 2:
+                    utenteController.listarUtentes();
+                    break;
+                case 3:
+                    utenteController.editarUtente();
+                    break;
+                case 4:
+                    utenteController.removerUtente();
+                    break;
+                case 0:
+                    System.out.println("Voltando ao menu principal...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (opcao != 0);
     }
 }
