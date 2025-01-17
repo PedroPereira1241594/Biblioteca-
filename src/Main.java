@@ -1,7 +1,9 @@
+import Controller.EmprestimosController;
 import Controller.LivroController;
 import Controller.UtenteController;
 import Model.Livro;
 import Model.Utentes;
+import View.EmprestimosView;
 import View.LivroView;
 import View.UtenteView;
 
@@ -17,6 +19,7 @@ public class Main {
         // Inicialização das views
         LivroView livroView = new LivroView();
         UtenteView utenteView = new UtenteView();
+        EmprestimosView emprestimosView = new EmprestimosView();
 
         // Inicialização dos controladores
         LivroController livroController = new LivroController(livros, livroView);
@@ -30,6 +33,7 @@ public class Main {
             System.out.println("\n=== Sistema de Gestão de Biblioteca ===");
             System.out.println("1. Gerir Livros");
             System.out.println("2. Gerir Utentes");
+            System.out.println("3. Gerir Empréstimos");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -40,6 +44,9 @@ public class Main {
                     break;
                 case 2:
                     gerirUtentes(utenteController, scanner);
+                    break;
+                case 3:
+                    emprestimosView.exibirMenu();
                     break;
                 case 0:
                     System.out.println("Saindo do sistema...");

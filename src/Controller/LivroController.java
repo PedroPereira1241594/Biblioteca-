@@ -78,4 +78,13 @@ public class LivroController {
             System.out.println("Índice inválido!");
         }
     }
+    public Livro buscarLivroPorTitulo(String titulo) {
+        for (Livro livro : livros) {
+            if (livro.getNome().equalsIgnoreCase(titulo)) {
+                return livro;
+            }
+        }
+        return null; // Retorna null se o livro não for encontrado
+    }
+
 }
