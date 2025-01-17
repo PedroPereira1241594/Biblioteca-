@@ -19,11 +19,21 @@ public class Main {
         // Inicialização das views
         LivroView livroView = new LivroView();
         UtenteView utenteView = new UtenteView();
-        EmprestimosView emprestimosView = new EmprestimosView();
 
-        // Inicialização dos controladores
-        LivroController livroController = new LivroController(livros, livroView);
+        // Inicialização do controlador de utentes
         UtenteController utenteController = new UtenteController(utentes, utenteView);
+
+        // Inicialização do controlador de empréstimos (temporariamente sem LivroController)
+        EmprestimosController emprestimosController = new EmprestimosController(null);
+
+        // Inicialização do controlador de livros com a dependência de EmprestimosController
+        LivroController livroController = new LivroController(livros, livroView, emprestimosController);
+
+        // Atualização do EmprestimosController para usar o LivroController
+        emprestimosController.setLivroController(livroController);
+
+        // Inicialização da view de empréstimos
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
 
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
@@ -46,7 +56,7 @@ public class Main {
                     gerirUtentes(utenteController, scanner);
                     break;
                 case 3:
-                    emprestimosView.exibirMenu();
+                    emprestimosView.exibirMenu(); // Exibe o menu de empréstimos
                     break;
                 case 0:
                     System.out.println("Saindo do sistema...");

@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Livro {
     private String nome;
     private String editora;
@@ -69,7 +71,23 @@ public class Livro {
     public String toString() {
         return "Livro: " + nome + "\n" + "Editora: " + editora + "\n" + "Categoria: " + categoria + "\n" + "Ano: " + ano + "\n" + "Autor: " + autor + "\n" + "ISBN: " + isbn;
     }
+
+    // Implementação de equals para comparar livros com base no ISBN
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Livro livro = (Livro) obj;
+        return Objects.equals(isbn, livro.isbn);  // Compara pelo ISBN
+    }
+
+    // Implementação de hashCode com base no ISBN
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn);  // Gera hash code com base no ISBN
+    }
 }
-
-
-

@@ -1,16 +1,18 @@
 package Model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Emprestimos {
     private int numero;
     private Utentes utente;
     private List<Livro> livros;
-    private String dataInicio;
-    private String dataPrevistaDevolucao;
-    private String dataEfetivaDevolucao;
+    private LocalDate dataInicio;
+    private LocalDate dataPrevistaDevolucao;
+    private LocalDate dataEfetivaDevolucao;
 
-    public Emprestimos(int numero, Utentes utente, List<Livro> livros, String dataInicio, String dataPrevistaDevolucao) {
+    // Construtor atualizado para receber LocalDate
+    public Emprestimos(int numero, Utentes utente, List<Livro> livros, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
         this.numero = numero;
         this.utente = utente;
         this.livros = livros;
@@ -18,6 +20,7 @@ public class Emprestimos {
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
     }
 
+    // Getters e Setters
     public int getNumero() {
         return numero;
     }
@@ -42,34 +45,37 @@ public class Emprestimos {
         this.livros = livros;
     }
 
-    public String getDataInicio() {
+    public LocalDate getDataInicio() {
         return dataInicio;
     }
 
-    public void setDataInicio(String dataInicio) {
+    public void setDataInicio(LocalDate dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public String getDataPrevistaDevolucao() {
+    public LocalDate getDataPrevistaDevolucao() {
         return dataPrevistaDevolucao;
     }
 
-    public void setDataPrevistaDevolucao(String dataPrevistaDevolucao) {
+    public void setDataPrevistaDevolucao(LocalDate dataPrevistaDevolucao) {
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
     }
 
-    public String getDataEfetivaDevolucao() {
+    public LocalDate getDataEfetivaDevolucao() {
         return dataEfetivaDevolucao;
     }
 
-    public void setDataEfetivaDevolucao(String dataEfetivaDevolucao) {
+    public void setDataEfetivaDevolucao(LocalDate dataEfetivaDevolucao) {
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
     }
 
     @Override
     public String toString() {
-        return "Emprestimo [numero=" + numero + ", utente=" + utente.getNome() + ", livros=" + livros
-                + ", dataInicio=" + dataInicio + ", dataPrevistaDevolucao=" + dataPrevistaDevolucao
-                + ", dataEfetivaDevolucao=" + dataEfetivaDevolucao + "]";
+        return "Emprestimo [numero=" + numero +
+                ", utente=" + utente.getNome() +
+                ", livros=" + livros +
+                ", dataInicio=" + dataInicio +
+                ", dataPrevistaDevolucao=" + dataPrevistaDevolucao +
+                ", dataEfetivaDevolucao=" + dataEfetivaDevolucao + "]";
     }
 }

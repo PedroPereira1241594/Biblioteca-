@@ -41,7 +41,7 @@ public class UtenteController {
 
         Utentes utente = new Utentes(nome, NIF, Genero, Contacto);
         utentes.add(utente);
-        System.out.println("Utente adicionado com sucesso!");
+        System.out.println("Utente adicionado com sucesso!\n");
     }
 
     public void listarUtentes() {
@@ -119,4 +119,13 @@ public class UtenteController {
             System.out.println("NIF inválido!");
         }
     }
+    public Utentes buscarUtentePorNif(String nif) {
+        for (Utentes utente : utentes) {
+            if (utente.getNif().equals(nif)) {
+                return utente;
+            }
+        }
+        return null;
+    }
+
 }

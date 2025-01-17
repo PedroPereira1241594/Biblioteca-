@@ -1,18 +1,22 @@
 package Controller;
 
 import Model.Livro;
+import Model.Emprestimos;
 import View.LivroView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LivroController {
     private final ArrayList<Livro> livros;
     private final LivroView livroView;
+    private final EmprestimosController emprestimosController; // Adicionado para acessar o controller de empréstimos
 
-    public LivroController(ArrayList<Livro> livros, LivroView livroView) {
+    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController) {
         this.livros = livros;
         this.livroView = livroView;
+        this.emprestimosController = emprestimosController; // Inicialização do controller de empréstimos
     }
 
     public void adicionarLivro() {
@@ -33,7 +37,7 @@ public class LivroController {
 
         Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn);
         livros.add(livro);
-        System.out.println("Livro adicionado com sucesso!");
+        System.out.println("Livro adicionado com sucesso!\n");
     }
 
     public void listarLivros() {
@@ -103,13 +107,27 @@ public class LivroController {
             System.out.println("ISBN inválido!");
         }
     }
-    public Livro buscarLivroPorTitulo(String titulo) {
+
+    public Livro buscarLivroPorIsbn(String isbn) {
         for (Livro livro : livros) {
-            if (livro.getNome().equalsIgnoreCase(titulo)) {
-                return livro;
+            if (livro.getIsbn().equalsIgnoreCase(isbn)) {
+                return livro; // Retorna o livro se o ISBN for encontrado
             }
         }
-        return null; // Retorna null se o livro não for encontrado
+        return null; // Retorna null se o livro com o ISBN não for encontrado
+    }
+
+    public boolean verificarLivroDisponivelParaEmprestimo(Livro livro) {
+        // Recuperar todos os empréstimos ativos
+        List<Emprestimos> emprestimosAtivos = emprestimosController.listarEmprestimosAtivos();
+
+        for (Emprestimos emprestimo : emprestimosAtivos) {
+            // Verifica se o livro está na lista de livros do empréstimo e se não tem data efetiva de devolução
+            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
+                return false; // O livro está emprestado e ainda não foi devolvido
+            }
+        }
+        return true; // O livro está disponível para empréstimo
     }
 
 }
