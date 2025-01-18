@@ -1,6 +1,8 @@
+import Controller.Configurações;
 import Controller.EmprestimosController;
 import Controller.LivroController;
 import Controller.UtenteController;
+import Model.Emprestimos;
 import Model.Jornal;
 import Model.Livro;
 import Model.Utentes;
@@ -19,10 +21,23 @@ import static View.UtenteView.gerirUtentes;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+
+        String caminhoConfig = "src\\DadosExportados\\Config.txt";
+
+        // Inicializar o leitor de configurações
+        Configurações configReader = new Configurações(caminhoConfig);
+
+        // Obter os caminhos do arquivo de configuração
+        String caminhoLivros = configReader.getCaminhoLivros();
+        String caminhoUtentes = configReader.getCaminhoUtentes();
+        String caminhoJornal = configReader.getCaminhoJornal();
+        String caminhoEmprestimo = configReader.getCaminhoEmprestimo();
+
         // Listas para armazenar livros e utentes
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
         ArrayList<Jornal> jornals = new ArrayList<>();
+        ArrayList<Emprestimos> emprestimos1 = new ArrayList<>();
 
         // Inicialização das views
         LivroView livroView = new LivroView();
@@ -75,14 +90,10 @@ public class Main {
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-                        // Definir os caminhos dos arquivos de exportação
-                        String caminhoLivros = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\livros.txt";
-                        String caminhoUtentes = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\utentes.txt";
-                        String caminhoJornal = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\jornal.txt";
-                        // Chamar os métodos para exportar livros e utentes
                         exportarLivros(caminhoLivros, livros);  // Exporta livros
                         exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
                         exportarJornal(caminhoJornal, jornals);
+                        exportarEmprestimos(caminhoEmprestimo, emprestimos1);
                         System.out.println("Saindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop

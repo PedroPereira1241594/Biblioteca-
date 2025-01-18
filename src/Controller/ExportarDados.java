@@ -3,6 +3,7 @@ package Controller;
 import Model.Jornal;
 import Model.Livro;
 import Model.Utentes;
+import Model.Emprestimos;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,6 +38,9 @@ public class ExportarDados {
                         utente.getGenero() ? "M" : "F",
                         utente.getContacto()));
             }
+            System.out.println("Utentes salvos no arquivo com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os Utentes: " + e.getMessage());
         }
     }
 
@@ -50,10 +54,33 @@ public class ExportarDados {
                         jornal.getEditora(),
                         jornal.getDataPublicacao()));
             }
+            System.out.println("Jornais/Revistas salvos no arquivo com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os Jornais/Revistas: " + e.getMessage());
 
         }
 
     }
+    public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
+        try (FileWriter writer = new FileWriter(caminhoArquivo)) {
+            for (Emprestimos emprestimo : emprestimos) {
+                // Escreve a linha formatada no arquivo
+                writer.write(String.format("%d;%s;%s;%s;%s;%s\n",
+                        emprestimo.getNumero(),
+                        emprestimo.getUtente().getNome(), // Exportando o nome do Utente
+                        emprestimo.getLivros(), // Usando o método getLivrosString() para exportar os livros
+                        emprestimo.getDataInicio().toString(),
+                        emprestimo.getDataPrevistaDevolucao().toString(),
+                        (emprestimo.getDataEfetivaDevolucao() != null) ? emprestimo.getDataEfetivaDevolucao().toString() : "")
+                );
+            }
+            writer.flush(); // Garante que todos os dados foram gravados no arquivo
+            System.out.println("Empréstimos salvos no arquivo com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
+        }
+    }
+
 }
 
 
