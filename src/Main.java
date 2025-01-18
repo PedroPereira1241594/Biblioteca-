@@ -1,5 +1,6 @@
 import Controller.EmprestimosController;
 import Controller.LivroController;
+import Controller.ReservaController;
 import Controller.UtenteController;
 import Model.Jornal;
 import Model.Livro;
@@ -7,6 +8,7 @@ import Model.Utentes;
 import View.EmprestimosView;
 import View.JornalView;
 import View.LivroView;
+import View.ReservaView;
 import View.UtenteView;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import static View.UtenteView.gerirUtentes;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // Listas para armazenar livros e utentes
+        // Listas para armazenar livros, utentes e jornais
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
         ArrayList<Jornal> jornals = new ArrayList<>();
@@ -41,8 +43,12 @@ public class Main {
         // Atualização do EmprestimosController para usar o LivroController
         emprestimosController.setLivroController(livroController);
 
-        // Inicialização da view de empréstimos
+        // Inicialização do controlador de reservas
+        ReservaController reservaController = new ReservaController();
+
+        // Inicialização das views de empréstimos e reservas
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController);
 
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
@@ -54,6 +60,7 @@ public class Main {
             System.out.println("2. Gerir Jornais/Revistas");
             System.out.println("3. Gerir Utentes");
             System.out.println("4. Gerir Empréstimos");
+            System.out.println("5. Gerir Reservas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -69,7 +76,10 @@ public class Main {
                     gerirUtentes(utenteController, scanner);
                     break;
                 case 4:
-                    emprestimosView.exibirMenu();  // Chamando a exibição do menu de empréstimos
+                    emprestimosView.exibirMenu();
+                    break;
+                case 5:
+                    reservaView.exibirMenu();
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
@@ -79,10 +89,12 @@ public class Main {
                         String caminhoLivros = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\livros.txt";
                         String caminhoUtentes = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\utentes.txt";
                         String caminhoJornal = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\jornal.txt";
-                        // Chamar os métodos para exportar livros e utentes
+
+                        // Chamar os métodos para exportar dados
                         exportarLivros(caminhoLivros, livros);  // Exporta livros
                         exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
                         exportarJornal(caminhoJornal, jornals);
+
                         System.out.println("Saindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop

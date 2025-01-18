@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Emprestimos;
 import Model.Livro;
+import Model.Reserva;
 import Model.Utentes;
 
 import java.time.LocalDate;
@@ -29,25 +30,45 @@ public class EmprestimosController {
 
     // CRUD: Create
     public void criarEmprestimo(Utentes utente, List<Livro> livrosParaEmprestimo, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
-        if (livrosParaEmprestimo.isEmpty()) {
+        if (utente == null) {
+            System.out.println("Erro: O utente informado é inválido.");
+            return;
+        }
+
+        if (livrosParaEmprestimo == null || livrosParaEmprestimo.isEmpty()) {
             System.out.println("Erro: Nenhum livro foi selecionado.");
             return;
         }
 
-        // Verifica se há livros duplicados no empréstimo
+        // Verifica duplicados na lista de livros
         Set<Livro> livrosUnicos = new HashSet<>(livrosParaEmprestimo);
         if (livrosUnicos.size() < livrosParaEmprestimo.size()) {
-            System.out.println("Erro: Não é possível adicionar livros repetidos no mesmo empréstimo.");
+            System.out.println("Erro: Não é permitido incluir livros repetidos no mesmo empréstimo.");
             return;
         }
 
-        // Valida data de devolução
-        while (dataPrevistaDevolucao.isBefore(dataInicio)) {
+        // Verifica se a data prevista de devolução é válida
+        if (dataPrevistaDevolucao.isBefore(dataInicio)) {
             System.out.println("Erro: A data prevista de devolução não pode ser anterior à data de início.");
-            dataPrevistaDevolucao = solicitarNovaData("Digite a nova data prevista de devolução (formato: dd/MM/yyyy): ");
+            return;
         }
 
-        // Verifica a disponibilidade dos livros
+        // Verifica conflitos com reservas
+        for (Livro livro : livrosParaEmprestimo) {
+            for (Reserva reserva : Reserva.getListaReservas()) { // Acessando a lista de reservas com o método estático
+                if (reserva.getLivros().contains(livro)) {
+                    LocalDate reservaInicio = reserva.getDataInicio();
+                    LocalDate reservaFim = reserva.getDataFim();
+
+                    if (!(dataPrevistaDevolucao.isBefore(reservaInicio) || dataInicio.isAfter(reservaFim))) {
+                        System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() +"' já está reservado no período solicitado.");
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Verifica disponibilidade dos livros
         for (Livro livro : livrosParaEmprestimo) {
             for (Emprestimos emprestimo : emprestimos) {
                 if (emprestimo.getLivros().contains(livro)) {
@@ -55,19 +76,20 @@ public class EmprestimosController {
                     LocalDate emprestimoFim = emprestimo.getDataPrevistaDevolucao();
 
                     if (!(dataPrevistaDevolucao.isBefore(emprestimoInicio) || dataInicio.isAfter(emprestimoFim))) {
-                        System.out.println("Não é possível criar o empréstimo. O livro '" + livro.getNome() + "' já está emprestado no intervalo de datas fornecido.");
+                        System.out.println("Erro: O livro '" + livro.getNome() + "' já está emprestado no período solicitado.");
                         return;
                     }
                 }
             }
         }
 
-        // Criação e adição do empréstimo
+        // Criação do empréstimo
         int numeroEmprestimo = proximoNumeroEmprestimo++;
-        Emprestimos emprestimo = new Emprestimos(numeroEmprestimo, utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao);
-        emprestimos.add(emprestimo);
+        Emprestimos novoEmprestimo = new Emprestimos(numeroEmprestimo, utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao);
+        emprestimos.add(novoEmprestimo);
 
-        exibirDetalhesEmprestimo(emprestimo);  // Exibe detalhes do empréstimo criado
+        // Exibe detalhes do novo empréstimo
+        exibirDetalhesEmprestimo(novoEmprestimo);
     }
 
     // Exibe detalhes do empréstimo de forma estruturada
@@ -154,24 +176,6 @@ public class EmprestimosController {
         }
     }
 
-    // Método auxiliar para solicitar uma nova data do usuário
-    private LocalDate solicitarNovaData(String mensagem) {
-        LocalDate novaData = null;
-        boolean dataValida = false;
-        while (!dataValida) {
-            System.out.print(mensagem);
-            String dataStr = scanner.nextLine();
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                novaData = LocalDate.parse(dataStr, formatter);
-                dataValida = true; // A data é válida
-            } catch (Exception e) {
-                System.out.println("Erro: Data inválida. Por favor, use o formato dd/MM/yyyy.");
-            }
-        }
-        return novaData;
-    }
-
     // CRUD: Delete
     public void removerEmprestimo(int numero) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
@@ -180,38 +184,6 @@ public class EmprestimosController {
             System.out.println("Empréstimo removido com sucesso.");
         } else {
             System.out.println("Empréstimo não encontrado.");
-        }
-    }
-
-    // Listar todos os empréstimos
-    public void listarEmprestimos() {
-        if (emprestimos.isEmpty()) {
-            System.out.println("\nNenhum empréstimo registrado.");
-        } else {
-            System.out.println("\n=== Lista de Empréstimos ===");
-            System.out.printf("%-10s %-25s %-25s %-20s %-25s %-30s\n",
-                    "Número", "Utente", "Data Início", "Data Prev. Devolução", "Livros Emprestados", "Data Devolução");
-
-            for (Emprestimos emprestimo : emprestimos) {
-                String livros = "";
-                for (Livro livro : emprestimo.getLivros()) {
-                    livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
-                }
-                // Remover última vírgula e espaço
-                if (!livros.isEmpty()) {
-                    livros = livros.substring(0, livros.length() - 2);
-                }
-
-                System.out.printf("%-10d %-25s %-25s %-20s %-25s %-30s\n",
-                        emprestimo.getNumero(),
-                        emprestimo.getUtente().getNome(),
-                        emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        livros,
-                        emprestimo.getDataEfetivaDevolucao() != null
-                                ? emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                                : "Em andamento");
-            }
         }
     }
 

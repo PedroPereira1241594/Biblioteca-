@@ -82,10 +82,10 @@ public class JornalView {
 
     // Método para atualizar um jornal
     public void atualizarJornal() {
-        System.out.print("Digite o ISSN do jornal/revista a ser atualizado: ");
+        System.out.print("Introduza o ISSN do jornal/revista a ser atualizado: ");
         String issn = scanner.nextLine();
 
-        System.out.println("Digite os novos dados (deixe em branco para manter o valor atual):");
+        System.out.println("Introduza os novos dados (deixe em branco para manter o valor atual):");
         System.out.print("Novo Título: ");
         String titulo = scanner.nextLine();
 
@@ -106,7 +106,7 @@ public class JornalView {
 
     // Método para deletar um jornal
     public void deletarJornal() {
-        System.out.print("Digite o ISSN do jornal/revista a ser deletado: ");
+        System.out.print("Introduza o ISSN do jornal/revista a ser deletado: ");
         String issn = scanner.nextLine();
 
         jornalController.deletarJornal(issn);
@@ -114,7 +114,7 @@ public class JornalView {
 
     // Método para buscar um jornal por ISSN
     public void buscarJornalPorIssn() {
-        System.out.print("Digite o ISSN do jornal/revista a ser buscado: ");
+        System.out.print("Introduza o ISSN do jornal/revista a ser buscado: ");
         String issn = scanner.nextLine();
 
         var jornal = jornalController.buscarPorIssn(issn);

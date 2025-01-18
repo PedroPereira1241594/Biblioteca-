@@ -55,7 +55,7 @@ public class UtenteController {
 
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite o NIF do utente a editar: ");
+        System.out.print("Introduza o NIF do utente a editar: ");
         String nif = scanner.nextLine();
 
         Utentes utente = null;
@@ -67,11 +67,11 @@ public class UtenteController {
         }
         if (utente != null) {
             System.out.println("Editando o utente: " + utente.getNome());
-            System.out.print("Digite o novo nome (ou pressione Enter para manter): ");
+            System.out.print("Introduza o novo nome (ou pressione Enter para manter): ");
             String nome = scanner.nextLine();
             if (!nome.isEmpty()) utente.setNome(nome);
 
-            System.out.print("Digite o novo NIF (ou pressione Enter para manter): ");
+            System.out.print("Introduza o novo NIF (ou pressione Enter para manter): ");
             String nifStr = scanner.nextLine();
             if (!nifStr.isEmpty()) utente.setNif(nifStr);
 
@@ -108,7 +108,7 @@ public class UtenteController {
 
     public void removerUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite o NIF do utente a remover: ");
+        System.out.print("Introduza o NIF do utente a remover: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
         for (Utentes Indice : utentes) {

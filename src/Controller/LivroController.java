@@ -30,16 +30,16 @@ public class LivroController {
                 return;
             }
         }
-        System.out.print("Digite o nome do livro: ");
+        System.out.print("Introduza o nome do livro: ");
         String nome = scanner.nextLine();
-        System.out.print("Digite a editora: ");
+        System.out.print("Introduza a editora: ");
         String editora = scanner.nextLine();
-        System.out.print("Digite a categoria: ");
+        System.out.print("Introduza a categoria: ");
         String categoria = scanner.nextLine();
-        System.out.print("Digite o ano: ");
+        System.out.print("Introduza o ano: ");
         int ano = scanner.nextInt();
         scanner.nextLine();
-        System.out.print("Digite o autor: ");
+        System.out.print("Introduza o autor: ");
         String autor = scanner.nextLine();
 
         Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn);
@@ -65,27 +65,27 @@ public class LivroController {
         }
         if (livro1 != null) {
             System.out.println("Editando o livro: " + livro1.getNome());
-            System.out.print("Digite o novo nome (ou pressione Enter para manter): ");
+            System.out.print("Introduza o novo nome (ou pressione Enter para manter): ");
             String nome = scanner.nextLine();
             if (!nome.isEmpty()) livro1.setNome(nome);
 
-            System.out.print("Digite a nova editora (ou pressione Enter para manter): ");
+            System.out.print("Introduza a nova editora (ou pressione Enter para manter): ");
             String editora = scanner.nextLine();
             if (!editora.isEmpty()) livro1.setEditora(editora);
 
-            System.out.print("Digite a nova categoria (ou pressione Enter para manter): ");
+            System.out.print("Introduza a nova categoria (ou pressione Enter para manter): ");
             String categoria = scanner.nextLine();
             if (!categoria.isEmpty()) livro1.setCategoria(categoria);
 
-            System.out.print("Digite o novo ano (ou pressione Enter para manter): ");
+            System.out.print("Introduza o novo ano (ou pressione Enter para manter): ");
             String anoStr = scanner.nextLine();
             if (!anoStr.isEmpty()) livro1.setAno(Integer.parseInt(anoStr));
 
-            System.out.print("Digite o novo autor (ou pressione Enter para manter): ");
+            System.out.print("Introduza o novo autor (ou pressione Enter para manter): ");
             String autor = scanner.nextLine();
             if (!autor.isEmpty()) livro1.setAutor(autor);
 
-            System.out.println("Digite o novo ISBN (ou pressione Enter para manter): ");
+            System.out.println("Introduza o novo ISBN (ou pressione Enter para manter): ");
             isbn = scanner.nextLine();
             if (!isbn.isEmpty()) livro1.setIsbn(isbn);
 

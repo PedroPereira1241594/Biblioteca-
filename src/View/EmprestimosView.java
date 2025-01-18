@@ -220,7 +220,40 @@ public class EmprestimosView {
         emprestimosController.removerEmprestimo(numero);
     }
 
-    private void listarEmprestimos() {
-        emprestimosController.listarEmprestimos();
+    public void listarEmprestimos() {
+        List<Emprestimos> emprestimosAtivos = emprestimosController.listarEmprestimosAtivos();
+
+        if (emprestimosAtivos.isEmpty()) {
+            System.out.println("\nNenhum empréstimo registado.");
+        } else {
+            System.out.println("\n=== Lista de Empréstimos ===");
+            // Ajustando os espaçamentos para garantir que "Livros Emprestados" tenha mais espaço
+            System.out.printf("%-10s %-20s %-20s %-25s %-50s %-25s\n",
+                    "Número", "Utente", "Data Início", "Data Prev. Devolução", "Livros Emprestados", "Data Devolução");
+
+            for (Emprestimos emprestimo : emprestimosAtivos) {
+                String livros = "";
+                for (Livro livro : emprestimo.getLivros()) {
+                    livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                }
+                // Remover última vírgula e espaço
+                if (!livros.isEmpty()) {
+                    livros = livros.substring(0, livros.length() - 2);
+                }
+
+                // Imprime o empréstimo com a lista de livros
+                System.out.printf("%-10d %-20s %-20s %-25s %-50s %-25s\n",
+                        emprestimo.getNumero(),
+                        emprestimo.getUtente().getNome(),
+                        emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        livros,
+                        emprestimo.getDataEfetivaDevolucao() != null ? emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "Em aberto");
+            }
+        }
     }
+
+
+
+
 }
