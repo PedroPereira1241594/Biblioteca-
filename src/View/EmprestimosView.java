@@ -208,9 +208,6 @@ public class EmprestimosView {
         }
     }
 
-
-
-
     private void removerEmprestimo() {
         System.out.println("\n=== Remover Empréstimo ===");
         System.out.print("Número do Empréstimo: ");

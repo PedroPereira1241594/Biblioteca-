@@ -23,26 +23,34 @@ public class ReservaController {
         this.scanner = new Scanner(System.in);
     }
 
-    public void criarReserva(Utentes utente, List<Livro> livrosParaReserva, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim) {
+    public boolean criarReserva(Utentes utente, List<Livro> livrosParaReserva, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim, EmprestimosController emprestimosController) {
         if (livrosParaReserva.isEmpty()) {
             System.out.println("Erro: Nenhum livro foi selecionado.");
-            return;
+            return false; // Retorna false se não houver livros para reservar
         }
 
         // Verifica se há livros duplicados na reserva
         Set<Livro> livrosUnicos = new HashSet<>(livrosParaReserva);
         if (livrosUnicos.size() < livrosParaReserva.size()) {
             System.out.println("Erro: Não é possível adicionar livros repetidos na mesma reserva.");
-            return;
+            return false; // Retorna false se houver livros duplicados
         }
 
         // Valida data de fim da reserva
         while (dataFim.isBefore(dataInicio)) {
             System.out.println("Erro: A data de fim da reserva não pode ser anterior à data de início.");
-                dataFim = solicitarNovaData("Introduza a nova data de fim da reserva (dd/MM/yyyy): ");
+            dataFim = solicitarNovaData("Introduza a nova data de fim da reserva (dd/MM/yyyy): ");
         }
 
-        // Verifica a disponibilidade dos livros
+        // Verifica se os livros possuem empréstimos sem data efetiva de devolução
+        for (Livro livro : livrosParaReserva) {
+            if (emprestimosController.livroPossuiEmprestimoAtivo(livro)) {
+                System.out.println("Erro: Não é possível criar a reserva. O livro '" + livro.getNome() + "' está emprestado sem data de devolução efetiva.");
+                return false; // Retorna false se algum livro estiver emprestado sem devolução
+            }
+        }
+
+        // Verifica a disponibilidade dos livros nas reservas existentes
         for (Livro livro : livrosParaReserva) {
             for (Reserva reserva : reservas) {
                 if (reserva.getLivros().contains(livro)) {
@@ -52,17 +60,19 @@ public class ReservaController {
                     if (!(dataFim.isBefore(reservaInicio) || dataInicio.isAfter(reservaFim))) {
                         System.out.println("Erro: Não é possível criar a reserva. O livro '" + livro.getNome() +
                                 "' já está reservado no intervalo de datas fornecido.");
-                        return;
+                        return false; // Retorna false se algum livro já estiver reservado no intervalo
                     }
                 }
             }
         }
 
-        // Criação e adição da reserva
+        // Se todas as verificações passarem, cria a reserva
         Reserva reserva = new Reserva(contadorReservas++, utente, livrosParaReserva, dataRegisto, dataInicio, dataFim);
         reservas.add(reserva);
 
-        exibirDetalhesReserva(reserva); // Exibe detalhes da reserva criada
+        // Exibe detalhes da reserva criada
+        exibirDetalhesReserva(reserva);
+        return true; // Retorna true se a reserva for criada com sucesso
     }
 
     public Reserva consultarReserva(int numero) {
@@ -75,7 +85,6 @@ public class ReservaController {
         // Se não encontrar a reserva, retorna null
         return null;
     }
-
 
     public void atualizarReserva(int numero, LocalDate novaDataInicio, LocalDate novaDataFim) {
         Reserva reserva = consultarReserva(numero);
@@ -101,7 +110,7 @@ public class ReservaController {
 
     public void listarReservas() {
         if (reservas.isEmpty()) {
-            System.out.println("Não há reservas registradas.");
+            System.out.println("Não há reservas registadas.");
         } else {
             System.out.println("\n=== Lista de Reservas ===");
             // Cabeçalhos das colunas
@@ -130,7 +139,6 @@ public class ReservaController {
         }
     }
 
-
     // Método auxiliar para solicitar uma nova data válida
     private LocalDate solicitarNovaData(String mensagem) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -146,8 +154,30 @@ public class ReservaController {
     }
 
     // Método auxiliar para exibir detalhes de uma reserva
-    private void exibirDetalhesReserva(Reserva reserva) {
+    public void exibirDetalhesReserva(Reserva reserva) {
         System.out.println("\nReserva criada com sucesso:");
-        System.out.println(reserva);
+        System.out.println("\n=== Detalhes da Reserva ===");
+        System.out.println("Número: " + reserva.getNumero());
+        System.out.println("Utente: " + reserva.getUtente().getNome());
+        System.out.println("Data de Registo: " + reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        System.out.println("Data de Início: " + reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        System.out.println("Data de Fim: " + reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        System.out.println("Livros Reservados:");
+        for (Livro livro : reserva.getLivros()) {
+            System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
+        }
     }
+
+    public Reserva buscarReservaPorNumero(int numero) {
+        for (Reserva reserva : reservas) {
+            if (reserva.getNumero() == numero) {
+                return reserva; // Retorna a reserva se o número corresponder
+            }
+        }
+        return null; // Retorna null se a reserva não for encontrada
+    }
+
+
+
 }

@@ -46,22 +46,27 @@ public class EmprestimosController {
             System.out.println("Erro: Não é permitido incluir livros repetidos no mesmo empréstimo.");
             return;
         }
-
-        // Verifica se a data prevista de devolução é válida
-        if (dataPrevistaDevolucao.isBefore(dataInicio)) {
-            System.out.println("Erro: A data prevista de devolução não pode ser anterior à data de início.");
-            return;
+        while (true) {
+            // Verifica se a data prevista de devolução é igual ou posterior à data de início
+            if (dataPrevistaDevolucao.isBefore(dataInicio)) {
+                System.out.println("Erro: A data prevista de devolução não pode ser anterior à data de início.");
+                System.out.print("Informe a data prevista de devolução (dd/MM/yyyy): ");
+                dataPrevistaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } else {
+                break; // Sai do loop se a data for válida
+            }
         }
+
 
         // Verifica conflitos com reservas
         for (Livro livro : livrosParaEmprestimo) {
-            for (Reserva reserva : Reserva.getListaReservas()) { // Acessando a lista de reservas com o método estático
+            for (Reserva reserva : Reserva.getListaReservas()) {
                 if (reserva.getLivros().contains(livro)) {
                     LocalDate reservaInicio = reserva.getDataInicio();
                     LocalDate reservaFim = reserva.getDataFim();
 
                     if (!(dataPrevistaDevolucao.isBefore(reservaInicio) || dataInicio.isAfter(reservaFim))) {
-                        System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() +"' já está reservado no período solicitado.");
+                        System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() + "' já está reservado no período solicitado.");
                         return;
                     }
                 }
@@ -92,6 +97,7 @@ public class EmprestimosController {
         exibirDetalhesEmprestimo(novoEmprestimo);
     }
 
+
     // Exibe detalhes do empréstimo de forma estruturada
     private void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
         System.out.println("\n=====================================");
@@ -113,7 +119,7 @@ public class EmprestimosController {
                 .orElse(null);
 
         if (emprestimo == null) {
-            System.out.println("Erro: Empréstimo com número '" + numero + "' não encontrado.");
+            System.out.println("Empréstimo com número '" + numero + "' não encontrado.");
         } else {
             exibirDetalhesEmprestimo(emprestimo);
         }
@@ -182,8 +188,6 @@ public class EmprestimosController {
         if (emprestimo != null) {
             emprestimos.remove(emprestimo);
             System.out.println("Empréstimo removido com sucesso.");
-        } else {
-            System.out.println("Empréstimo não encontrado.");
         }
     }
 
@@ -196,5 +200,14 @@ public class EmprestimosController {
             }
         }
         return ativos;
+    }
+
+    public boolean livroPossuiEmprestimoAtivo(Livro livro) {
+        for (Emprestimos emprestimo : emprestimos) {
+            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
+                return true; // Existe um empréstimo ativo sem data de devolução
+            }
+        }
+        return false; // Não há empréstimos ativos para este livro
     }
 }

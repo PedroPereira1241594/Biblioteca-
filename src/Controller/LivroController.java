@@ -24,8 +24,8 @@ public class LivroController {
 
         System.out.print("Digite o ISBN: ");
         String isbn = scanner.nextLine();
-        for (Livro livro : livros){
-            if (livro.getIsbn().equals(isbn)){
+        for (Livro livro : livros) {
+            if (livro.getIsbn().equals(isbn)) {
                 System.out.println("Já Existe um Livro com o Mesmo ISBN");
                 return;
             }
@@ -95,7 +95,7 @@ public class LivroController {
         }
     }
 
-    public void removerLivro(){
+    public void removerLivro() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insira o ISBN do Livro que Pretende Remover: ");
         String isbn = scanner.nextLine();
@@ -137,4 +137,18 @@ public class LivroController {
         return true; // O livro está disponível para empréstimo
     }
 
+    // No LivroController
+    public boolean verificarLivroEmprestado(Livro livro) {
+        // Aqui você deve verificar se o livro está emprestado.
+        // Supondo que você tenha uma lista de empréstimos ou um método que consulte essa informação.
+
+        // Exemplo de verificação simples (ajuste conforme a lógica da sua aplicação):
+        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
+            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
+                return true; // Livro emprestado, sem data de devolução
+            }
+        }
+
+        return false; // Livro não está emprestado ou já devolvido
+    }
 }

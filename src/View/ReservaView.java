@@ -1,5 +1,6 @@
 package View;
 
+import Controller.EmprestimosController;
 import Controller.LivroController;
 import Controller.ReservaController;
 import Controller.UtenteController;
@@ -18,14 +19,18 @@ public class ReservaView {
     private ReservaController reservaController;
     private UtenteController utenteController;
     private LivroController livroController;
+    private EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
     private Scanner scanner;
 
-    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController) {
+
+    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, EmprestimosController emprestimosController) {
         this.reservaController = reservaController;
         this.utenteController = utenteController;
         this.livroController = livroController;
+        this.emprestimosController = emprestimosController; // Agora está corretamente inicializado
         this.scanner = new Scanner(System.in);
     }
+
 
     public void exibirMenu() {
         int opcao;
@@ -148,14 +153,28 @@ public class ReservaView {
             System.out.print("Data de Fim da Reserva (dd/MM/yyyy): ");
             LocalDate dataFim = lerData(formato);
 
-            // Criação da reserva usando o controller
-            reservaController.criarReserva(utente, livrosParaReserva, dataRegisto, dataInicio, dataFim);
-            System.out.println("Reserva criada com sucesso!");
+            // Verificar se algum livro está emprestado e não pode ser reservado
+            for (Livro livro : livrosParaReserva) {
+                if (livroController.verificarLivroEmprestado(livro)) {  // Método hipotético para verificar se o livro está emprestado
+                    System.out.println("Erro: O livro '" + livro.getNome() + "' está emprestado e não pode ser reservado.");
+                    return; // Impede a criação da reserva
+                }
+            }
+
+            // Chama o controller para criar a reserva e captura o retorno booleano
+            boolean reservaCriadaComSucesso = reservaController.criarReserva(utente, livrosParaReserva, dataRegisto, dataInicio, dataFim, emprestimosController);
+
+            // Exibe a mensagem de sucesso ou erro com base no retorno
+            if (reservaCriadaComSucesso) {
+                System.out.println("Reserva criada com sucesso!");
+            } else {
+                System.out.println("Erro ao criar reserva.");
+            }
+
         } catch (Exception e) {
             System.out.println("Erro ao criar reserva: " + e.getMessage());
         }
     }
-
 
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
@@ -179,22 +198,11 @@ public class ReservaView {
 
         // Se a reserva for encontrada, exibe os detalhes
         if (reserva != null) {
-            System.out.println("\n=== Detalhes da Reserva ===");
-            System.out.println("Número: " + reserva.getNumero());
-            System.out.println("Utente: " + reserva.getUtente().getNome());
-            System.out.println("Data de Registo: " + reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            System.out.println("Data de Início: " + reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            System.out.println("Data de Fim: " + reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
-            System.out.println("Livros Reservados:");
-            for (Livro livro : reserva.getLivros()) {
-                System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
-            }
+            reservaController.exibirDetalhesReserva(reserva);
         } else {
             System.out.println("Reserva com o número " + numero + " não encontrada.");
         }
     }
-
 
     private void atualizarReserva() {
         System.out.println("\n=== Atualizar Reserva ===");
@@ -202,23 +210,41 @@ public class ReservaView {
         int numero = scanner.nextInt();
         scanner.nextLine();
 
+        // Verificar se a reserva existe
+        Reserva reserva = reservaController.buscarReservaPorNumero(numero);
+        if (reserva == null) {
+            System.out.println("Reserva não encontrada com o número informado.");
+            return; // Retorna caso a reserva não exista
+        }
+
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        // Solicitar as novas datas
         System.out.print("Nova Data de Início (dd/MM/yyyy): ");
         LocalDate novaDataInicio = lerData(formato);
 
         System.out.print("Nova Data de Fim (dd/MM/yyyy): ");
         LocalDate novaDataFim = lerData(formato);
 
+        // Atualizar a reserva
         reservaController.atualizarReserva(numero, novaDataInicio, novaDataFim);
+        System.out.println("Reserva atualizada com sucesso!");
     }
+
 
     private void removerReserva() {
         System.out.println("\n=== Remover Reserva ===");
         System.out.print("Número da Reserva: ");
         int numero = scanner.nextInt();
         scanner.nextLine();
+
+        Reserva reserva = reservaController.buscarReservaPorNumero(numero);
+        if (reserva == null) {
+            System.out.println("Reserva não encontrada com o número informado.");
+            return; // Retorna caso a reserva não exista
+        }
         reservaController.removerReserva(numero);
+        System.out.println("Reserva eliminada com sucesso!");
     }
 
     private void listarReservas() {

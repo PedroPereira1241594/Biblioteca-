@@ -62,7 +62,7 @@ public class Main {
 
         // Inicialização das views de empréstimos e reservas
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
 
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
