@@ -12,12 +12,13 @@ public class Emprestimos {
     private LocalDate dataEfetivaDevolucao;
 
     // Construtor atualizado para receber LocalDate
-    public Emprestimos(int numero, Utentes utente, List<Livro> livros, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
+    public Emprestimos(int numero, Utentes utente, List<Livro> livros, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
         this.numero = numero;
         this.utente = utente;
         this.livros = livros;
         this.dataInicio = dataInicio;
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
+        this.dataEfetivaDevolucao = dataEfetivaDevolucao;
     }
 
     // Getters e Setters

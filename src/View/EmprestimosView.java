@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static Controller.ExportarDados.*;
+
 public class EmprestimosView {
     private EmprestimosController emprestimosController;
     private UtenteController utenteController;
@@ -145,12 +147,41 @@ public class EmprestimosView {
             System.out.print("Data Prevista de Devolução (dd/MM/yyyy): ");
             LocalDate dataPrevistaDevolucao = lerData(formato);
 
+            while (dataPrevistaDevolucao.isBefore(dataInicio)) {
+                System.out.println("Erro: A data prevista de devolução não pode ser anterior à data de início.");
+                System.out.print("Informe a data prevista de devolução (dd/MM/yyyy): ");
+                dataPrevistaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            }
+
+            // Declaração da variável dataEfetivaDevolucao fora do ciclo
+            LocalDate dataEfetivaDevolucao = null;
+
+            System.out.print("Deseja adicionar a data efetiva de devolução? (S/N): ");
+            char confirmacao = scanner.next().toUpperCase().charAt(0);
+            scanner.nextLine(); // Limpar o buffer antes de ler a data
+
+            if (confirmacao == 'S') {
+                // Solicitar a data efetiva de devolução
+                System.out.print("Data Efetiva de Devolução (dd/MM/yyyy): ");
+                dataEfetivaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                // Valida a data de devolução (dataEfetivaDevolucao não pode ser anterior à dataInicio)
+                while (dataEfetivaDevolucao.isBefore(dataInicio)) {
+                    System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início.");
+                    System.out.print("Informe a data efetiva de devolução (dd/MM/yyyy): ");
+                    dataEfetivaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                }
+            }
+
+
+
             // Criação do empréstimo sem número, pois ele será gerado automaticamente pelo controller
-            emprestimosController.criarEmprestimo(utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao);
+            emprestimosController.criarEmprestimo(utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
         } catch (Exception e) {
             System.out.println("Erro ao criar empréstimo: " + e.getMessage());
         }
     }
+
 
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
@@ -185,10 +216,10 @@ public class EmprestimosView {
             while (!dataValida) {
                 System.out.print("Informe a nova data efetiva de devolução (dd/MM/yyyy): ");
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate novaDataEfetivaDevolucao = lerData(formato);
+                LocalDate dataEfetivaDevolucao = lerData(formato);
 
                 // Verifica se a nova data de devolução é válida em relação à data de início
-                if (novaDataEfetivaDevolucao.isBefore(emprestimo.getDataInicio())) {
+                if (dataEfetivaDevolucao.isBefore(emprestimo.getDataInicio())) {
                     System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início do empréstimo.");
 
                     System.out.print("Deseja tentar novamente? (S/N): ");
@@ -201,7 +232,7 @@ public class EmprestimosView {
                         return; // Cancelar operação
                     }
                 } else {
-                    emprestimosController.atualizarEmprestimo(numero, novaDataEfetivaDevolucao);  // Atualiza o empréstimo com a nova data
+                    emprestimosController.atualizarEmprestimo(numero, dataEfetivaDevolucao);  // Atualiza o empréstimo com a nova data
                     dataValida = true;  // Encerra o loop
                 }
             }

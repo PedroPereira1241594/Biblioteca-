@@ -24,14 +24,12 @@ public class EmprestimosController {
         this.emprestimos = emprestimos; // Use a mesma lista do main
     }
 
-
     // Setter para LivroController (evita dependências circulares)
     public void setLivroController(LivroController livroController) {
         this.livroController = livroController;
     }
 
-    // CRUD: Create
-    public void criarEmprestimo(Utentes utente, List<Livro> livrosParaEmprestimo, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
+    public void criarEmprestimo(Utentes utente, List<Livro> livrosParaEmprestimo, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
         if (utente == null) {
             System.out.println("Erro: O utente informado é inválido.");
             return;
@@ -48,56 +46,26 @@ public class EmprestimosController {
             System.out.println("Erro: Não é permitido incluir livros repetidos no mesmo empréstimo.");
             return;
         }
-        while (true) {
-            // Verifica se a data prevista de devolução é igual ou posterior à data de início
-            if (dataPrevistaDevolucao.isBefore(dataInicio)) {
-                System.out.println("Erro: A data prevista de devolução não pode ser anterior à data de início.");
-                System.out.print("Informe a data prevista de devolução (dd/MM/yyyy): ");
-                dataPrevistaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            } else {
-                break; // Sai do loop se a data for válida
-            }
-        }
 
-
-        // Verifica conflitos com reservas
+        // Verifica conflitos com reservas e disponibilidade de livros
         for (Livro livro : livrosParaEmprestimo) {
-            for (Reserva reserva : Reserva.getListaReservas()) {
-                if (reserva.getLivros().contains(livro)) {
-                    LocalDate reservaInicio = reserva.getDataInicio();
-                    LocalDate reservaFim = reserva.getDataFim();
-
-                    if (!(dataPrevistaDevolucao.isBefore(reservaInicio) || dataInicio.isAfter(reservaFim))) {
-                        System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() + "' já está reservado no período solicitado.");
-                        return;
-                    }
-                }
-            }
-        }
-
-        // Verifica disponibilidade dos livros
-        for (Livro livro : livrosParaEmprestimo) {
-            for (Emprestimos emprestimo : emprestimos) {
-                if (emprestimo.getLivros().contains(livro)) {
-                    LocalDate emprestimoInicio = emprestimo.getDataInicio();
-                    LocalDate emprestimoFim = emprestimo.getDataPrevistaDevolucao();
-
-                    if (!(dataPrevistaDevolucao.isBefore(emprestimoInicio) || dataInicio.isAfter(emprestimoFim))) {
-                        System.out.println("Erro: O livro '" + livro.getNome() + "' já está emprestado no período solicitado.");
-                        return;
-                    }
-                }
+            // Verifica se o livro está reservado ou emprestado no período
+            if (livroPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
+                System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() + "' já está emprestado no período solicitado.");
+                return;
             }
         }
 
         // Criação do empréstimo
         int numeroEmprestimo = proximoNumeroEmprestimo++;
-        Emprestimos novoEmprestimo = new Emprestimos(numeroEmprestimo, utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao);
+        Emprestimos novoEmprestimo = new Emprestimos(numeroEmprestimo, utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
         emprestimos.add(novoEmprestimo);
 
         // Exibe detalhes do novo empréstimo
         exibirDetalhesEmprestimo(novoEmprestimo);
     }
+
+
 
 
     // Exibe detalhes do empréstimo de forma estruturada
@@ -107,11 +75,20 @@ public class EmprestimosController {
         System.out.println("Utente: " + emprestimo.getUtente().getNome() + " (NIF: " + emprestimo.getUtente().getNif() + ")");
         System.out.println("Data de Início: " + emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         System.out.println("Data Prevista de Devolução: " + emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        // Verifica se a data efetiva de devolução é null
+        if (emprestimo.getDataEfetivaDevolucao() != null) {
+            System.out.println("Data Efetiva de Devolução: " + emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        } else {
+            System.out.println("Data Efetiva de Devolução: Em aberto");
+        }
+
         System.out.println("Livros Emprestados:");
         for (Livro livro : emprestimo.getLivros()) {
             System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
         }
     }
+
 
     // CRUD: Read
     public Emprestimos consultarEmprestimo(int numero) {
@@ -197,19 +174,28 @@ public class EmprestimosController {
     public List<Emprestimos> listarEmprestimosAtivos() {
         List<Emprestimos> ativos = new ArrayList<>();
         for (Emprestimos emprestimo : emprestimos) {
-            if (emprestimo.getDataEfetivaDevolucao() == null) {
                 ativos.add(emprestimo);
-            }
         }
         return ativos;
     }
 
-    public boolean livroPossuiEmprestimoAtivo(Livro livro) {
+    // Verifica se o livro já está emprestado no período entre dataInicio e dataPrevistaDevolucao
+    public boolean livroPossuiEmprestimoAtivo(Livro livro, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
         for (Emprestimos emprestimo : emprestimos) {
-            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
-                return true; // Existe um empréstimo ativo sem data de devolução
+            for (Livro livroEmprestado : emprestimo.getLivros()) {
+                // Verifica se o livro está no empréstimo
+                if (livro.equals(livroEmprestado)) {
+                    // Verifica se a data de devolução prevista ou efetiva do empréstimo cobre o período solicitado
+                    if ((dataInicio.isBefore(emprestimo.getDataPrevistaDevolucao()) && dataPrevistaDevolucao.isAfter(emprestimo.getDataInicio())) ||
+                            (dataInicio.isBefore(emprestimo.getDataEfetivaDevolucao()) && dataPrevistaDevolucao.isAfter(emprestimo.getDataInicio()))) {
+                        return true; // O livro já está emprestado no período solicitado
+                    }
+                }
             }
         }
-        return false; // Não há empréstimos ativos para este livro
+        return false; // O livro não está emprestado no período solicitado
     }
+
+
+
 }
