@@ -72,7 +72,7 @@ public class Main {
                     jornalView.exibirMenu();
                     break;
                 case 3:
-                    gerirUtentes(utenteController, scanner);
+                    gerirUtentes(utenteController, utentes, reservas, emprestimos, scanner);
                     break;
                 case 4:
                     emprestimosView.exibirMenu();

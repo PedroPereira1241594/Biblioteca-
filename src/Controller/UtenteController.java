@@ -1,10 +1,11 @@
 package Controller;
 
+import Model.Emprestimos;
+import Model.Reserva;
 import Model.Utentes;
 import View.UtenteView;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class UtenteController {
     private final ArrayList<Utentes> utentes;
@@ -49,9 +50,30 @@ public class UtenteController {
         System.out.println("Utente adicionado com sucesso!\n");
     }
 
-    public void listarUtentes() {
-        utenteView.exibirUtentes(utentes);
+    public void listarUtentesComReservasOuEmprestimos(List<Utentes> utentes, List<Reserva> reservas, List<Emprestimos> emprestimos) {
+        Set<Utentes> utentesComReservasOuEmprestimos = new HashSet<>();
+
+        // Adiciona utentes que possuem reservas
+        for (Reserva reserva : reservas) {
+            utentesComReservasOuEmprestimos.add(reserva.getUtente());
+        }
+
+        // Adiciona utentes que possuem empréstimos
+        for (Emprestimos emprestimo : emprestimos) {
+            utentesComReservasOuEmprestimos.add(emprestimo.getUtente());
+        }
+
+        // Exibe os utentes com reservas ou empréstimos
+        if (utentesComReservasOuEmprestimos.isEmpty()) {
+            System.out.println("Não há utentes com reservas ou empréstimos.");
+        } else {
+            System.out.println("\n=== Lista de Utentes com Reservas ou Empréstimos ===");
+            for (Utentes utente : utentesComReservasOuEmprestimos) {
+                System.out.println("Nome: " + utente.getNome() + " | NIF: " + utente.getNif());
+            }
+        }
     }
+
 
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);

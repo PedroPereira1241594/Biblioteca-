@@ -1,8 +1,11 @@
 package View;
 
 import Controller.UtenteController;
+import Model.Emprestimos;
+import Model.Reserva;
 import Model.Utentes;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UtenteView {
@@ -36,7 +39,7 @@ public class UtenteView {
         System.out.println(mensagem);
     }
 
-    public static void gerirUtentes(UtenteController utenteController, Scanner scanner) {
+    public static void gerirUtentes(UtenteController utenteController, List<Utentes> utentes, List<Reserva> reservas, List<Emprestimos> emprestimos, Scanner scanner) {
         int opcao;
 
         do {
@@ -54,7 +57,7 @@ public class UtenteView {
                     utenteController.adicionarUtente();
                     break;
                 case 2:
-                    utenteController.listarUtentes();
+                    utenteController.listarUtentesComReservasOuEmprestimos(utentes, reservas, emprestimos);
                     break;
                 case 3:
                     utenteController.editarUtente();
