@@ -2,3 +2,4 @@ caminhoLivros=C:\Users\Acer\Desktop\APOO\Projecto Final 1\Biblioteca-\Biblioteca
 caminhoUtentes=C:\Users\Acer\Desktop\APOO\Projecto Final 1\Biblioteca-\Biblioteca-\src\DadosExportados\utentes.txt
 caminhoJornal=C:\Users\Acer\Desktop\APOO\Projecto Final 1\Biblioteca-\Biblioteca-\src\DadosExportados\jornal.txt
 caminhoEmprestimos=C:\Users\Acer\Desktop\APOO\Projecto Final 1\Biblioteca-\Biblioteca-\src\DadosExportados\Emprestimos.txt
+caminhoReservas=C:\Users\Acer\Desktop\APOO\Projecto Final 1\Biblioteca-\Biblioteca-\src\DadosExportados\Reservas.txt

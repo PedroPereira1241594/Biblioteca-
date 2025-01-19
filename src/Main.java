@@ -1,8 +1,5 @@
 import Controller.*;
-import Model.Emprestimos;
-import Model.Jornal;
-import Model.Livro;
-import Model.Utentes;
+import Model.*;
 import View.EmprestimosView;
 import View.JornalView;
 import View.LivroView;
@@ -16,6 +13,7 @@ import java.io.IOException;
 import static Controller.ExportarDados.*;
 import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
+import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -30,34 +28,24 @@ public class Main {
         String caminhoUtentes = configReader.getCaminhoUtentes();
         String caminhoJornal = configReader.getCaminhoJornal();
         String caminhoEmprestimo = configReader.getCaminhoEmprestimo();
+        String caminhoReserva = configReader.getCaminhoReserva();
 
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
         ArrayList<Jornal> jornals = new ArrayList<>();
         ArrayList<Emprestimos> emprestimos1 = new ArrayList<>();
+        ArrayList<Reserva> reservas = new ArrayList<>();
 
         // Inicialização das views
         LivroView livroView = new LivroView();
         UtenteView utenteView = new UtenteView();
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
-
-        // Inicialização do controlador de utentes
         UtenteController utenteController = new UtenteController(utentes, utenteView);
-
-        // Inicialização do controlador de empréstimos (temporariamente sem LivroController)
         EmprestimosController emprestimosController = new EmprestimosController(null);
-
-        // Inicialização do controlador de livros com a dependência de EmprestimosController
         LivroController livroController = new LivroController(livros, livroView, emprestimosController);
-
-        // Atualização do EmprestimosController para usar o LivroController
         emprestimosController.setLivroController(livroController);
-
-        // Inicialização do controlador de reservas
         ReservaController reservaController = new ReservaController();
-
-        // Inicialização das views de empréstimos e reservas
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
 
@@ -95,6 +83,7 @@ public class Main {
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     System.out.println("Emprestimos: " + emprestimos1);
+                    System.out.println("Reservas" + reservas);
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
                         // Chamar os métodos para exportar dados
@@ -102,6 +91,7 @@ public class Main {
                         exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
                         exportarJornal(caminhoJornal, jornals);
                         exportarEmprestimos(caminhoEmprestimo, emprestimos1);
+                        exportarReservas(caminhoReserva, reservas);
                         System.out.println("Saindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop

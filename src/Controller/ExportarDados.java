@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Jornal;
-import Model.Livro;
-import Model.Utentes;
-import Model.Emprestimos;
+import Model.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -78,8 +75,23 @@ public class ExportarDados {
         }
     }
 
-
-
+    public static void exportarReservas(String caminhoArquivo, ArrayList<Reserva> reservas) throws IOException {
+        try (FileWriter writer = new FileWriter(caminhoArquivo)) {
+            for (Reserva reserva : reservas) {
+                writer.write(String.format("%s;%s;%s;%s;%s\n",
+                        reserva.getNumero(),
+                        reserva.getUtente(),
+                        reserva.getLivros(),
+                        reserva.getDataRegisto(),
+                        reserva.getDataInicio(),
+                        reserva.getDataFim()));
+            }
+            System.out.println("Reservas Guardadas com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro a Guardas as Reservas: " + e.getMessage());
+        }
+    }
 }
+
 
 

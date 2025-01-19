@@ -9,6 +9,7 @@ public class Configurações {
     private String caminhoUtentes;
     private String caminhoJornal;
     private String caminhoEmprestimo;
+    private String caminhoReserva;
 
     public Configurações(String caminhoConfig) throws IOException {
         carregarConfiguracoes(caminhoConfig);
@@ -26,6 +27,9 @@ public class Configurações {
                     caminhoJornal = linha.split("=", 2)[1].trim();
                 } else if (linha.startsWith("caminhoEmprestimos=")) {
                     caminhoEmprestimo = linha.split("=", 2)[1].trim();
+                } else if (linha.startsWith("caminhoReservas=")) {
+                    caminhoReserva = linha.split("=", 2)[1].trim();
+
                 }
             }
         }
@@ -46,4 +50,7 @@ public class Configurações {
     public String getCaminhoEmprestimo() {
         return caminhoEmprestimo;
     }
+
+    public String getCaminhoReserva() { return caminhoReserva; }
+
 }
