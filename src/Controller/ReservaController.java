@@ -45,10 +45,11 @@ public class ReservaController {
 
         // Verifica se os livros possuem empréstimos sem data efetiva de devolução
         for (Livro livro : livrosParaReserva) {
-            if (emprestimosController.livroPossuiEmprestimoAtivo(livro)) {
-                System.out.println("Erro: Não é possível criar a reserva. O livro '" + livro.getNome() + "' está emprestado sem data de devolução efetiva.");
-                return false; // Retorna false se algum livro estiver emprestado sem devolução
+            if (emprestimosController.livroPossuiEmprestimoAtivo(livro, dataInicio, dataFim)) {
+                System.out.println("Erro: O livro '" + livro.getNome() + "' está emprestado no intervalo de datas fornecido.");
+                return false;
             }
+
         }
 
         // Verifica a disponibilidade dos livros nas reservas existentes

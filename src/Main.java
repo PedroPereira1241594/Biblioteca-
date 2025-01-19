@@ -82,8 +82,6 @@ public class Main {
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
-                    System.out.println("Emprestimos: " + emprestimos);
-                    System.out.println("Reservas" + reservas);
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
                         // Exporta os dados
@@ -92,7 +90,7 @@ public class Main {
                         exportarJornal(caminhoJornal, jornals);
                         exportarEmprestimos(caminhoEmprestimo, emprestimos);
                         exportarReservas(caminhoReserva, reservas);
-                        System.out.println("Saindo do sistema...");
+                        System.out.println("\nSaindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop
                     }
