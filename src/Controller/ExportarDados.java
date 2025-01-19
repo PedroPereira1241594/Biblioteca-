@@ -64,22 +64,21 @@ public class ExportarDados {
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
-                // Escreve a linha formatada no arquivo
                 writer.write(String.format("%d;%s;%s;%s;%s;%s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(), // Exportando o nome do Utente
-                        emprestimo.getLivros(), // Usando o método getLivrosString() para exportar os livros
+                        emprestimo.getLivros(), // Livros formatados
                         emprestimo.getDataInicio().toString(),
                         emprestimo.getDataPrevistaDevolucao().toString(),
-                        (emprestimo.getDataEfetivaDevolucao() != null) ? emprestimo.getDataEfetivaDevolucao().toString() : "")
-                );
+                        emprestimo.getDataEfetivaDevolucao()));
             }
-            writer.flush(); // Garante que todos os dados foram gravados no arquivo
             System.out.println("Empréstimos salvos no arquivo com sucesso!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
         }
     }
+
+
 
 }
 

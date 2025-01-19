@@ -1,8 +1,4 @@
-import Controller.Configurações;
-import Controller.EmprestimosController;
-import Controller.LivroController;
-import Controller.ReservaController;
-import Controller.UtenteController;
+import Controller.*;
 import Model.Emprestimos;
 import Model.Jornal;
 import Model.Livro;
@@ -43,7 +39,8 @@ public class Main {
         // Inicialização das views
         LivroView livroView = new LivroView();
         UtenteView utenteView = new UtenteView();
-        JornalView jornalView = new JornalView();
+        JornalController jornalController = new JornalController(jornals);
+        JornalView jornalView = new JornalView(jornalController);
 
         // Inicialização do controlador de utentes
         UtenteController utenteController = new UtenteController(utentes, utenteView);
@@ -97,6 +94,7 @@ public class Main {
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
+                    System.out.println("Emprestimos: " + emprestimos1);
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
                         // Chamar os métodos para exportar dados

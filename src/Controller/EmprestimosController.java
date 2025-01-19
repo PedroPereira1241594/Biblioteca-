@@ -5,6 +5,9 @@ import Model.Livro;
 import Model.Reserva;
 import Model.Utentes;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

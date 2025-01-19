@@ -7,8 +7,8 @@ public class JornalView {
     private JornalController jornalController;
     private Scanner scanner;
 
-    public JornalView() {
-        this.jornalController = new JornalController();
+    public JornalView(JornalController jornalController) {
+        this.jornalController = jornalController;
         this.scanner = new Scanner(System.in);
     }
 

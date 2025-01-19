@@ -7,8 +7,9 @@ public class JornalController {
     private ArrayList<Jornal> jornais; // Lista para armazenar os jornais
 
     // Construtor
-    public JornalController() {
-        this.jornais = new ArrayList<>();
+    public JornalController(ArrayList<Jornal> jornais) {
+
+        this.jornais = jornais;
     }
 
     // Criar um novo jornal
