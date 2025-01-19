@@ -17,8 +17,9 @@ public class ReservaController {
     private int contadorReservas;
     private Scanner scanner;
 
-    public ReservaController() {
-        this.reservas = new ArrayList<>();
+    // Modificado para receber a lista de reservas do Main
+    public ReservaController(List<Reserva> reservas) {
+        this.reservas = reservas;  // Agora a lista de reservas vem do Main
         this.contadorReservas = 1;
         this.scanner = new Scanner(System.in);
     }

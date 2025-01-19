@@ -17,7 +17,6 @@ import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
         String caminhoConfig = "src\\DadosExportados\\Config.txt";
 
         // Inicializar o leitor de configurações
@@ -30,24 +29,25 @@ public class Main {
         String caminhoEmprestimo = configReader.getCaminhoEmprestimo();
         String caminhoReserva = configReader.getCaminhoReserva();
 
+        // Dados compartilhados
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
         ArrayList<Jornal> jornals = new ArrayList<>();
-        ArrayList<Emprestimos> emprestimos1 = new ArrayList<>();
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>();
         ArrayList<Reserva> reservas = new ArrayList<>();
 
-        // Inicialização das views
-        LivroView livroView = new LivroView();
+        // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
+        UtenteController utenteController = new UtenteController(utentes, utenteView);
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
-        UtenteController utenteController = new UtenteController(utentes, utenteView);
-        EmprestimosController emprestimosController = new EmprestimosController(null);
+        EmprestimosController emprestimosController = new EmprestimosController(emprestimos);
+        LivroView livroView = new LivroView();
         LivroController livroController = new LivroController(livros, livroView, emprestimosController);
         emprestimosController.setLivroController(livroController);
-        ReservaController reservaController = new ReservaController();
-        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
 
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
@@ -82,15 +82,15 @@ public class Main {
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
-                    System.out.println("Emprestimos: " + emprestimos1);
+                    System.out.println("Emprestimos: " + emprestimos);
                     System.out.println("Reservas" + reservas);
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-                        // Chamar os métodos para exportar dados
-                        exportarLivros(caminhoLivros, livros);  // Exporta livros
-                        exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
+                        // Exporta os dados
+                        exportarLivros(caminhoLivros, livros);
+                        exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);
-                        exportarEmprestimos(caminhoEmprestimo, emprestimos1);
+                        exportarEmprestimos(caminhoEmprestimo, emprestimos);
                         exportarReservas(caminhoReserva, reservas);
                         System.out.println("Saindo do sistema...");
                     } else {

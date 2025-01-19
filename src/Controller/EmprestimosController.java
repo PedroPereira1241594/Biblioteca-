@@ -20,11 +20,10 @@ public class EmprestimosController {
     private Scanner scanner;
 
     // Construtor
-    public EmprestimosController(LivroController livroController) {
-        this.emprestimos = new ArrayList<>();
-        this.livroController = livroController;
-        this.scanner = new Scanner(System.in); // Instanciando o scanner aqui
+    public EmprestimosController(List<Emprestimos> emprestimos) {
+        this.emprestimos = emprestimos; // Use a mesma lista do main
     }
+
 
     // Setter para LivroController (evita dependências circulares)
     public void setLivroController(LivroController livroController) {
