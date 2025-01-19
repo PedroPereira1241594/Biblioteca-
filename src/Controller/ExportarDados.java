@@ -61,10 +61,19 @@ public class ExportarDados {
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
+                String livrosEmprestados = "";
+                for (Livro livro : emprestimo.getLivros()) {
+                    livrosEmprestados += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                }
+                // Remover a última vírgula e espaço
+                if (!livrosEmprestados.isEmpty()) {
+                    livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
+                }
+
                 writer.write(String.format("%d;%s;%s;%s;%s;%s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(), // Exportando o nome do Utente
-                        emprestimo.getLivros(), // Livros formatados
+                        livrosEmprestados,  // Livros formatados
                         emprestimo.getDataInicio().toString(),
                         emprestimo.getDataPrevistaDevolucao().toString(),
                         emprestimo.getDataEfetivaDevolucao()));
@@ -75,22 +84,33 @@ public class ExportarDados {
         }
     }
 
+
     public static void exportarReservas(String caminhoArquivo, ArrayList<Reserva> reservas) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Reserva reserva : reservas) {
-                writer.write(String.format("%s;%s;%s;%s;%s\n",
+                String livrosReservados = "";
+                for (Livro livro : reserva.getLivros()) {
+                    livrosReservados += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                }
+                // Remover a última vírgula e espaço
+                if (!livrosReservados.isEmpty()) {
+                    livrosReservados = livrosReservados.substring(0, livrosReservados.length() - 2);
+                }
+
+                writer.write(String.format("%d;%s;%s;%s;%s\n",
                         reserva.getNumero(),
-                        reserva.getUtente(),
-                        reserva.getLivros(),
+                        reserva.getUtente().getNome(), // Exportando o nome do Utente
+                        livrosReservados,  // Livros formatados
                         reserva.getDataRegisto(),
                         reserva.getDataInicio(),
                         reserva.getDataFim()));
             }
             System.out.println("Reservas Guardadas com sucesso!");
         } catch (IOException e) {
-            System.out.println("Erro a Guardas as Reservas: " + e.getMessage());
+            System.out.println("Erro a Guardar as Reservas: " + e.getMessage());
         }
     }
+
 }
 
 
