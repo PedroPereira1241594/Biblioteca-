@@ -1,17 +1,6 @@
-import Controller.Configurações;
-import Controller.EmprestimosController;
-import Controller.LivroController;
-import Controller.ReservaController;
-import Controller.UtenteController;
-import Model.Emprestimos;
-import Model.Jornal;
-import Model.Livro;
-import Model.Utentes;
-import View.EmprestimosView;
-import View.JornalView;
-import View.LivroView;
-import View.ReservaView;
-import View.UtenteView;
+import Controller.*;
+import Model.*;
+import View.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,13 +9,11 @@ import java.io.IOException;
 import static Controller.ExportarDados.*;
 import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
+import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-<<<<<<< HEAD
-        // Listas para armazenar livros, utentes e jornais
-=======
-
+        Scanner scanner = new Scanner(System.in); // Cria o Scanner.
         String caminhoConfig = "src\\DadosExportados\\Config.txt";
 
         // Inicializar o leitor de configurações
@@ -37,40 +24,30 @@ public class Main {
         String caminhoUtentes = configReader.getCaminhoUtentes();
         String caminhoJornal = configReader.getCaminhoJornal();
         String caminhoEmprestimo = configReader.getCaminhoEmprestimo();
+        String caminhoReserva = configReader.getCaminhoReserva();
 
-        // Listas para armazenar livros e utentes
->>>>>>> 42696b5db1818335e6cb24b2f4036af36aafa5e9
+        // Dados compartilhados
         ArrayList<Livro> livros = new ArrayList<>();
         ArrayList<Utentes> utentes = new ArrayList<>();
         ArrayList<Jornal> jornals = new ArrayList<>();
-        ArrayList<Emprestimos> emprestimos1 = new ArrayList<>();
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>();
+        ArrayList<Reserva> reservas = new ArrayList<>();
 
-        // Inicialização das views
-        LivroView livroView = new LivroView();
+        // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
-        JornalView jornalView = new JornalView();
-
-        // Inicialização do controlador de utentes
         UtenteController utenteController = new UtenteController(utentes, utenteView);
-
-        // Inicialização do controlador de empréstimos (temporariamente sem LivroController)
-        EmprestimosController emprestimosController = new EmprestimosController(null);
-
-        // Inicialização do controlador de livros com a dependência de EmprestimosController
+        JornalController jornalController = new JornalController(jornals);
+        JornalView jornalView = new JornalView(jornalController);
+        EmprestimosController emprestimosController = new EmprestimosController(emprestimos);
+        LivroView livroView = new LivroView();
         LivroController livroController = new LivroController(livros, livroView, emprestimosController);
-
-        // Atualização do EmprestimosController para usar o LivroController
         emprestimosController.setLivroController(livroController);
-
-        // Inicialização do controlador de reservas
-        ReservaController reservaController = new ReservaController();
-
-        // Inicialização das views de empréstimos e reservas
+        ReservaController reservaController = new ReservaController(reservas);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController);
+        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
+        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
 
-        // Scanner para interação no menu
-        Scanner scanner = new Scanner(System.in);
         int opcao;
 
         do {
@@ -80,6 +57,7 @@ public class Main {
             System.out.println("3. Gerir Utentes");
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
+            System.out.println("6. Pesquisas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -92,7 +70,7 @@ public class Main {
                     jornalView.exibirMenu();
                     break;
                 case 3:
-                    gerirUtentes(utenteController, scanner);
+                    gerirUtentes(utenteController, utentes, reservas, emprestimos, scanner);
                     break;
                 case 4:
                     emprestimosView.exibirMenu();
@@ -100,28 +78,20 @@ public class Main {
                 case 5:
                     reservaView.exibirMenu();
                     break;
+                case 6:
+                    pesquisaView.exibirMenu();
+                    break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-<<<<<<< HEAD
-                        // Definir os caminhos dos arquivos de exportação
-                        String caminhoLivros = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\livros.txt";
-                        String caminhoUtentes = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\utentes.txt";
-                        String caminhoJornal = "C:\\Users\\Acer\\Desktop\\APOO\\Projecto Final 1\\Biblioteca-\\Biblioteca-\\src\\DadosExportados\\jornal.txt";
-
-                        // Chamar os métodos para exportar dados
-                        exportarLivros(caminhoLivros, livros);  // Exporta livros
-                        exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
+                        // Exporta os dados
+                        exportarLivros(caminhoLivros, livros);
+                        exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);
-
-=======
-                        exportarLivros(caminhoLivros, livros);  // Exporta livros
-                        exportarUtentes(caminhoUtentes, utentes);  // Exporta utentes
-                        exportarJornal(caminhoJornal, jornals);
-                        exportarEmprestimos(caminhoEmprestimo, emprestimos1);
->>>>>>> 42696b5db1818335e6cb24b2f4036af36aafa5e9
-                        System.out.println("Saindo do sistema...");
+                        exportarEmprestimos(caminhoEmprestimo, emprestimos);
+                        exportarReservas(caminhoReserva, reservas);
+                        System.out.println("\nSaindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop
                     }

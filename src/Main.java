@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.io.IOException;
 
 import static Controller.ExportarDados.*;
+import static Controller.LivroLoader.*;
 import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
 import static Controller.ExportarDados.exportarReservas;
@@ -45,8 +46,12 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
-        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+        LivroLoader livroLoader = new LivroLoader();
+        livros.addAll(livroLoader.carregarLivros());
+        utentes.addAll(carregarUtentes());
+        jornals.addAll(carregarJornais());
+        emprestimos.addAll(carregarEmprestimos(utentes, livros));
+        reservas.addAll(carregarReservas(utentes, livros));
 
         int opcao;
 
