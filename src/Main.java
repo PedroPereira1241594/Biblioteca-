@@ -56,6 +56,7 @@ public class Main {
         emprestimos.addAll(carregarEmprestimos(utentes, livros));
         reservas.addAll(carregarReservas(utentes, livros));
 
+
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
         int opcao;

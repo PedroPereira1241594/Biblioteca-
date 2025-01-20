@@ -220,15 +220,32 @@ public class ReservaView {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Solicitar as novas datas
-        System.out.print("Nova Data de Início (dd/MM/yyyy): ");
+        System.out.print("Informe a Nova Data de Início (dd/MM/yyyy): ");
         LocalDate novaDataInicio = lerData(formato);
 
-        System.out.print("Nova Data de Fim (dd/MM/yyyy): ");
-        LocalDate novaDataFim = lerData(formato);
+        LocalDate novaDataFim = null;
+        boolean dataValida = false;
+
+        while (!dataValida) {
+            System.out.print("Informe a Nova Data de Fim (dd/MM/yyyy): ");
+            novaDataFim = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+            if (!reservaController.verificarDataAnterior(reserva.getDataInicio(), novaDataFim)) {
+                System.out.println("Erro: A Data Fim não pode ser anterior à Data de Início da reserva.");
+                System.out.print("Deseja tentar novamente? (S/N): ");
+                char resposta = scanner.next().toUpperCase().charAt(0);
+                scanner.nextLine(); // Limpar buffer
+                if (resposta == 'N') {
+                    System.out.println("Operação cancelada.");
+                    return;
+                }
+            } else {
+                dataValida = true;
+            }
+        }
 
         // Atualizar a reserva
         reservaController.atualizarReserva(numero, novaDataInicio, novaDataFim);
-        System.out.println("Reserva atualizada com sucesso!");
     }
 
 
@@ -244,7 +261,6 @@ public class ReservaView {
             return; // Retorna caso a reserva não exista
         }
         reservaController.removerReserva(numero);
-        System.out.println("Reserva eliminada com sucesso!");
     }
 
     private void listarReservas() {
