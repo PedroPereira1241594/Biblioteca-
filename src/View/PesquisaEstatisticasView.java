@@ -1,15 +1,10 @@
 package View;
 
-import Controller.LivroController;
-import Controller.JornalController;
-import Controller.PesquisaController;
+import Controller.PesquisaEstatisticasController;
 import Model.Emprestimos;
 import Model.Jornal;
 import Model.Livro;
 import Model.Reserva;
-
-import View.EmprestimosView;
-import View.ReservaView;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,17 +12,14 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
-public class PesquisaView {
-    private PesquisaController pesquisaController;
+public class PesquisaEstatisticasView {
+    private PesquisaEstatisticasController pesquisaEstatisticasController;
     private Scanner scanner;
 
-
-    public PesquisaView(Scanner scanner, PesquisaController pesquisaController) {
+    public PesquisaEstatisticasView(Scanner scanner, PesquisaEstatisticasController pesquisaEstatisticasController) {
         this.scanner = scanner;
-        this.pesquisaController = pesquisaController;
+        this.pesquisaEstatisticasController = pesquisaEstatisticasController;
     }
-
-
 
     public void exibirMenu() {
         int opcao;
@@ -71,7 +63,7 @@ public class PesquisaView {
                 case 1:
                     System.out.print("\nInsira o ISBN do Livro: ");
                     String ISBN = scanner.nextLine();
-                    Livro livroEncontrado = pesquisaController.pesquisaISBN(ISBN); // Busca pelo ISBN
+                    Livro livroEncontrado = pesquisaEstatisticasController.pesquisaISBN(ISBN); // Busca pelo ISBN
 
                     if (livroEncontrado != null) {
                         System.out.println("Livro encontrado:");
@@ -88,7 +80,7 @@ public class PesquisaView {
                 case 2:
                     System.out.print("\nInsira o ISSN do Jornal: ");
                     String ISSN = scanner.nextLine();
-                    Jornal jornalEncontrado = pesquisaController.pesquisaISSN(ISSN); // Busca pelo ISSN
+                    Jornal jornalEncontrado = pesquisaEstatisticasController.pesquisaISSN(ISSN); // Busca pelo ISSN
                     if (jornalEncontrado != null) {
                         System.out.println("Jornal ou Revista encontrada:");
                         System.out.println("Título: " + jornalEncontrado.getTitulo());
@@ -127,28 +119,32 @@ public class PesquisaView {
 
         switch (opcao) {
             case 1:
-                List<Emprestimos> emprestimos = pesquisaController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+                List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
                 exibirEmprestimos(emprestimos);
                 break;
             case 2:
-                List<Reserva> reservas = pesquisaController.buscarReservasEntreDatas(dataInicio, dataFim);
+                List<Reserva> reservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
                 exibirReservas(reservas);
                 break;
             case 3:
-                List<Emprestimos> todosEmprestimos = pesquisaController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
-                List<Reserva> todasReservas = pesquisaController.buscarReservasEntreDatas(dataInicio, dataFim);
+                List<Emprestimos> todosEmprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+                List<Reserva> todasReservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
                 exibirEmprestimos(todosEmprestimos);
                 exibirReservas(todasReservas);
                 break;
             default:
                 System.out.println("Opção inválida!");
         }
+
+        // Exibir total de empréstimos realizados no intervalo
+        long totalEmprestimos = pesquisaEstatisticasController.contarEmprestimosEntreDatas(dataInicio, dataFim);
+        System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicio +"' - '" + dataFim + "': " + totalEmprestimos); // Exibindo o total de empréstimos
     }
 
     // Método auxiliar para exibir empréstimos
     private void exibirEmprestimos(List<Emprestimos> emprestimos) {
         if (emprestimos.isEmpty()) {
-            System.out.println("Nenhum empréstimo encontrado no intervalo de datas.");
+            System.out.println("Nenhum empréstimo encontrado no intervalo de datas fornecido.");
         } else {
             System.out.println("\n=== Lista de Empréstimos ===");
             // Ajustando os espaçamentos para garantir que "Livros Emprestados" tenha mais espaço
@@ -180,11 +176,10 @@ public class PesquisaView {
         }
     }
 
-
     // Método auxiliar para exibir reservas
     private void exibirReservas(List<Reserva> reservas) {
         if (reservas.isEmpty()) {
-            System.out.println("Nenhuma reserva encontrada no intervalo de datas.");
+            System.out.println("Nenhuma reserva encontrada no intervalo de datas fornecido.");
         } else {
             System.out.println("\n=== Lista de Reservas ===");
             // Cabeçalhos das colunas
@@ -213,7 +208,6 @@ public class PesquisaView {
             }
         }
     }
-
 
     // Método para ler a data no formato correto
     private LocalDate lerData(DateTimeFormatter formato) {

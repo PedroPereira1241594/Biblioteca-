@@ -45,8 +45,8 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
-        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+        PesquisaController pesquisaEstatisticasController = new PesquisaController(livros, jornals);
+        PesquisaView pesquisaEstatisticasView = new PesquisaView(scanner, pesquisaEstatisticasController);
 
         int opcao;
 
@@ -79,7 +79,7 @@ public class Main {
                     reservaView.exibirMenu();
                     break;
                 case 6:
-                    pesquisaView.exibirMenu();
+                    pesquisaEstatisticasView.exibirMenu();
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");

@@ -9,21 +9,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PesquisaController {
-    private List<Livro> livros;           // Lista de livros a ser pesquisada.
-    private List<Jornal> jornals;         // Lista de jornais/revistas a ser pesquisada.
-    private List<Emprestimos> emprestimos; // Lista de empréstimos registrados.
-    private List<Reserva> reservas;       // Lista de reservas registradas.
+public class PesquisaEstatisticasController {
+    private List<Livro> livros;
+    private List<Jornal> jornals;
+    private List<Emprestimos> emprestimos;
+    private List<Reserva> reservas;
 
     // Construtor que inicializa as listas
-    public PesquisaController(List<Livro> livros, List<Jornal> jornals, List<Emprestimos> emprestimos, List<Reserva> reservas) {
+    public PesquisaEstatisticasController(List<Livro> livros, List<Jornal> jornals, List<Emprestimos> emprestimos, List<Reserva> reservas) {
         this.livros = livros != null ? livros : new ArrayList<>();
         this.jornals = jornals != null ? jornals : new ArrayList<>();
         this.emprestimos = emprestimos != null ? emprestimos : new ArrayList<>();
         this.reservas = reservas != null ? reservas : new ArrayList<>();
     }
 
-    // Método para pesquisar por ISBN
+    // Método para pesquisar Livro por ISBN
     public Livro pesquisaISBN(String ISBN) {
         for (Livro livro : livros) {
             if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
@@ -33,7 +33,7 @@ public class PesquisaController {
         return null; // Retorna null se nenhum livro for encontrado.
     }
 
-    // Método para pesquisar por ISSN
+    // Método para pesquisar Jornal/Revista por ISSN
     public Jornal pesquisaISSN(String ISSN) {
         for (Jornal jornal : jornals) { // Iterando sobre a lista de jornais
             if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
@@ -68,4 +68,16 @@ public class PesquisaController {
         }
         return resultados;
     }
+
+    // Método para contar o total de empréstimos em um intervalo de datas
+    public long contarEmprestimosEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
+        return emprestimos.stream()
+                .filter(emprestimo -> {
+                    LocalDate dataEmprestimo = emprestimo.getDataInicio();
+                    return !dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim);
+                })
+                .count(); // Retorna o número total de empréstimos no intervalo
+    }
+
+
 }
