@@ -52,6 +52,8 @@ public class Main {
         jornals.addAll(carregarJornais());
         emprestimos.addAll(carregarEmprestimos(utentes, livros));
         reservas.addAll(carregarReservas(utentes, livros));
+        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
+        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
 
         int opcao;
 
