@@ -21,9 +21,10 @@ public class UtenteController {
         System.out.print("NIF: ");
         String NIF = scanner.nextLine();
         for (Utentes utentes1 : utentes) {
-            if (utentes1.getNif().equals(NIF)) ;
-            System.out.println("Esse Utente Já Existe!");
-            return;
+            if (utentes1.getNif().equals(NIF)) {
+                System.out.println("Esse Utente Já Existe!");
+                return;
+            }
         }
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
