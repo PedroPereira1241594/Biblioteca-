@@ -79,5 +79,28 @@ public class PesquisaEstatisticasController {
                 .count(); // Retorna o número total de empréstimos no intervalo
     }
 
+    // Método para calcular o tempo médio dos empréstimos em um intervalo de datas
+    public double calcularTempoMedioEmpréstimos(LocalDate dataInicio, LocalDate dataFim) {
+        long totalDias = 0;
+        long count = 0;
+
+        for (Emprestimos emprestimo : emprestimos) {
+            LocalDate dataEmprestimo = emprestimo.getDataInicio();
+
+            if (!dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim)) {
+                LocalDate dataDevolucao = emprestimo.getDataEfetivaDevolucao() != null
+                        ? emprestimo.getDataEfetivaDevolucao()
+                        : emprestimo.getDataPrevistaDevolucao();
+
+                long dias = dataEmprestimo.until(dataDevolucao).getDays();
+                totalDias += dias;
+                count++;
+            }
+        }
+
+        // Se não houver empréstimos no intervalo, retornamos 0 para evitar divisão por zero
+        return count > 0 ? (double) totalDias / count : 0;
+    }
+
 
 }

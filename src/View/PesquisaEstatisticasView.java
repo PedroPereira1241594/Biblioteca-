@@ -27,6 +27,7 @@ public class PesquisaEstatisticasView {
             System.out.println("\n=== Menu de Pesquisas ===");
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
+            System.out.println("3. Mostrar Tempo Médio de Empréstimos em um Intervalo de Datas"); // Nova opção
             System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -39,6 +40,9 @@ public class PesquisaEstatisticasView {
                 case 2:
                     pesquisarEntreDatas();
                     break;
+                case 3:
+                    exibirTempoMedioEmprestimosNoIntervalo();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -47,6 +51,7 @@ public class PesquisaEstatisticasView {
             }
         } while (opcao != 0);
     }
+
 
     private void pesquisarPorISBNouISSN() {
         int option;
@@ -220,6 +225,31 @@ public class PesquisaEstatisticasView {
             }
         }
     }
+
+    private void exibirTempoMedioEmprestimosNoIntervalo() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Solicitar data de início e fim para o intervalo
+        System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
+        LocalDate dataInicio = lerData(formato);
+        System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
+        LocalDate dataFim = lerData(formato);
+
+        // Buscar todos os empréstimos entre as datas fornecidas
+        List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+
+        // Exibir o total de empréstimos encontrados no intervalo
+        System.out.println("\nTotal de empréstimos realizados no intervalo: " + emprestimos.size());
+
+        // Calcular e exibir o tempo médio dos empréstimos
+        double tempoMedio = pesquisaEstatisticasController.calcularTempoMedioEmpréstimos(dataInicio, dataFim);
+        if (tempoMedio > 0) {
+            System.out.println("Tempo médio dos empréstimos (em dias): " + tempoMedio);
+        } else {
+            System.out.println("Não há empréstimos realizados nesse intervalo de datas.");
+        }
+    }
+
 
 
 
