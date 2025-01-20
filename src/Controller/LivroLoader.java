@@ -55,7 +55,7 @@ public class LivroLoader {
                     if (dados.length == 4) {
                         String nome = dados[0].replace("Nome: ", "").trim();
                         String nif = dados[1].replace("NIF: ", "").trim();
-                        Boolean genero = Boolean.parseBoolean(dados[2].replace("Genero: ", "").trim()); // "M" -> true, "F" -> false
+                        Boolean genero = dados[2].replace("Genero: ", "").trim().equals("M") ? true : false;
                         String contacto = dados[3].replace("Contacto: ", "").trim();
 
                         Utentes utente = new Utentes(nome, nif, genero, contacto);

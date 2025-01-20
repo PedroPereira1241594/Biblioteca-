@@ -47,6 +47,7 @@ public class Utentes {
 
     @Override
     public String toString() {
-        return "Nome: " + nome + "\n" + "NIF: " + nif + "\n" + "Genero: " + (genero ? "M" : "F") + "\n" + "Contacto: " + contacto;
+        String generoStr = (genero == null) ? "Indefinido" : (genero ? "M" : "F");
+        return "Nome: " + nome + "\n" + "NIF: " + nif + "\n" + "Genero: " + generoStr + "\n" + "Contacto: " + contacto;
     }
 }

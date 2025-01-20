@@ -27,11 +27,11 @@ public class Main {
         String caminhoReserva = configReader.getCaminhoReserva();
 
         // Dados compartilhados
-        ArrayList<Livro> livros = new ArrayList<>();
-        ArrayList<Utentes> utentes = new ArrayList<>();
-        ArrayList<Jornal> jornals = new ArrayList<>();
-        ArrayList<Emprestimos> emprestimos = new ArrayList<>();
-        ArrayList<Reserva> reservas = new ArrayList<>();
+        ArrayList<Livro> livros = new ArrayList<>(LivroLoader.carregarLivros(caminhoLivros));
+        ArrayList<Utentes> utentes = new ArrayList<>(LivroLoader.carregarUtentes(caminhoUtentes));
+        ArrayList<Jornal> jornals = new ArrayList<>(LivroLoader.carregarJornais(caminhoJornal));
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>(LivroLoader.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
+        ArrayList<Reserva> reservas = new ArrayList<>(LivroLoader.carregarReservas(caminhoReserva, utentes, livros));
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
@@ -45,8 +45,22 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        PesquisaController pesquisaEstatisticasController = new PesquisaController(livros, jornals);
-        PesquisaView pesquisaEstatisticasView = new PesquisaView(scanner, pesquisaEstatisticasController);
+        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
+        PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
+
+        // Carregar Ficheiros
+        LivroLoader livroLoader = new LivroLoader();
+<<<<<<< HEAD
+        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
+        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+=======
+        livros.addAll(livroLoader.carregarLivros());
+        utentes.addAll(carregarUtentes());
+        jornals.addAll(carregarJornais());
+        emprestimos.addAll(carregarEmprestimos(utentes, livros));
+        reservas.addAll(carregarReservas(utentes, livros));
+
+>>>>>>> a9cfcbda74c3848a45c81855558cc3997a7e6de4
 
         int opcao;
 
@@ -57,7 +71,7 @@ public class Main {
             System.out.println("3. Gerir Utentes");
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
-            System.out.println("6. Pesquisas");
+            System.out.println("6. Pesquisas/Estatísticas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -85,7 +99,7 @@ public class Main {
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-                        // Exporta os dados
+                        // Exportação dos dados
                         exportarLivros(caminhoLivros, livros);
                         exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);
