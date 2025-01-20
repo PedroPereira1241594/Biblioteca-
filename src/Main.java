@@ -45,9 +45,12 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
+        PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
+
+        // Carregar Ficheiros
         LivroLoader livroLoader = new LivroLoader();
-        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
-        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+
 
         int opcao;
 
@@ -58,7 +61,7 @@ public class Main {
             System.out.println("3. Gerir Utentes");
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
-            System.out.println("6. Pesquisas");
+            System.out.println("6. Pesquisas/Estatísticas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -80,13 +83,13 @@ public class Main {
                     reservaView.exibirMenu();
                     break;
                 case 6:
-                    pesquisaView.exibirMenu();
+                    pesquisaEstatisticasView.exibirMenu();
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-                        // Exporta os dados
+                        // Exportação dos dados
                         exportarLivros(caminhoLivros, livros);
                         exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);

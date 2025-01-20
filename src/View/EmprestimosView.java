@@ -130,7 +130,7 @@ public class EmprestimosView {
                     } else if (livrosParaEmprestimo.contains(livro)) {
                         // Verifica se o livro já foi adicionado
                         System.out.println("Erro: O livro '" + livro.getNome() + "' já foi adicionado a este empréstimo.");
-                        livro = null;  // Se o livro já foi adicionado, pedimos para ao utilizador tentar novamente
+                        livro = null;  // Se o livro já foi adicionado, pedimos para o usuário tentar novamente
                     }
                 }
                 livrosParaEmprestimo.add(livro);  // Adiciona o livro encontrado ou recém-adicionado à lista
@@ -181,14 +181,13 @@ public class EmprestimosView {
                     break;
             }
 
-            // Criação do empréstimo sem número, pois ele será gerado automaticamente pelo controller
+            // Criação do empréstimo com a data efetiva de devolução como null, se não informada
             emprestimosController.criarEmprestimo(utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
 
         } catch (Exception e) {
             System.out.println("Erro ao criar empréstimo: " + e.getMessage());
         }
     }
-
 
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
