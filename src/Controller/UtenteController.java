@@ -70,7 +70,7 @@ public class UtenteController {
         } else {
             System.out.println("\n=== Lista de Utentes com Reservas ou Empréstimos ===");
             for (Utentes utente : utentesComReservasOuEmprestimos) {
-                System.out.println("Nome: " + utente.getNome() + " | NIF: " + utente.getNif());
+                System.out.println("Nome: " + utente.getNome() + " | NIF: " + utente.getNif() + " | Tel: " + utente.getContacto() + " | " + utente.getGenero());
             }
         }
     }
