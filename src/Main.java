@@ -49,6 +49,7 @@ public class Main {
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
 
+
         // Scanner para interação no menu
         Scanner scanner = new Scanner(System.in);
         int opcao;

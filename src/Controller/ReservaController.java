@@ -90,23 +90,26 @@ public class ReservaController {
 
     public void atualizarReserva(int numero, LocalDate novaDataInicio, LocalDate novaDataFim) {
         Reserva reserva = consultarReserva(numero);
-        if (reserva != null) {
-            if (novaDataFim.isBefore(novaDataInicio)) {
-                System.out.println("Erro: A data de fim não pode ser anterior à data de início.");
-                return;
-            }
+        if (reserva == null) {
+            System.out.println("Erro: Empréstimo com número '" + numero + "' não encontrado.");
+            return;
+        }
+
+        if (!verificarDataAnterior(reserva.getDataInicio(), novaDataFim)) {
+            System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início do empréstimo.");
+            return;
+        }
             reserva.setDataInicio(novaDataInicio);
             reserva.setDataFim(novaDataFim);
             System.out.println("Reserva atualizada com sucesso!");
-            System.out.println(reserva);
         }
-    }
+
 
     public void removerReserva(int numero) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
             reservas.remove(reserva);
-            System.out.println("Reserva removida com sucesso!");
+            System.out.println("Reserva eliminada com sucesso!");
         }
     }
 
@@ -157,7 +160,6 @@ public class ReservaController {
 
     // Método auxiliar para exibir detalhes de uma reserva
     public void exibirDetalhesReserva(Reserva reserva) {
-        System.out.println("\nReserva criada com sucesso:");
         System.out.println("\n=== Detalhes da Reserva ===");
         System.out.println("Número: " + reserva.getNumero());
         System.out.println("Utente: " + reserva.getUtente().getNome());
@@ -179,7 +181,13 @@ public class ReservaController {
         }
         return null; // Retorna null se a reserva não for encontrada
     }
-
+    public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
+        if (dataFim.isBefore(dataInicio)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 
 }
