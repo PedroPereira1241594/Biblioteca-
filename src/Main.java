@@ -46,14 +46,17 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        PesquisaController pesquisaController = new PesquisaController(livros, jornals, emprestimos, reservas);
+        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+
+        // Carregar Ficheiros
         LivroLoader livroLoader = new LivroLoader();
         livros.addAll(livroLoader.carregarLivros());
         utentes.addAll(carregarUtentes());
         jornals.addAll(carregarJornais());
         emprestimos.addAll(carregarEmprestimos(utentes, livros));
         reservas.addAll(carregarReservas(utentes, livros));
-        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
-        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
+
 
         int opcao;
 
@@ -92,7 +95,7 @@ public class Main {
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
                     if (confirmacao == 'S') {
-                        // Exporta os dados
+                        // Exportação dos dados
                         exportarLivros(caminhoLivros, livros);
                         exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);

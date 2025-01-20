@@ -154,13 +154,14 @@ public class EmprestimosController {
         return false; // O livro não está emprestado no período solicitado
     }
 
-    public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
-        if (dataPrevistaDevolucao.isBefore(dataInicio)) {
-            return false;
-        } else {
-            return true;
+    // Verificação de datas no método verificarDataAnterior
+    public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataDevolucao) {
+        if (dataDevolucao == null) {
+            return true;  // Se a data efetiva de devolução for null, considera válido
         }
+        return !dataDevolucao.isBefore(dataInicio);  // Verifica se a data de devolução não é anterior à data de início
     }
+
 
 
 }
