@@ -1,1 +1,2 @@
-1;123;;2023-01-01;2023-01-10
+ID: 1; Nome: João Silva; ISBN: 9783161484100; DataRegisto: 2024-01-15; DataInicioReserva: 2024-02-01; DataFimReserva: 2024-02-15
+

@@ -12,7 +12,7 @@ public class ExportarDados {
     public static void exportarLivros(String caminhoArquivo, List<Livro> livros) {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Livro livro : livros) {
-                writer.write(String.format("%s;%s;%s;%s;%d;%s\n",
+                writer.write(String.format("ISBN: %s; Nome: %s; Editora: %s; Categoria: %s; Ano: %d; Autor: %s\n",
                         livro.getIsbn(),
                         livro.getNome(),
                         livro.getEditora(),
@@ -26,10 +26,11 @@ public class ExportarDados {
         }
     }
 
+
     public static void exportarUtentes(String caminhoArquivo, ArrayList<Utentes> utentes) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Utentes utente : utentes) {
-                writer.write(String.format("%s;%s;%s;%s\n",
+                writer.write(String.format("NIF: %s; Nome: %s; Genero: %s; Contacto: %s\n",
                         utente.getNif(),
                         utente.getNome(),
                         utente.getGenero() ? "M" : "F",
@@ -44,7 +45,7 @@ public class ExportarDados {
     public static void exportarJornal(String caminhoArquivo, ArrayList<Jornal> jornals) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Jornal jornal : jornals) {
-                writer.write(String.format("%s;%s;%s;%s;%s\n",
+                writer.write(String.format("ISSN: %s; Titulo: %s; Categoria: %s; Editora: %s; Data Publicação: %s\n",
                         jornal.getIssn(),
                         jornal.getTitulo(),
                         jornal.getCategoria(),
@@ -63,14 +64,14 @@ public class ExportarDados {
             for (Emprestimos emprestimo : emprestimos) {
                 String livrosEmprestados = "";
                 for (Livro livro : emprestimo.getLivros()) {
-                    livrosEmprestados += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                    livrosEmprestados += livro.getIsbn();
                 }
                 // Remover a última vírgula e espaço
                 if (!livrosEmprestados.isEmpty()) {
                     livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
                 }
 
-                writer.write(String.format("%d;%s;%s;%s;%s;%s\n",
+                writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(), // Exportando o nome do Utente
                         livrosEmprestados,  // Livros formatados
@@ -90,14 +91,14 @@ public class ExportarDados {
             for (Reserva reserva : reservas) {
                 String livrosReservados = "";
                 for (Livro livro : reserva.getLivros()) {
-                    livrosReservados += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                    livrosReservados += livro.getIsbn();
                 }
                 // Remover a última vírgula e espaço
                 if (!livrosReservados.isEmpty()) {
                     livrosReservados = livrosReservados.substring(0, livrosReservados.length() - 2);
                 }
 
-                writer.write(String.format("%d;%s;%s;%s;%s\n",
+                writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
                         reserva.getNumero(),
                         reserva.getUtente().getNome(), // Exportando o nome do Utente
                         livrosReservados,  // Livros formatados

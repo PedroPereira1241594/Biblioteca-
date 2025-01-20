@@ -1,1 +1,1 @@
-1;123;123 (ISBN: 123);2020-02-02;2021-02-02;null
+ID: 1; Nome: João Silva; ISBN: 1234567890, 9876543210; DataInicio: 2025-01-01; DataPrevistaDevolução: 2025-02-01; DataEfetivaDevolução: 2025-01-30

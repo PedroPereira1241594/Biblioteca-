@@ -15,6 +15,7 @@ public class LivroView {
             System.out.println("Lista de Livros:");
             for (int i = 0; i < livros.size(); i++) {
                 Livro livro = livros.get(i);
+                System.out.println("ISBN: " + livro.getIsbn());
                 System.out.println("Título: " + livro.getNome());
                 System.out.println("Autor: " + livro.getAutor());
                 System.out.println("Editora: " + livro.getEditora());
