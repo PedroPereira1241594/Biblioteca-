@@ -22,7 +22,7 @@ public class LivroController {
     public void adicionarLivro() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Digite o ISBN: ");
+        System.out.print("Insira o ISBN: ");
         String isbn = scanner.nextLine();
         for (Livro livro : livros) {
             if (livro.getIsbn().equals(isbn)) {

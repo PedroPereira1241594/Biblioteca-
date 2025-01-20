@@ -1,10 +1,6 @@
 import Controller.*;
 import Model.*;
-import View.EmprestimosView;
-import View.JornalView;
-import View.LivroView;
-import View.ReservaView;
-import View.UtenteView;
+import View.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,6 +13,7 @@ import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in); // Cria o Scanner.
         String caminhoConfig = "src\\DadosExportados\\Config.txt";
 
         // Inicializar o leitor de configurações
@@ -48,10 +45,9 @@ public class Main {
         ReservaController reservaController = new ReservaController(reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        PesquisaController pesquisaController = new PesquisaController(livros, jornals);
+        PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
 
-
-        // Scanner para interação no menu
-        Scanner scanner = new Scanner(System.in);
         int opcao;
 
         do {
@@ -61,6 +57,7 @@ public class Main {
             System.out.println("3. Gerir Utentes");
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
+            System.out.println("6. Pesquisas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -80,6 +77,9 @@ public class Main {
                     break;
                 case 5:
                     reservaView.exibirMenu();
+                    break;
+                case 6:
+                    pesquisaView.exibirMenu();
                     break;
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
