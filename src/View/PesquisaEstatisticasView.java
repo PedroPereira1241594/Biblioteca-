@@ -27,11 +27,12 @@ public class PesquisaEstatisticasView {
             System.out.println("\n=== Menu de Pesquisas ===");
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
-            System.out.println("3. Mostrar Tempo Médio de Empréstimos em um Intervalo de Datas"); // Nova opção
+            System.out.println("3. Exibir Tempo Médio de Empréstimos em um Intervalo de Datas");
+            System.out.println("4. Exibir Item Mais Requisitado no Intervalo de Datas"); // Nova opção
             System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Limpar buffer
 
             switch (opcao) {
                 case 1:
@@ -41,7 +42,10 @@ public class PesquisaEstatisticasView {
                     pesquisarEntreDatas();
                     break;
                 case 3:
-                    exibirTempoMedioEmprestimosNoIntervalo();
+                    mostrarTempoMedioEmprestimosNoIntervalo();
+                    break;
+                case 4:
+                    mostrarItemMaisRequisitado();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -51,6 +55,7 @@ public class PesquisaEstatisticasView {
             }
         } while (opcao != 0);
     }
+
 
 
     private void pesquisarPorISBNouISSN() {
@@ -226,7 +231,7 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    private void exibirTempoMedioEmprestimosNoIntervalo() {
+    private void mostrarTempoMedioEmprestimosNoIntervalo() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Solicitar data de início e fim para o intervalo
@@ -249,6 +254,28 @@ public class PesquisaEstatisticasView {
             System.out.println("Não há empréstimos realizados nesse intervalo de datas.");
         }
     }
+
+    private void mostrarItemMaisRequisitado() {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Solicitar data de início e fim para o intervalo
+        System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
+        LocalDate dataInicio = lerData(formato);
+        System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
+        LocalDate dataFim = lerData(formato);
+
+        // Buscar o item mais requisitado no intervalo de datas
+        List<String> itemMaisRequisitado = pesquisaEstatisticasController.pesquisarItensMaisRequisitados(dataInicio, dataFim);
+
+        // Exibir o resultado
+        if (itemMaisRequisitado != null) {
+            System.out.println("\nO item mais requisitado entre as datas " + dataInicio.format(formato) + " e " + dataFim.format(formato) + " é: ");
+            System.out.println("Livro com o ISBN: " + itemMaisRequisitado);
+        } else {
+            System.out.println("Não foram encontradas requisições no intervalo de datas fornecido.");
+        }
+    }
+
 
 
 
