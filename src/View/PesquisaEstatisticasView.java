@@ -21,6 +21,7 @@ public class PesquisaEstatisticasView {
         this.pesquisaEstatisticasController = pesquisaEstatisticasController;
     }
 
+    // Método para mostar o menu
     public void exibirMenu() {
         int opcao;
         do {
@@ -28,7 +29,8 @@ public class PesquisaEstatisticasView {
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
             System.out.println("3. Exibir Tempo Médio de Empréstimos em um Intervalo de Datas");
-            System.out.println("4. Exibir Item Mais Requisitado no Intervalo de Datas"); // Nova opção
+            System.out.println("4. Exibir Item Mais Requisitado no Intervalo de Datas");
+            System.out.println("5. Exibir Utentes com Atraso Superior a N Dias"); // Nova opção
             System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -47,6 +49,9 @@ public class PesquisaEstatisticasView {
                 case 4:
                     mostrarItemMaisRequisitado();
                     break;
+                case 5:
+                    mostrarUtentesComAtraso(); // Método para exibir utentes com atraso
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -56,8 +61,7 @@ public class PesquisaEstatisticasView {
         } while (opcao != 0);
     }
 
-
-
+    // Método para mostrar Livro por ISBN
     private void pesquisarPorISBNouISSN() {
         int option;
         do {
@@ -111,6 +115,7 @@ public class PesquisaEstatisticasView {
         } while (option != 0);
     }
 
+    // Método para mostrar Jornal/Revista por ISSN
     private void pesquisarEntreDatas() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -130,17 +135,17 @@ public class PesquisaEstatisticasView {
         switch (opcao) {
             case 1:
                 List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
-                exibirEmprestimos(emprestimos);
+                mostrarEmprestimos(emprestimos);
                 break;
             case 2:
                 List<Reserva> reservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
-                exibirReservas(reservas);
+                mostrarReservas(reservas);
                 break;
             case 3:
                 List<Emprestimos> todosEmprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
                 List<Reserva> todasReservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
-                exibirEmprestimos(todosEmprestimos);
-                exibirReservas(todasReservas);
+                mostrarEmprestimos(todosEmprestimos);
+                mostrarReservas(todasReservas);
                 break;
             default:
                 System.out.println("Opção inválida!");
@@ -151,8 +156,8 @@ public class PesquisaEstatisticasView {
         System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicio +"' - '" + dataFim + "': " + totalEmprestimos); // Exibindo o total de empréstimos
     }
 
-    // Método auxiliar para exibir empréstimos
-    private void exibirEmprestimos(List<Emprestimos> emprestimos) {
+    // Método auxiliar para mostrar empréstimos
+    private void mostrarEmprestimos(List<Emprestimos> emprestimos) {
         if (emprestimos.isEmpty()) {
             System.out.println("Nenhum empréstimo encontrado no intervalo de datas fornecido.");
         } else {
@@ -186,8 +191,8 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método auxiliar para exibir reservas
-    private void exibirReservas(List<Reserva> reservas) {
+    // Método auxiliar para mostrar reservas
+    private void mostrarReservas(List<Reserva> reservas) {
         if (reservas.isEmpty()) {
             System.out.println("Nenhuma reserva encontrada no intervalo de datas fornecido.");
         } else {
@@ -231,6 +236,7 @@ public class PesquisaEstatisticasView {
         }
     }
 
+    // Método para mostrar o tempo médio de empréstimos no intervalo de datas fornecido
     private void mostrarTempoMedioEmprestimosNoIntervalo() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -255,6 +261,7 @@ public class PesquisaEstatisticasView {
         }
     }
 
+    // Método para mostrar o item mais requisitado no intervalo de datas fornecido
     private void mostrarItemMaisRequisitado() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -276,9 +283,37 @@ public class PesquisaEstatisticasView {
         }
     }
 
+    // Método para mostrar os empréstimos com N dias de atraso
+    private void mostrarUtentesComAtraso() {
+        System.out.print("Insira o número de dias de atraso: ");
+        int diasAtraso = scanner.nextInt();
+        scanner.nextLine();  // Limpar buffer
 
+        // Buscar empréstimos com atraso maior que o número de dias informado
+        List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.buscarEmprestimosComAtraso(diasAtraso);
 
+        if (emprestimosComAtraso.isEmpty()) {
+            System.out.println("Nenhum empréstimo encontrado com atraso superior a " + diasAtraso + " dias.");
+        } else {
+            System.out.println("\n=== Lista de Utentes com Atraso ===");
+            System.out.printf("%-20s %-20s %-25s %-25s\n", "Utente", "Livro", "Data de Empréstimo", "Data de Devolução");
 
+            for (Emprestimos emprestimo : emprestimosComAtraso) {
+                String livros = "";
+                for (Livro livro : emprestimo.getLivros()) {
+                    livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                }
+                if (!livros.isEmpty()) {
+                    livros = livros.substring(0, livros.length() - 2);  // Remover última vírgula
+                }
 
+                System.out.printf("%-20s %-20s %-25s %-25s\n",
+                        emprestimo.getUtente().getNome(),
+                        livros,
+                        emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
+        }
+    }
 
 }

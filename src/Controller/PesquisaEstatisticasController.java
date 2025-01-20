@@ -146,5 +146,23 @@ public class PesquisaEstatisticasController {
         return itensMaisRequisitados;
     }
 
+    // Método para buscar os empréstimos com N dias de atraso
+    public List<Emprestimos> buscarEmprestimosComAtraso(int diasAtraso) {
+        List<Emprestimos> emprestimosComAtraso = new ArrayList<>();
+        LocalDate hoje = LocalDate.now();
+
+        for (Emprestimos emprestimo : emprestimos) {
+            LocalDate dataDevolucaoPrevista = emprestimo.getDataPrevistaDevolucao();
+            if (dataDevolucaoPrevista.isBefore(hoje)) {
+                long atraso = dataDevolucaoPrevista.until(hoje).getDays();
+                if (atraso > diasAtraso) {
+                    emprestimosComAtraso.add(emprestimo);
+                }
+            }
+        }
+
+        return emprestimosComAtraso;
+    }
+
 
 }
