@@ -88,21 +88,27 @@ public class ReservaController {
         return null;
     }
 
+
+
     public void atualizarReserva(int numero, LocalDate novaDataInicio, LocalDate novaDataFim) {
         Reserva reserva = consultarReserva(numero);
         if (reserva == null) {
-            System.out.println("Erro: Empréstimo com número '" + numero + "' não encontrado.");
+            System.out.println("Erro: Reserva com número '" + numero + "' não encontrada.");
             return;
         }
 
+        // Validação da data de fim não ser anterior à data de início
         if (!verificarDataAnterior(reserva.getDataInicio(), novaDataFim)) {
-            System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início do empréstimo.");
+            System.out.println("Erro: A data de fim não pode ser anterior à data de início da reserva.");
             return;
         }
-            reserva.setDataInicio(novaDataInicio);
-            reserva.setDataFim(novaDataFim);
-            System.out.println("Reserva atualizada com sucesso!");
-        }
+
+        // Atualizando as datas da reserva
+        reserva.setDataInicio(novaDataInicio);
+        reserva.setDataFim(novaDataFim);
+        System.out.println("Reserva atualizada com sucesso!");
+    }
+
 
 
     public void removerReserva(int numero) {
@@ -158,6 +164,7 @@ public class ReservaController {
         }
     }
 
+
     // Método auxiliar para exibir detalhes de uma reserva
     public void exibirDetalhesReserva(Reserva reserva) {
         System.out.println("\n=== Detalhes da Reserva ===");
@@ -188,6 +195,35 @@ public class ReservaController {
             return true;
         }
     }
+
+    // Método para adicionar livro à reserva
+    public void adicionarLivroNaReserva(Reserva reserva, Livro livro) {
+        if (reserva == null || livro == null) {
+            System.out.println("Erro: Reserva ou livro inválido.");
+            return;
+        }
+
+        // Adiciona o livro à lista de livros da reserva
+        reserva.getLivros().add(livro);
+        System.out.println("Livro '" + livro.getNome() + "' adicionado com sucesso à reserva.");
+    }
+
+    // Método para remover livro da reserva
+    public void removerLivroDaReserva(Reserva reserva, Livro livro) {
+        if (reserva == null || livro == null) {
+            System.out.println("Erro: Reserva ou livro inválido.");
+            return;
+        }
+
+        // Verifica se o livro está na lista de livros da reserva
+        if (reserva.getLivros().contains(livro)) {
+            reserva.getLivros().remove(livro);
+            System.out.println("Livro '" + livro.getNome() + "' removido com sucesso da reserva.");
+        } else {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' não está na reserva.");
+        }
+    }
+
 
 
 }

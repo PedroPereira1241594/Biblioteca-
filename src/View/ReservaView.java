@@ -217,6 +217,28 @@ public class ReservaView {
             return; // Retorna caso a reserva não exista
         }
 
+        System.out.println("O que você deseja atualizar?");
+        System.out.println("1. Atualizar as datas da reserva");
+        System.out.println("2. Alterar livros da reserva");
+        System.out.print("Escolha uma opção: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();  // Limpar buffer
+
+        switch (opcao) {
+            case 1:
+                // Atualizar as datas
+                atualizarDatasReserva(reserva, numero);
+                break;
+            case 2:
+                // Adicionar/remover livros
+                modificarLivrosReserva(reserva);
+                break;
+            default:
+                System.out.println("Opção inválida.");
+        }
+    }
+
+    private void atualizarDatasReserva(Reserva reserva, int numero) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         // Solicitar as novas datas
@@ -246,6 +268,74 @@ public class ReservaView {
 
         // Atualizar a reserva
         reservaController.atualizarReserva(numero, novaDataInicio, novaDataFim);
+    }
+
+    private void modificarLivrosReserva(Reserva reserva) {
+        System.out.println("O que você deseja fazer com os livros da reserva?");
+        System.out.println("1. Adicionar livro");
+        System.out.println("2. Remover livro");
+        System.out.print("Escolha uma opção: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer
+
+        switch (opcao) {
+            case 1:
+                adicionarLivroNaReserva(reserva);
+                break;
+            case 2:
+                removerLivroDaReserva(reserva);
+                break;
+            default:
+                System.out.println("Opção inválida.");
+        }
+    }
+
+    private void adicionarLivroNaReserva(Reserva reserva) {
+        System.out.println("\n=== Adicionar Livro à Reserva ===");
+
+        // Solicitar o ISBN do livro a ser adicionado
+        System.out.print("Informe o ISBN do livro: ");
+        String isbn = scanner.nextLine();
+
+        // Buscar o livro pelo ISBN
+        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        if (livro == null) {
+            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
+            return;
+        }
+
+        // Verificar se o livro já está na reserva
+        if (reserva.getLivros().contains(livro)) {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
+        } else {
+            // Adicionar o livro à reserva
+            reservaController.adicionarLivroNaReserva(reserva, livro);
+            System.out.println("Livro '" + livro.getNome() + "' adicionado à reserva com sucesso.");
+        }
+    }
+
+    private void removerLivroDaReserva(Reserva reserva) {
+        System.out.println("\n=== Remover Livro da Reserva ===");
+
+        // Solicitar o ISBN do livro a ser removido
+        System.out.print("Informe o ISBN do livro a ser removido: ");
+        String isbn = scanner.nextLine();
+
+        // Buscar o livro pelo ISBN
+        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        if (livro == null) {
+            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
+            return;
+        }
+
+        // Verificar se o livro está na reserva
+        if (reserva.getLivros().contains(livro)) {
+            // Remover o livro da reserva
+            reservaController.removerLivroDaReserva(reserva, livro);
+            System.out.println("Livro '" + livro.getNome() + "' removido da reserva com sucesso.");
+        } else {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' não está na reserva.");
+        }
     }
 
 

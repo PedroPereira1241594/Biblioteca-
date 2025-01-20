@@ -1,3 +1,2 @@
 ISBN: 123456789; Nome: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; Ano: 2020; Autor: John Doe
 ISBN: 9783161484100; Nome: O Senhor dos Anéis; Editora: J.R.R. Tolkien; Categoria: 1954; Ano: 1995; Autor: Jose Afonso
-
