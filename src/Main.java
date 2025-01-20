@@ -7,7 +7,6 @@ import java.util.Scanner;
 import java.io.IOException;
 
 import static Controller.ExportarDados.*;
-import static Controller.LivroLoader.*;
 import static View.LivroView.gerirLivros;
 import static View.UtenteView.gerirUtentes;
 import static Controller.ExportarDados.exportarReservas;
@@ -28,11 +27,11 @@ public class Main {
         String caminhoReserva = configReader.getCaminhoReserva();
 
         // Dados compartilhados
-        ArrayList<Livro> livros = new ArrayList<>();
-        ArrayList<Utentes> utentes = new ArrayList<>();
-        ArrayList<Jornal> jornals = new ArrayList<>();
-        ArrayList<Emprestimos> emprestimos = new ArrayList<>();
-        ArrayList<Reserva> reservas = new ArrayList<>();
+        ArrayList<Livro> livros = new ArrayList<>(LivroLoader.carregarLivros(caminhoLivros));
+        ArrayList<Utentes> utentes = new ArrayList<>(LivroLoader.carregarUtentes(caminhoUtentes));
+        ArrayList<Jornal> jornals = new ArrayList<>(LivroLoader.carregarJornais(caminhoJornal));
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>(LivroLoader.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
+        ArrayList<Reserva> reservas = new ArrayList<>(LivroLoader.carregarReservas(caminhoReserva, utentes, livros));
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
@@ -51,11 +50,6 @@ public class Main {
 
         // Carregar Ficheiros
         LivroLoader livroLoader = new LivroLoader();
-        livros.addAll(livroLoader.carregarLivros());
-        utentes.addAll(carregarUtentes());
-        jornals.addAll(carregarJornais());
-        emprestimos.addAll(carregarEmprestimos(utentes, livros));
-        reservas.addAll(carregarReservas(utentes, livros));
 
 
         int opcao;

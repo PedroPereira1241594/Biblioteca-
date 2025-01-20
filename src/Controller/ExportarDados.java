@@ -66,15 +66,14 @@ public class ExportarDados {
                 for (Livro livro : emprestimo.getLivros()) {
                     livrosEmprestados += livro.getIsbn();
                 }
-                // Remover a última vírgula e espaço
                 if (!livrosEmprestados.isEmpty()) {
                     livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
                 }
 
                 writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
                         emprestimo.getNumero(),
-                        emprestimo.getUtente().getNome(), // Exportando o nome do Utente
-                        livrosEmprestados,  // Livros formatados
+                        emprestimo.getUtente().getNome(),
+                        livrosEmprestados,
                         emprestimo.getDataInicio().toString(),
                         emprestimo.getDataPrevistaDevolucao().toString(),
                         emprestimo.getDataEfetivaDevolucao()));
@@ -93,15 +92,14 @@ public class ExportarDados {
                 for (Livro livro : reserva.getLivros()) {
                     livrosReservados += livro.getIsbn();
                 }
-                // Remover a última vírgula e espaço
                 if (!livrosReservados.isEmpty()) {
                     livrosReservados = livrosReservados.substring(0, livrosReservados.length() - 2);
                 }
 
                 writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
                         reserva.getNumero(),
-                        reserva.getUtente().getNome(), // Exportando o nome do Utente
-                        livrosReservados,  // Livros formatados
+                        reserva.getUtente().getNome(),
+                        livrosReservados,
                         reserva.getDataRegisto(),
                         reserva.getDataInicio(),
                         reserva.getDataFim()));
