@@ -69,6 +69,9 @@ public class Emprestimos {
     public void setDataEfetivaDevolucao(LocalDate dataEfetivaDevolucao) {
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
     }
+    public LocalDate getDataEmprestimo() {
+        return getDataInicio();
+    }
 
     @Override
     public String toString() {

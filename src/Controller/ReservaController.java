@@ -16,6 +16,15 @@ public class ReservaController {
     private List<Reserva> reservas;
     private int contadorReservas;
     private Scanner scanner;
+    private EmprestimosController emprestimosController;
+
+    public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas) {
+        this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
+        this.reservas = reservas; // Atribui a lista de reservas
+        this.contadorReservas = 1;
+        this.scanner = new Scanner(System.in);
+    }
+
 
     // Modificado para receber a lista de reservas do Main
     public ReservaController(List<Reserva> reservas) {
@@ -119,7 +128,7 @@ public class ReservaController {
         }
     }
 
-    public void listarReservas() {
+    public List<Reserva> listarReservas() {
         if (reservas.isEmpty()) {
             System.out.println("Não há reservas registadas.");
         } else {
@@ -148,6 +157,7 @@ public class ReservaController {
                         livrosReservados);
             }
         }
+        return reservas;
     }
 
     // Método auxiliar para solicitar uma nova data válida
@@ -197,9 +207,15 @@ public class ReservaController {
     }
 
     // Método para adicionar livro à reserva
-    public void adicionarLivroNaReserva(Reserva reserva, Livro livro) {
+    public void adicionarLivroNaReserva(Reserva reserva, Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         if (reserva == null || livro == null) {
             System.out.println("Erro: Reserva ou livro inválido.");
+            return;
+        }
+
+        // Verifica se o livro já está em outra reserva ou está em empréstimo
+        if (verificarLivroEmOutraReservaOuEmprestimo(livro, dataInicioReserva, dataFimReserva)) {
+
             return;
         }
 
@@ -215,6 +231,12 @@ public class ReservaController {
             return;
         }
 
+        // Verifica se a reserva tem mais de um livro
+        if (reserva.getLivros().size() <= 1) {
+            System.out.println("Erro: A reserva precisa ter pelo menos dois livros para poder remover um.");
+            return;
+        }
+
         // Verifica se o livro está na lista de livros da reserva
         if (reserva.getLivros().contains(livro)) {
             reserva.getLivros().remove(livro);
@@ -222,6 +244,32 @@ public class ReservaController {
         } else {
             System.out.println("Erro: O livro '" + livro.getNome() + "' não está na reserva.");
         }
+    }
+
+
+    private boolean verificarLivroEmOutraReservaOuEmprestimo(Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
+
+        // Verifica se o livro está emprestado no intervalo de datas
+        if (emprestimosController.verificarLivroEmprestado(livro, dataInicioReserva, dataFimReserva)) {
+            return true;
+        }
+
+        // Verifica se o livro já está em outra reserva durante o intervalo de datas
+        for (Reserva reserva : reservas) {
+            for (Livro l : reserva.getLivros()) {
+                if (l.getIsbn().equals(livro.getIsbn())) {  // Comparação pelo ISBN
+                    // Verifica se há sobreposição de datas
+                    if ((dataInicioReserva.isBefore(reserva.getDataFim()) || dataInicioReserva.isEqual(reserva.getDataFim())) &&
+                            (dataFimReserva.isAfter(reserva.getDataInicio()) || dataFimReserva.isEqual(reserva.getDataInicio()))) {
+                        System.out.println("Erro: Livro '" + livro.getNome() + "' já está reservado para o período entre "
+                                + reserva.getDataInicio() + " e " + reserva.getDataFim() + ".");
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false; // O livro não está emprestado nem reservado no intervalo de datas
     }
 
 

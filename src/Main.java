@@ -42,11 +42,13 @@ public class Main {
         LivroView livroView = new LivroView();
         LivroController livroController = new LivroController(livros, livroView, emprestimosController);
         emprestimosController.setLivroController(livroController);
-        ReservaController reservaController = new ReservaController(reservas);
+        ReservaController reservaController = new ReservaController(emprestimosController, reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
+
+
 
         // Carregar Ficheiros
         LivroLoader livroLoader = new LivroLoader();

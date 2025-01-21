@@ -162,6 +162,30 @@ public class EmprestimosController {
         return !dataDevolucao.isBefore(dataInicio);  // Verifica se a data de devolução não é anterior à data de início
     }
 
+    public boolean verificarLivroEmprestado(Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
+
+        for (Emprestimos emprestimo : emprestimos) {
+            for (Livro l : emprestimo.getLivros()) {
+                if (l.getIsbn().equals(livro.getIsbn())) {
+                    LocalDate dataInicioEmprestimo = emprestimo.getDataInicio(); // Corrigir: uso do método correto
+                    LocalDate dataFimEmprestimo = emprestimo.getDataEfetivaDevolucao(); // Pode ser null
+
+                    // Se a devolução ainda não foi registrada, usamos a data prevista
+                    if (dataFimEmprestimo == null) {
+                        dataFimEmprestimo = emprestimo.getDataPrevistaDevolucao();
+                    }
+
+                    // Verificar se há sobreposição de datas
+                    if (!(dataFimReserva.isBefore(dataInicioEmprestimo) || dataInicioReserva.isAfter(dataFimEmprestimo))) {
+                        System.out.println("Erro: Livro '" + livro.getNome() + "' já está emprestado no período da reserva.");
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
 
 }

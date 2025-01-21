@@ -217,6 +217,9 @@ public class ReservaView {
             return; // Retorna caso a reserva não exista
         }
 
+        LocalDate dataInicioReserva = reserva.getDataInicio();
+        LocalDate dataFimReserva = reserva.getDataFim();
+
         System.out.println("O que você deseja atualizar?");
         System.out.println("1. Atualizar as datas da reserva");
         System.out.println("2. Alterar livros da reserva");
@@ -231,7 +234,7 @@ public class ReservaView {
                 break;
             case 2:
                 // Adicionar/remover livros
-                modificarLivrosReserva(reserva);
+                modificarLivrosReserva(reserva, dataInicioReserva, dataFimReserva);
                 break;
             default:
                 System.out.println("Opção inválida.");
@@ -270,7 +273,7 @@ public class ReservaView {
         reservaController.atualizarReserva(numero, novaDataInicio, novaDataFim);
     }
 
-    private void modificarLivrosReserva(Reserva reserva) {
+    private void modificarLivrosReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("O que você deseja fazer com os livros da reserva?");
         System.out.println("1. Adicionar livro");
         System.out.println("2. Remover livro");
@@ -280,7 +283,7 @@ public class ReservaView {
 
         switch (opcao) {
             case 1:
-                adicionarLivroNaReserva(reserva);
+                adicionarLivroNaReserva(reserva, dataInicioReserva, dataFimReserva);
                 break;
             case 2:
                 removerLivroDaReserva(reserva);
@@ -290,7 +293,7 @@ public class ReservaView {
         }
     }
 
-    private void adicionarLivroNaReserva(Reserva reserva) {
+    private void adicionarLivroNaReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("\n=== Adicionar Livro à Reserva ===");
 
         // Solicitar o ISBN do livro a ser adicionado
@@ -309,8 +312,8 @@ public class ReservaView {
             System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
         } else {
             // Adicionar o livro à reserva
-            reservaController.adicionarLivroNaReserva(reserva, livro);
-            System.out.println("Livro '" + livro.getNome() + "' adicionado à reserva com sucesso.");
+            reservaController.adicionarLivroNaReserva(reserva, livro, dataInicioReserva, dataFimReserva);
+
         }
     }
 
@@ -332,7 +335,7 @@ public class ReservaView {
         if (reserva.getLivros().contains(livro)) {
             // Remover o livro da reserva
             reservaController.removerLivroDaReserva(reserva, livro);
-            System.out.println("Livro '" + livro.getNome() + "' removido da reserva com sucesso.");
+
         } else {
             System.out.println("Erro: O livro '" + livro.getNome() + "' não está na reserva.");
         }
