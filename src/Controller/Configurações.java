@@ -15,8 +15,8 @@ public class Configurações {
         carregarConfiguracoes(caminhoConfig);
     }
 
-    private void carregarConfiguracoes(String caminhoConfig) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(caminhoConfig))) {
+    private void carregarConfiguracoes(String Caminho) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(Caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 if (linha.startsWith("caminhoLivros=")) {

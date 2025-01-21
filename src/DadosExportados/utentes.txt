@@ -17,7 +17,3 @@ Nome: Amélia Pereira; NIF: 445566778; Genero: F; Contacto: 912345693
 Nome: Kévim Lopes; NIF: 889900112; Genero: M; Contacto: 912345694
 Nome: Salvador Almeida; NIF: 556677889; Genero: F; Contacto: 912345695
 Nome: Francisco Cardoso; NIF: 223344556; Genero: M; Contacto: 912345696
-
-
-
-

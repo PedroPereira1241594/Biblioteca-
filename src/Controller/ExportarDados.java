@@ -30,9 +30,9 @@ public class ExportarDados {
     public static void exportarUtentes(String caminhoArquivo, ArrayList<Utentes> utentes) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Utentes utente : utentes) {
-                writer.write(String.format("NIF: %s; Nome: %s; Genero: %s; Contacto: %s\n",
-                        utente.getNif(),
+                writer.write(String.format("Nome: %s; NIF: %s; Genero: %s; Contacto: %s\n",
                         utente.getNome(),
+                        utente.getNif(),
                         utente.getGenero() ? "M" : "F",
                         utente.getContacto()));
             }
@@ -66,17 +66,20 @@ public class ExportarDados {
                 for (Livro livro : emprestimo.getLivros()) {
                     livrosEmprestados += livro.getIsbn();
                 }
+
+                // Remover a última vírgula e espaço, se necessário
                 if (!livrosEmprestados.isEmpty()) {
                     livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
                 }
 
+                // Escrever no arquivo
                 writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(),
                         livrosEmprestados,
                         emprestimo.getDataInicio().toString(),
                         emprestimo.getDataPrevistaDevolucao().toString(),
-                        emprestimo.getDataEfetivaDevolucao()));
+                        emprestimo.getDataEfetivaDevolucao() == null ? "null" : emprestimo.getDataEfetivaDevolucao().toString()));
             }
             System.out.println("Empréstimos guardados com sucesso no ficheiro!");
         } catch (IOException e) {
@@ -85,21 +88,22 @@ public class ExportarDados {
     }
 
 
+
     public static void exportarReservas(String caminhoArquivo, ArrayList<Reserva> reservas) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Reserva reserva : reservas) {
-                String livrosReservados = "";
+                StringBuilder livrosReservados = new StringBuilder();
                 for (Livro livro : reserva.getLivros()) {
-                    livrosReservados += livro.getIsbn();
-                }
-                if (!livrosReservados.isEmpty()) {
-                    livrosReservados = livrosReservados.substring(0, livrosReservados.length() - 2);
+                    if (livrosReservados.length() > 0) {
+                        livrosReservados.append(", "); // Adiciona uma vírgula entre os ISBNs
+                    }
+                    livrosReservados.append(livro.getIsbn());
                 }
 
                 writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
                         reserva.getNumero(),
                         reserva.getUtente().getNome(),
-                        livrosReservados,
+                        livrosReservados.toString(),
                         reserva.getDataRegisto(),
                         reserva.getDataInicio(),
                         reserva.getDataFim()));
@@ -109,6 +113,7 @@ public class ExportarDados {
             System.out.println("Erro a Guardar as Reservas: " + e.getMessage());
         }
     }
+
 
 }
 
