@@ -64,11 +64,11 @@ public class ExportarDados {
             for (Emprestimos emprestimo : emprestimos) {
                 String livrosEmprestados = "";
                 for (Livro livro : emprestimo.getLivros()) {
-                    livrosEmprestados += livro.getIsbn();
+                    livrosEmprestados += livro.getIsbn() + ", "; // Adiciona ISBN com vírgula e espaço
                 }
 
                 // Remover a última vírgula e espaço, se necessário
-                if (!livrosEmprestados.isEmpty()) {
+                if (livrosEmprestados.endsWith(", ")) {
                     livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
                 }
 
@@ -86,6 +86,7 @@ public class ExportarDados {
             System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
         }
     }
+
 
 
 

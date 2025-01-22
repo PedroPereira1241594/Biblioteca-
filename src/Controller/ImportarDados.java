@@ -106,12 +106,13 @@ public class ImportarDados {
     }
 
 
-    public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<Livro> livrosDisponiveis) throws IOException {
+    public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
         List<Emprestimos> emprestimos = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoEmprestimo))) {
             String linha;
             int linhaNumero = 0;
+
             while ((linha = br.readLine()) != null) {
                 linhaNumero++;
                 linha = linha.trim();
@@ -121,17 +122,29 @@ public class ImportarDados {
                 }
 
                 String[] dados = linha.split(";");
+
+                // Verifica se o número de campos está correto
                 if (dados.length < 6) {
                     System.out.println("Linha " + linhaNumero + " mal formatada. Ignorada.");
                     continue;
                 }
 
                 try {
+                    // Processa os dados do empréstimo
                     int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim()); // Remover "ID: " e converter para inteiro
                     String nomeUtente = dados[1].replace("Nome: ", "").trim(); // Remover "Nome: " e pegar o nome do utente
-                    String livrosEmprestadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros emprestados no formato "Livro: [Nome] (ISBN: [ISBN])"
-                    String[] titulosLivros = livrosEmprestadosStr.split(","); // Separa os livros por vírgula
+                    String livrosEmprestadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros emprestados no formato de ISBN
 
+                    // Verifica se a string de livros emprestados está vazia
+                    if (livrosEmprestadosStr.isEmpty()) {
+                        System.out.println("Nenhum livro emprestado encontrado na linha " + linhaNumero);
+                        continue;
+                    }
+
+                    // Separa os livros por vírgula
+                    String[] isbnsLivros = livrosEmprestadosStr.split(",");
+
+                    // Procura o utente pelo nome
                     Utentes utente = null;
                     for (Utentes u : utentes) {
                         if (u.getNome().trim().equalsIgnoreCase(nomeUtente.trim())) {
@@ -145,39 +158,43 @@ public class ImportarDados {
                         continue;
                     }
 
+                    // Processa os livros emprestados
                     List<Livro> livrosEmprestados = new ArrayList<>();
-                    for (String titulo : titulosLivros) {
-                        String[] livroDados = titulo.split("\\(");
-                        if (livroDados.length == 2) {
-                            String nomeLivro = livroDados[0].replace("Livro: ", "").trim(); // Remove o prefixo "Livro: " e espaços
-                            String isbnLivro = livroDados[1].replace("ISBN: ", "").replace(")", "").trim(); // Extrai o ISBN
+                    for (String isbn : isbnsLivros) {
+                        String isbnLivro = isbn.trim(); // Remove espaços e pega o ISBN
 
-                            Livro livro = null;
-                            for (Livro l : livrosDisponiveis) {
-                                if (l.getIsbn().equals(isbnLivro)) {
-                                    livro = l;
-                                    break;
-                                }
+                        Livro livro = null;
+                        for (Livro l : livrosDisponiveis) {
+                            if (l.getIsbn().equals(isbnLivro)) {
+                                livro = l;
+                                break;
                             }
+                        }
 
-                            if (livro != null) {
-                                livrosEmprestados.add(livro);
-                            } else {
-                                System.out.println("Livro com ISBN " + isbnLivro + " não encontrado. Ignorado.");
-                            }
+                        if (livro != null) {
+                            livrosEmprestados.add(livro);
+                        } else {
+                            System.out.println("Livro com ISBN " + isbnLivro + " não encontrado entre os livros disponíveis. Ignorado.");
                         }
                     }
 
+                    // Converte as datas
                     LocalDate dataInicio = LocalDate.parse(dados[3].replace("DataInicio: ", "").trim());
                     LocalDate dataPrevistaDevolucao = LocalDate.parse(dados[4].replace("DataPrevistaDevolução: ", "").trim());
                     LocalDate dataEfetivaDevolucao = null;
-                    if (!dados[5].equalsIgnoreCase("null") && !dados[5].isEmpty()) {
-                        dataEfetivaDevolucao = LocalDate.parse(dados[5].replace("DataEfetivaDevolução: ", "").trim());
+
+                    // Verifica se a data efetiva de devolução é nula ou vazia
+                    String dataEfetivaStr = dados[5].replace("DataEfetivaDevolução: ", "").trim();
+                    if (!dataEfetivaStr.equalsIgnoreCase("null") && !dataEfetivaStr.isEmpty()) {
+                        dataEfetivaDevolucao = LocalDate.parse(dataEfetivaStr);
                     }
 
+                    // Cria e adiciona o objeto Emprestimos à lista
                     Emprestimos emprestimo = new Emprestimos(numero, utente, livrosEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
                     emprestimos.add(emprestimo);
+
                 } catch (Exception e) {
+                    // Exibe o erro caso ocorra durante o processamento da linha
                     System.out.println("Erro ao processar linha " + linhaNumero + ": " + e.getMessage());
                 }
             }
@@ -187,6 +204,7 @@ public class ImportarDados {
 
         return emprestimos;
     }
+
 
     public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
         List<Reserva> reservas = new ArrayList<>();
