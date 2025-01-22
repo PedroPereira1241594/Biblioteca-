@@ -28,6 +28,7 @@ public class LivroView {
             }
         }
     }
+
     public static void gerirLivros(LivroController livroController, Scanner scanner) {
         int opcao;
 
@@ -37,7 +38,7 @@ public class LivroView {
             System.out.println("2. Listar Livros");
             System.out.println("3. Editar Livro");
             System.out.println("4. Remover Livro");
-            System.out.println("0. Voltar ao menu principal");
+            System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
 

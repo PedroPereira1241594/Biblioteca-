@@ -1,20 +1,20 @@
-Titulo: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; ISSN: 9876-5432; Data Publicação: 2020-05-15
-Titulo: O Mistério das Sombras; Editora: Editora XYZ; Categoria: Suspense; ISSN: 1234-5678; Data Publicação: 2019-08-23
-Titulo: O Mundo Perdido; Editora: Editora Bravo; Categoria: Aventura; ISSN: 4567-1234; Data Publicação: 2021-02-10
-Titulo: Luz no Fim do Túnel; Editora: Editora Solar; Categoria: Drama; ISSN: 7890-2345; Data Publicação: 2022-01-05
-Titulo: Além da Linha do Horizonte; Editora: Editora Horizonte; Categoria: Ficção Científica; ISSN: 1122-3344; Data Publicação: 2021-11-30
-Titulo: O Último Suspiro; Editora: Editora Lira; Categoria: Mistério; ISSN: 3344-5566; Data Publicação: 2020-12-01
-Titulo: No Coração da Tempestade; Editora: Editora Nexus; Categoria: Ação; ISSN: 7766-8899; Data Publicação: 2021-07-18
-Titulo: Fragmentos de um Sonho; Editora: Editora Novo Mundo; Categoria: Poesia; ISSN: 9988-7766; Data Publicação: 2019-10-12
-Titulo: O Caminho dos Guerreiros; Editora: Editora Fênix; Categoria: História; ISSN: 1122-5566; Data Publicação: 2020-06-21
-Titulo: O Enigma da Mente; Editora: Editora Alpha; Categoria: Psicologia; ISSN: 3344-8899; Data Publicação: 2021-03-03
-Titulo: Quando o Sol Se Põe; Editora: Editora Lua; Categoria: Romance; ISSN: 5555-6666; Data Publicação: 2019-09-14
-Titulo: A Última Viagem; Editora: Editora Estrela; Categoria: Aventura; ISSN: 7777-8888; Data Publicação: 2020-01-28
-Titulo: O Poder da Mente; Editora: Editora Nova Era; Categoria: Autoajuda; ISSN: 2222-3333; Data Publicação: 2022-04-25
-Titulo: A Ilha das Sombras; Editora: Editora Mar; Categoria: Terror; ISSN: 6666-7777; Data Publicação: 2021-09-09
-Titulo: O Último Desejo; Editora: Editora Sol; Categoria: Drama; ISSN: 9999-8888; Data Publicação: 2020-11-14
-Titulo: Sob o Céu Estrelado; Editora: Editora Galáxia; Categoria: Romance; ISSN: 5555-4444; Data Publicação: 2021-06-18
-Titulo: A Conquista do Império; Editora: Editora Águia; Categoria: História; ISSN: 2345-6789; Data Publicação: 2019-12-01
-Titulo: Ecos do Passado; Editora: Editora Echo; Categoria: Suspense; ISSN: 1111-4444; Data Publicação: 2022-05-22
-Titulo: A Última Fronteira; Editora: Editora Universo; Categoria: Ficção Científica; ISSN: 9876-4321; Data Publicação: 2021-08-17
-Titulo: À Beira do Abismo; Editora: Editora Abismo; Categoria: Thriller; ISSN: 4444-2222; Data Publicação: 2020-03-07
+ISSN: Editora: Titulo: Editora ABC; Titulo: ISSN: Editora: 9876-5432; Categoria: Ficção; Editora: Titulo: ISSN: A Vida Secreta; Data Publicação: 2020-05-15
+ISSN: Editora: Titulo: Editora XYZ; Titulo: ISSN: Editora: 1234-5678; Categoria: Suspense; Editora: Titulo: ISSN: O Mistério das Sombras; Data Publicação: 2019-08-23
+ISSN: Editora: Titulo: Editora Bravo; Titulo: ISSN: Editora: 4567-1234; Categoria: Aventura; Editora: Titulo: ISSN: O Mundo Perdido; Data Publicação: 2021-02-10
+ISSN: Editora: Titulo: Editora Solar; Titulo: ISSN: Editora: 7890-2345; Categoria: Drama; Editora: Titulo: ISSN: Luz no Fim do Túnel; Data Publicação: 2022-01-05
+ISSN: Editora: Titulo: Editora Horizonte; Titulo: ISSN: Editora: 1122-3344; Categoria: Ficção Científica; Editora: Titulo: ISSN: Além da Linha do Horizonte; Data Publicação: 2021-11-30
+ISSN: Editora: Titulo: Editora Lira; Titulo: ISSN: Editora: 3344-5566; Categoria: Mistério; Editora: Titulo: ISSN: O Último Suspiro; Data Publicação: 2020-12-01
+ISSN: Editora: Titulo: Editora Nexus; Titulo: ISSN: Editora: 7766-8899; Categoria: Ação; Editora: Titulo: ISSN: No Coração da Tempestade; Data Publicação: 2021-07-18
+ISSN: Editora: Titulo: Editora Novo Mundo; Titulo: ISSN: Editora: 9988-7766; Categoria: Poesia; Editora: Titulo: ISSN: Fragmentos de um Sonho; Data Publicação: 2019-10-12
+ISSN: Editora: Titulo: Editora Fênix; Titulo: ISSN: Editora: 1122-5566; Categoria: História; Editora: Titulo: ISSN: O Caminho dos Guerreiros; Data Publicação: 2020-06-21
+ISSN: Editora: Titulo: Editora Alpha; Titulo: ISSN: Editora: 3344-8899; Categoria: Psicologia; Editora: Titulo: ISSN: O Enigma da Mente; Data Publicação: 2021-03-03
+ISSN: Editora: Titulo: Editora Lua; Titulo: ISSN: Editora: 5555-6666; Categoria: Romance; Editora: Titulo: ISSN: Quando o Sol Se Põe; Data Publicação: 2019-09-14
+ISSN: Editora: Titulo: Editora Estrela; Titulo: ISSN: Editora: 7777-8888; Categoria: Aventura; Editora: Titulo: ISSN: A Última Viagem; Data Publicação: 2020-01-28
+ISSN: Editora: Titulo: Editora Nova Era; Titulo: ISSN: Editora: 2222-3333; Categoria: Autoajuda; Editora: Titulo: ISSN: O Poder da Mente; Data Publicação: 2022-04-25
+ISSN: Editora: Titulo: Editora Mar; Titulo: ISSN: Editora: 6666-7777; Categoria: Terror; Editora: Titulo: ISSN: A Ilha das Sombras; Data Publicação: 2021-09-09
+ISSN: Editora: Titulo: Editora Sol; Titulo: ISSN: Editora: 9999-8888; Categoria: Drama; Editora: Titulo: ISSN: O Último Desejo; Data Publicação: 2020-11-14
+ISSN: Editora: Titulo: Editora Galáxia; Titulo: ISSN: Editora: 5555-4444; Categoria: Romance; Editora: Titulo: ISSN: Sob o Céu Estrelado; Data Publicação: 2021-06-18
+ISSN: Editora: Titulo: Editora Águia; Titulo: ISSN: Editora: 2345-6789; Categoria: História; Editora: Titulo: ISSN: A Conquista do Império; Data Publicação: 2019-12-01
+ISSN: Editora: Titulo: Editora Echo; Titulo: ISSN: Editora: 1111-4444; Categoria: Suspense; Editora: Titulo: ISSN: Ecos do Passado; Data Publicação: 2022-05-22
+ISSN: Editora: Titulo: Editora Universo; Titulo: ISSN: Editora: 9876-4321; Categoria: Ficção Científica; Editora: Titulo: ISSN: A Última Fronteira; Data Publicação: 2021-08-17
+ISSN: Editora: Titulo: Editora Abismo; Titulo: ISSN: Editora: 4444-2222; Categoria: Thriller; Editora: Titulo: ISSN: À Beira do Abismo; Data Publicação: 2020-03-07

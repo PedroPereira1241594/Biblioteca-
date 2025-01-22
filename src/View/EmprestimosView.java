@@ -36,7 +36,7 @@ public class EmprestimosView {
             System.out.println("3. Atualizar Empréstimo");
             System.out.println("4. Remover Empréstimo");
             System.out.println("5. Listar Todos os Empréstimos");
-            System.out.println("0. Sair");
+            System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar buffer
@@ -364,8 +364,7 @@ public class EmprestimosView {
             System.out.println("\nNenhum empréstimo registado.");
         } else {
             System.out.println("\n=== Lista de Empréstimos ===");
-            // Ajustando os espaçamentos para garantir que "Livros Emprestados" tenha mais espaço
-            System.out.printf("%-10s %-20s %-20s %-25s %-50s %-25s\n",
+            System.out.printf("%-10s %-35s %-20s %-25s %-70s %-25s\n",
                     "Número", "Utente", "Data Início", "Data Prev. Devolução", "Livros Emprestados", "Data Devolução");
 
             for (Emprestimos emprestimo : emprestimosAtivos) {
@@ -373,13 +372,11 @@ public class EmprestimosView {
                 for (Livro livro : emprestimo.getLivros()) {
                     livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
                 }
-                // Remover última vírgula e espaço
                 if (!livros.isEmpty()) {
                     livros = livros.substring(0, livros.length() - 2);
                 }
 
-                // Imprime o empréstimo com a lista de livros
-                System.out.printf("%-10d %-20s %-20s %-25s %-50s %-25s\n",
+                System.out.printf("%-10d %-35s %-20s %-25s %-70s %-25s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(),
                         emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
@@ -389,6 +386,7 @@ public class EmprestimosView {
             }
         }
     }
+
 
 
 

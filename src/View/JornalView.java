@@ -23,7 +23,7 @@ public class JornalView {
             System.out.println("3. Atualizar Jornal/Revista");
             System.out.println("4. Eliminar Jornal/Revista");
             System.out.println("5. Procurar Jornal/Revista por ISSN");
-            System.out.println("0. Sair");
+            System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
