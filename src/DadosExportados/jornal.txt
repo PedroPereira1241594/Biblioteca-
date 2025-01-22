@@ -1,20 +1,20 @@
-Titulo: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; ISSN: 9876-5432; Data Publicação: 15-05-2020
-Titulo: O Mistério das Sombras; Editora: Editora XYZ; Categoria: Suspense; ISSN: 1234-5678; Data Publicação: 23-08-2019
-Titulo: O Mundo Perdido; Editora: Editora Bravo; Categoria: Aventura; ISSN: 4567-1234; Data Publicação: 10-02-2021
-Titulo: Luz no Fim do Túnel; Editora: Editora Solar; Categoria: Drama; ISSN: 7890-2345; Data Publicação: 05-01-2022
-Titulo: Além da Linha do Horizonte; Editora: Editora Horizonte; Categoria: Ficção Científica; ISSN: 1122-3344; Data Publicação: 30-11-2021
-Titulo: O Último Suspiro; Editora: Editora Lira; Categoria: Mistério; ISSN: 3344-5566; Data Publicação: 01-12-2020
-Titulo: No Coração da Tempestade; Editora: Editora Nexus; Categoria: Ação; ISSN: 7766-8899; Data Publicação: 18-07-2021
-Titulo: Fragmentos de um Sonho; Editora: Editora Novo Mundo; Categoria: Poesia; ISSN: 9988-7766; Data Publicação: 12-10-2019
-Titulo: O Caminho dos Guerreiros; Editora: Editora Fênix; Categoria: História; ISSN: 1122-5566; Data Publicação: 21-06-2020
-Titulo: O Enigma da Mente; Editora: Editora Alpha; Categoria: Psicologia; ISSN: 3344-8899; Data Publicação: 03-03-2021
-Titulo: Quando o Sol Se Põe; Editora: Editora Lua; Categoria: Romance; ISSN: 5555-6666; Data Publicação: 14-09-2019
-Titulo: A Última Viagem; Editora: Editora Estrela; Categoria: Aventura; ISSN: 7777-8888; Data Publicação: 28-01-2020
-Titulo: O Poder da Mente; Editora: Editora Nova Era; Categoria: Autoajuda; ISSN: 2222-3333; Data Publicação: 25-04-2022
-Titulo: A Ilha das Sombras; Editora: Editora Mar; Categoria: Terror; ISSN: 6666-7777; Data Publicação: 09-09-2021
-Titulo: O Último Desejo; Editora: Editora Sol; Categoria: Drama; ISSN: 9999-8888; Data Publicação: 14-11-2020
-Titulo: Sob o Céu Estrelado; Editora: Editora Galáxia; Categoria: Romance; ISSN: 5555-4444; Data Publicação: 18-06-2021
-Titulo: A Conquista do Império; Editora: Editora Águia; Categoria: História; ISSN: 2345-6789; Data Publicação: 01-12-2019
-Titulo: Ecos do Passado; Editora: Editora Echo; Categoria: Suspense; ISSN: 1111-4444; Data Publicação: 22-05-2022
-Titulo: A Última Fronteira; Editora: Editora Universo; Categoria: Ficção Científica; ISSN: 9876-4321; Data Publicação: 17-08-2021
-Titulo: À Beira do Abismo; Editora: Editora Abismo; Categoria: Thriller; ISSN: 4444-2222; Data Publicação: 07-03-2020
+Titulo: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; ISSN: 9876-5432; Data Publicação: 2020-05-15
+Titulo: O Mistério das Sombras; Editora: Editora XYZ; Categoria: Suspense; ISSN: 1234-5678; Data Publicação: 2019-08-23
+Titulo: O Mundo Perdido; Editora: Editora Bravo; Categoria: Aventura; ISSN: 4567-1234; Data Publicação: 2021-02-10
+Titulo: Luz no Fim do Túnel; Editora: Editora Solar; Categoria: Drama; ISSN: 7890-2345; Data Publicação: 2022-01-05
+Titulo: Além da Linha do Horizonte; Editora: Editora Horizonte; Categoria: Ficção Científica; ISSN: 1122-3344; Data Publicação: 2021-11-30
+Titulo: O Último Suspiro; Editora: Editora Lira; Categoria: Mistério; ISSN: 3344-5566; Data Publicação: 2020-12-01
+Titulo: No Coração da Tempestade; Editora: Editora Nexus; Categoria: Ação; ISSN: 7766-8899; Data Publicação: 2021-07-18
+Titulo: Fragmentos de um Sonho; Editora: Editora Novo Mundo; Categoria: Poesia; ISSN: 9988-7766; Data Publicação: 2019-10-12
+Titulo: O Caminho dos Guerreiros; Editora: Editora Fênix; Categoria: História; ISSN: 1122-5566; Data Publicação: 2020-06-21
+Titulo: O Enigma da Mente; Editora: Editora Alpha; Categoria: Psicologia; ISSN: 3344-8899; Data Publicação: 2021-03-03
+Titulo: Quando o Sol Se Põe; Editora: Editora Lua; Categoria: Romance; ISSN: 5555-6666; Data Publicação: 2019-09-14
+Titulo: A Última Viagem; Editora: Editora Estrela; Categoria: Aventura; ISSN: 7777-8888; Data Publicação: 2020-01-28
+Titulo: O Poder da Mente; Editora: Editora Nova Era; Categoria: Autoajuda; ISSN: 2222-3333; Data Publicação: 2022-04-25
+Titulo: A Ilha das Sombras; Editora: Editora Mar; Categoria: Terror; ISSN: 6666-7777; Data Publicação: 2021-09-09
+Titulo: O Último Desejo; Editora: Editora Sol; Categoria: Drama; ISSN: 9999-8888; Data Publicação: 2020-11-14
+Titulo: Sob o Céu Estrelado; Editora: Editora Galáxia; Categoria: Romance; ISSN: 5555-4444; Data Publicação: 2021-06-18
+Titulo: A Conquista do Império; Editora: Editora Águia; Categoria: História; ISSN: 2345-6789; Data Publicação: 2019-12-01
+Titulo: Ecos do Passado; Editora: Editora Echo; Categoria: Suspense; ISSN: 1111-4444; Data Publicação: 2022-05-22
+Titulo: A Última Fronteira; Editora: Editora Universo; Categoria: Ficção Científica; ISSN: 9876-4321; Data Publicação: 2021-08-17
+Titulo: À Beira do Abismo; Editora: Editora Abismo; Categoria: Thriller; ISSN: 4444-2222; Data Publicação: 2020-03-07

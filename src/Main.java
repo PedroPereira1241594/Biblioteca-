@@ -27,11 +27,11 @@ public class Main {
         String caminhoReserva = configReader.getCaminhoReserva();
 
         // Dados compartilhados
-        ArrayList<Livro> livros = new ArrayList<>(LivroLoader.carregarLivros(caminhoLivros));
-        ArrayList<Utentes> utentes = new ArrayList<>(LivroLoader.carregarUtentes(caminhoUtentes));
-        ArrayList<Jornal> jornals = new ArrayList<>(LivroLoader.carregarJornais(caminhoJornal));
-        ArrayList<Emprestimos> emprestimos = new ArrayList<>(LivroLoader.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
-        ArrayList<Reserva> reservas = new ArrayList<>(LivroLoader.carregarReservas(caminhoReserva, utentes, livros));
+        ArrayList<Livro> livros = new ArrayList<>(ImportarDados.carregarLivros(caminhoLivros));
+        ArrayList<Utentes> utentes = new ArrayList<>(ImportarDados.carregarUtentes(caminhoUtentes));
+        ArrayList<Jornal> jornals = new ArrayList<>(ImportarDados.carregarJornais(caminhoJornal));
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
+        ArrayList<Reserva> reservas = new ArrayList<>(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
@@ -52,7 +52,7 @@ public class Main {
 
 
         // Carregar Ficheiros
-        LivroLoader livroLoader = new LivroLoader();
+        ImportarDados importarDados = new ImportarDados();
 
 
         int opcao;

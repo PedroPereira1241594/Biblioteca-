@@ -49,12 +49,12 @@ public class Main {
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
         // Carregar Ficheiros
-        LivroLoader livroLoader = new LivroLoader();
+        LivroLoader importarDados = new LivroLoader();
 <<<<<<< HEAD
         PesquisaController pesquisaController = new PesquisaController(livros, jornals);
         PesquisaView pesquisaView = new PesquisaView(scanner, pesquisaController);
 =======
-        livros.addAll(livroLoader.carregarLivros());
+        livros.addAll(importarDados.carregarLivros());
         utentes.addAll(carregarUtentes());
         jornals.addAll(carregarJornais());
         emprestimos.addAll(carregarEmprestimos(utentes, livros));
