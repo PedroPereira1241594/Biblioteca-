@@ -1,6 +1,9 @@
 package Controller;
 
 import Model.Jornal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class JornalController {
@@ -8,31 +11,48 @@ public class JornalController {
 
     // Construtor
     public JornalController(ArrayList<Jornal> jornais) {
-
         this.jornais = jornais;
     }
 
-    // Criar um novo jornal
+    // Método para criar um novo jornal ou uma revista
     public void criarJornal(String titulo, String editora, String categoria, String issn, String dataPublicacao) {
-        Jornal novoJornal = new Jornal(titulo, editora, categoria, issn, dataPublicacao);
-        jornais.add(novoJornal);
-        System.out.println("Jornal/revista adicionado com sucesso!");
+        try {
+            LocalDate data = LocalDate.parse(dataPublicacao, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Jornal novoJornal = new Jornal(titulo, editora, categoria, issn, data);
+            jornais.add(novoJornal);
+            System.out.println("Jornal/Revista adicionado com sucesso!");
+        } catch (DateTimeParseException e) {
+            System.out.println("Data de publicação inválida! Use o formato dd/MM/yyyy.");
+        }
     }
 
-    // Método para listar todos os jornais
+    // Método para listar todos os jornais e revistas
     public void listarJornais() {
         if (jornais.isEmpty()) {
-            System.out.println("Nenhum jornal ou revista cadastrado.");
+            System.out.println("Nenhum jornal ou revista registado.");
             return;
         }
 
-        System.out.println("Lista de jornais/revistas:");
+        System.out.println("\n=== Lista de Jornais/Revistas ===");
+        System.out.printf("%-35s %-25s %-20s %-15s %-15s%n",
+                "Título", "Editora", "Categoria", "ISSN", "Data Publicação");
+        System.out.println("-".repeat(115));
+
         for (Jornal jornal : jornais) {
-            System.out.println(jornal);
+            System.out.printf(
+                    "%-35s %-25s %-20s %-15s %-15s%n",
+                    jornal.getTitulo(),
+                    jornal.getEditora(),
+                    jornal.getCategoria(),
+                    jornal.getIssn(),
+                    jornal.getDataPublicacao()
+            );
         }
+
+        System.out.println("-".repeat(115));
     }
 
-    // Método para atualizar um jornal
+    // Método para atualizar um jornal ou uma revista
     public void atualizarJornal(String issn, String novoTitulo, String novaEditora, String novaCategoria, String novoIssn, String novaDataPublicacao) {
         Jornal jornalEncontrado = null;
 
@@ -45,7 +65,7 @@ public class JornalController {
         }
 
         if (jornalEncontrado == null) {
-            System.out.println("Nenhum jornal/revista encontrado com o ISSN fornecido.");
+            System.out.println("Nenhum Jornal/Revista encontrado com o ISSN fornecido.");
             return;
         }
 
@@ -54,13 +74,21 @@ public class JornalController {
         if (!novaEditora.isEmpty()) jornalEncontrado.setEditora(novaEditora);
         if (!novaCategoria.isEmpty()) jornalEncontrado.setCategoria(novaCategoria);
         if (!novoIssn.isEmpty()) jornalEncontrado.setIssn(novoIssn);
-        if (!novaDataPublicacao.isEmpty()) jornalEncontrado.setDataPublicacao(novaDataPublicacao);
+
+        if (!novaDataPublicacao.isEmpty()) {
+            try {
+                LocalDate novaData = LocalDate.parse(novaDataPublicacao, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                jornalEncontrado.setDataPublicacao(novaData);
+            } catch (DateTimeParseException e) {
+                System.out.println("Data de publicação inválida! Utilize o formato dd/MM/yyyy.");
+            }
+        }
 
         System.out.println("Jornal/revista atualizado com sucesso!");
     }
 
-    // Método para deletar um jornal
-    public void deletarJornal(String issn) {
+    // Método para eliminar um jornal ou uma revista
+    public void eliminarJornal(String issn) {
         Jornal jornalEncontrado = null;
 
         // Buscando o jornal pelo ISSN
@@ -72,18 +100,18 @@ public class JornalController {
         }
 
         if (jornalEncontrado == null) {
-            System.out.println("Nenhum jornal/revista encontrado com o ISSN fornecido.");
+            System.out.println("Nenhum Jornal/Revista encontrado com o ISSN fornecido.");
             return;
         }
 
         // Deletando o jornal encontrado
-        System.out.println("Deletando o jornal/revista: " + jornalEncontrado);
+        System.out.println("A eliminar o jornal/revista: " + issn + "...");
         jornais.remove(jornalEncontrado);
         System.out.println("Jornal/revista removido com sucesso!");
     }
 
-    // Método para buscar um jornal pelo ISSN
-    public Jornal buscarPorIssn(String issn) {
+    // Método para procurar um jornal ou revista pelo ISSN
+    public Jornal procurarPorIssn(String issn) {
         for (Jornal jornal : jornais) {
             if (jornal.getIssn().equalsIgnoreCase(issn)) {
                 return jornal;
@@ -92,6 +120,3 @@ public class JornalController {
         return null;
     }
 }
-
-
-

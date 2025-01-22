@@ -12,18 +12,18 @@ public class JornalView {
         this.scanner = new Scanner(System.in);
     }
 
-    // Exibe o menu de opções
+    // Método para exibir o menu de opções
     public void exibirMenu() {
         int opcao;
 
         do {
             System.out.println("\nMenu:");
-            System.out.println("1 - Criar Jornal");
-            System.out.println("2 - Listar Jornais");
-            System.out.println("3 - Atualizar Jornal");
-            System.out.println("4 - Deletar Jornal");
-            System.out.println("5 - Buscar Jornal por ISSN");
-            System.out.println("0 - Sair");
+            System.out.println("1. Criar Jornal/Revista");
+            System.out.println("2. Listar Jornais/Revistas");
+            System.out.println("3. Atualizar Jornal/Revista");
+            System.out.println("4. Eliminar Jornal/Revista");
+            System.out.println("5. Procurar Jornal/Revista por ISSN");
+            System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
@@ -39,23 +39,23 @@ public class JornalView {
                     atualizarJornal();
                     break;
                 case 4:
-                    deletarJornal();
+                    eliminarJornal();
                     break;
                 case 5:
-                    buscarJornalPorIssn();
+                    procurarJornalPorIssn();
                     break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println("Opção inválida. Tente novamente...");
             }
         } while (opcao != 0);
     }
 
     // Método para criar um novo jornal
     public void criarJornal() {
-        System.out.println("Insira os dados do novo jornal/revista:");
+        System.out.println("Insira os dados do novo Jornal/Revista:");
 
         System.out.print("Título: ");
         String titulo = scanner.nextLine();
@@ -69,7 +69,7 @@ public class JornalView {
         System.out.print("ISSN: ");
         String issn = scanner.nextLine();
 
-        System.out.print("Data de Publicação: ");
+        System.out.print("Data de Publicação (dd/MM/yyyy): ");
         String dataPublicacao = scanner.nextLine();
 
         jornalController.criarJornal(titulo, editora, categoria, issn, dataPublicacao);
@@ -98,30 +98,39 @@ public class JornalView {
         System.out.print("Novo ISSN: ");
         String novoIssn = scanner.nextLine();
 
-        System.out.print("Nova Data de Publicação: ");
+        System.out.print("Nova Data de Publicação (dd/MM/yyyy): ");
         String dataPublicacao = scanner.nextLine();
 
         jornalController.atualizarJornal(issn, titulo, editora, categoria, novoIssn, dataPublicacao);
     }
 
-    // Método para deletar um jornal
-    public void deletarJornal() {
-        System.out.print("Introduza o ISSN do jornal/revista a ser deletado: ");
+    // Método para eliminar um jornal
+    public void eliminarJornal() {
+        System.out.print("Introduza o ISSN do jornal/revista a ser eliminado: ");
         String issn = scanner.nextLine();
 
-        jornalController.deletarJornal(issn);
+        jornalController.eliminarJornal(issn);
     }
 
-    // Método para buscar um jornal por ISSN
-    public void buscarJornalPorIssn() {
-        System.out.print("Introduza o ISSN do jornal/revista a ser buscado: ");
+    // Método para procurar um jornal por ISSN
+    public void procurarJornalPorIssn() {
+        System.out.print("Introduza o ISSN do jornal/revista que pretende procurar: ");
         String issn = scanner.nextLine();
 
-        var jornal = jornalController.buscarPorIssn(issn);
+        var jornal = jornalController.procurarPorIssn(issn);
         if (jornal != null) {
-            System.out.println("Jornal encontrado: " + jornal);
+            System.out.println("\nJornal/Revista encontrado:");
+            System.out.println("-------------------------------");
+            System.out.println("Título: " + jornal.getTitulo());
+            System.out.println("Editora: " + jornal.getEditora());
+            System.out.println("Categoria: " + jornal.getCategoria());
+            System.out.println("ISSN: " + jornal.getIssn());
+            System.out.println("Data de Publicação: " + jornal.getDataPublicacao());
+            System.out.println("-------------------------------");
         } else {
-            System.out.println("Jornal não encontrado.");
+            System.out.println("\nJornal não encontrado.");
+            System.out.println("Certifique-se de que o ISSN introduzido está correto.");
         }
     }
+
 }
