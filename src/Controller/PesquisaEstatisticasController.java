@@ -153,12 +153,14 @@ public class PesquisaEstatisticasController {
 
         for (Emprestimos emprestimo : emprestimos) {
             LocalDate dataDevolucaoPrevista = emprestimo.getDataPrevistaDevolucao();
-            if (dataDevolucaoPrevista.isBefore(hoje)) {
+            LocalDate dataDevolucao = emprestimo.getDataEfetivaDevolucao();
+            if (dataDevolucaoPrevista.isBefore(hoje) && dataDevolucao == null) {
                 long atraso = dataDevolucaoPrevista.until(hoje).getDays();
                 if (atraso > diasAtraso) {
                     emprestimosComAtraso.add(emprestimo);
                 }
             }
+
         }
 
         return emprestimosComAtraso;

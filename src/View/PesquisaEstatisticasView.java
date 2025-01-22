@@ -296,20 +296,16 @@ public class PesquisaEstatisticasView {
             System.out.println("Nenhum empréstimo encontrado com atraso superior a " + diasAtraso + " dias.");
         } else {
             System.out.println("\n=== Lista de Utentes com Atraso ===");
-            System.out.printf("%-20s %-20s %-25s %-25s\n", "Utente", "Livro", "Data de Empréstimo", "Data de Devolução");
+            System.out.printf("%-30s %-25s %-25s\n", "Utente", "Data de Empréstimo", "Data Prev. Devolução");
 
             for (Emprestimos emprestimo : emprestimosComAtraso) {
                 String livros = "";
-                for (Livro livro : emprestimo.getLivros()) {
-                    livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
-                }
                 if (!livros.isEmpty()) {
                     livros = livros.substring(0, livros.length() - 2);  // Remover última vírgula
                 }
 
-                System.out.printf("%-20s %-20s %-25s %-25s\n",
+                System.out.printf("%-30s %-25s %-25s\n",
                         emprestimo.getUtente().getNome(),
-                        livros,
                         emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             }
