@@ -1,10 +1,10 @@
-ID: 1; Nome: Laura Barbosa; ISBN: ; DataInicio: 2024-06-27; DataPrevistaDevolução: 2024-08-05; DataEfetivaDevolução: 2024-08-02
-ID: 2; Nome: Núria Abreu; ISBN: ; DataInicio: 2024-07-09; DataPrevistaDevolução: 2024-08-26; DataEfetivaDevolução: 2024-07-26
-ID: 3; Nome: Ângelo Vieira; ISBN: ; DataInicio: 2023-05-05; DataPrevistaDevolução: 2023-06-27; DataEfetivaDevolução: 2023-06-24
-ID: 4; Nome: António Matias; ISBN: ; DataInicio: 2024-12-07; DataPrevistaDevolução: 2024-12-25; DataEfetivaDevolução: 2025-01-12
-ID: 5; Nome: Núria-Patrícia Nascimento; ISBN: ; DataInicio: 2023-11-17; DataPrevistaDevolução: 2024-01-04; DataEfetivaDevolução: 2023-12-24
-ID: 6; Nome: Pilar Alves-Borges; ISBN: ; DataInicio: 2023-12-06; DataPrevistaDevolução: 2024-01-21; DataEfetivaDevolução: 2023-12-24
-ID: 7; Nome: Amélia Pereira; ISBN: ; DataInicio: 2024-08-08; DataPrevistaDevolução: 2024-10-03; DataEfetivaDevolução: 2024-08-28
-ID: 8; Nome: Kévim Lopes; ISBN: ; DataInicio: 2024-05-12; DataPrevistaDevolução: 2024-06-22; DataEfetivaDevolução: 2024-07-01
-ID: 9; Nome: Salvador Almeida; ISBN: ; DataInicio: 2024-07-08; DataPrevistaDevolução: 2024-08-26; DataEfetivaDevolução: 2024-07-27
-ID: 10; Nome: Francisco Cardoso; ISBN: ; DataInicio: 2024-06-30; DataPrevistaDevolução: 2024-07-27; DataEfetivaDevolução: 2024-09-03
+ID: 1; Nome: Laura Barbosa; ISBN: 9781480673335, 9781129103148; DataInicio: 2024-06-27; DataPrevistaDevolução: 2024-08-05; DataEfetivaDevolução: 2024-08-02
+ID: 2; Nome: Núria Abreu; ISBN: 9781449741518, 9780988165847; DataInicio: 2024-07-09; DataPrevistaDevolução: 2024-08-26; DataEfetivaDevolução: 2024-07-26
+ID: 3; Nome: Ângelo Vieira; ISBN: 9781838046903, 9781781946367; DataInicio: 2023-05-05; DataPrevistaDevolução: 2023-06-27; DataEfetivaDevolução: 2023-06-24
+ID: 4; Nome: António Matias; ISBN: 9781682938171, 9781106651716; DataInicio: 2024-12-07; DataPrevistaDevolução: 2024-12-25; DataEfetivaDevolução: 2025-01-12
+ID: 5; Nome: Núria-Patrícia Nascimento; ISBN: 9781974422722, 9780896504387; DataInicio: 2023-11-17; DataPrevistaDevolução: 2024-01-04; DataEfetivaDevolução: 2023-12-24
+ID: 6; Nome: Pilar Alves-Borges; ISBN: 9780122580567, 9781590399828; DataInicio: 2023-12-06; DataPrevistaDevolução: 2024-01-21; DataEfetivaDevolução: 2023-12-24
+ID: 7; Nome: Amélia Pereira; ISBN: 9781638806615, 9781965120712; DataInicio: 2024-08-08; DataPrevistaDevolução: 2024-10-03; DataEfetivaDevolução: 2024-08-28
+ID: 8; Nome: Kévim Lopes; ISBN: 9781469662299, 9780318422831; DataInicio: 2024-05-12; DataPrevistaDevolução: 2024-06-22; DataEfetivaDevolução: 2024-07-01
+ID: 9; Nome: Salvador Almeida; ISBN: 9780905021539, 9780190962777; DataInicio: 2024-07-08; DataPrevistaDevolução: 2024-08-26; DataEfetivaDevolução: 2024-07-27
+ID: 10; Nome: Francisco Cardoso; ISBN: 9876543210, 9781994871302; DataInicio: 2024-06-30; DataPrevistaDevolução: 2024-07-27; DataEfetivaDevolução: 2024-09-03

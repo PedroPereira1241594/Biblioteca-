@@ -60,7 +60,7 @@ public class EmprestimosController {
     // Exibe detalhes do empréstimo de forma estruturada
     private void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
         System.out.println("\n=====================================");
-        System.out.println("Número do Empréstimo: " + "E" + emprestimo.getNumero());
+        System.out.println("Número do Empréstimo: " + emprestimo.getNumero());
         System.out.println("Utente: " + emprestimo.getUtente().getNome() + " (NIF: " + emprestimo.getUtente().getNif() + ")");
         System.out.println("Data de Início: " + emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         System.out.println("Data Prevista de Devolução: " + emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

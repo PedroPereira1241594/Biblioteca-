@@ -35,12 +35,12 @@ public class Main {
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
-        UtenteController utenteController = new UtenteController(utentes, utenteView);
+        UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
         EmprestimosController emprestimosController = new EmprestimosController(emprestimos);
         LivroView livroView = new LivroView();
-        LivroController livroController = new LivroController(livros, livroView, emprestimosController);
+        LivroController livroController = new LivroController(livros, livroView, emprestimosController, reservas);
         emprestimosController.setLivroController(livroController);
         ReservaController reservaController = new ReservaController(emprestimosController, reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);

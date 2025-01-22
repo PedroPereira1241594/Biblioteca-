@@ -10,10 +10,14 @@ import java.util.*;
 public class UtenteController {
     private final ArrayList<Utentes> utentes;
     private final UtenteView utenteView;
+    private final List<Reserva> reservas;
+    private final List<Emprestimos> emprestimos;
 
-    public UtenteController(ArrayList<Utentes> utentes, UtenteView utenteView) {
+    public UtenteController(ArrayList<Utentes> utentes, UtenteView utenteView, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.utentes = utentes;
         this.utenteView = utenteView;
+        this.reservas = reservas;
+        this.emprestimos = emprestimos;
     }
 
     public void adicionarUtente() {
@@ -135,19 +139,50 @@ public class UtenteController {
         System.out.print("Introduza o NIF do utente a remover: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
+
+        // Procurar o utente pelo NIF
         for (Utentes Indice : utentes) {
             if (Indice.getNif().equals(nif)) {
                 utente = Indice;
                 break;
             }
         }
-        if (utente != null) {
+
+        if (utente == null) {
+            System.out.println("NIF inválido!");
+            return;
+        }
+
+        // Verificar se o utente tem reservas associadas
+        boolean utenteComReserva = false;
+        for (Reserva reserva : reservas) {
+            if (reserva.getUtente().equals(utente)) {
+                utenteComReserva = true;
+                break;
+            }
+        }
+
+        // Verificar se o utente tem empréstimos ativos
+        boolean utenteComEmprestimo = false;
+        for (Emprestimos emprestimo : emprestimos) {
+            if (emprestimo.getUtente().equals(utente)) {
+                utenteComEmprestimo = true;
+                break;
+            }
+        }
+
+        // Verificar se o utente está associado a alguma reserva ou empréstimo
+        if (utenteComReserva) {
+            System.out.println("Erro: O utente '" + utente.getNome() + "' tem reservas associadas e não pode ser removido.");
+        } else if (utenteComEmprestimo) {
+            System.out.println("Erro: O utente '" + utente.getNome() + "' tem empréstimos ativos e não pode ser removido.");
+        } else {
+            // Remover o utente
             utentes.remove(utente);
             System.out.println("Utente removido com sucesso!");
-        } else {
-            System.out.println("NIF inválido!");
         }
     }
+
     public Utentes buscarUtentePorNif(String nif) {
         for (Utentes utente : utentes) {
             if (utente.getNif().equals(nif)) {

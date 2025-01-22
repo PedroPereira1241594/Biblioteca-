@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Livro;
 import Model.Emprestimos;
+import Model.Reserva;
 import View.LivroView;
 
 import java.util.ArrayList;
@@ -11,12 +12,14 @@ import java.util.Scanner;
 public class LivroController {
     private final ArrayList<Livro> livros;
     private final LivroView livroView;
-    private final EmprestimosController emprestimosController; // Adicionado para acessar o controller de empréstimos
+    private final EmprestimosController emprestimosController;
+    private final List<Reserva> reservas; // Adicionada a lista de reservas
 
-    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController) {
+    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas) {
         this.livros = livros;
         this.livroView = livroView;
-        this.emprestimosController = emprestimosController; // Inicialização do controller de empréstimos
+        this.emprestimosController = emprestimosController;
+        this.reservas = reservas; // Inicializa a lista de reservas
     }
 
     public void adicionarLivro() {
@@ -101,17 +104,43 @@ public class LivroController {
         String isbn = scanner.nextLine();
 
         Livro livro1 = null;
-        for (Livro Indice : livros) {
-            if (Indice.getIsbn().equals(isbn)) {
-                livro1 = Indice;
+        for (Livro livro : livros) {
+            if (livro.getIsbn().equals(isbn)) {
+                livro1 = livro;
                 break;
             }
         }
-        if (livro1 != null) {
+
+        if (livro1 == null) {
+            System.out.println("ISBN inválido!");
+            return;
+        }
+
+        // Verificar se o livro está associado a alguma reserva
+        boolean livroReservado = false;
+        for (Reserva reserva : reservas) {
+            if (reserva.getLivros().contains(livro1)) {
+                livroReservado = true;
+                break;
+            }
+        }
+
+        // Verificar se o livro está associado a algum empréstimo ativo
+        boolean livroEmprestado = false;
+        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
+            if (emprestimo.getLivros().contains(livro1)) {
+                livroEmprestado = true;
+                break;
+            }
+        }
+
+        if (livroReservado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
+        } else if (livroEmprestado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo ativo e não pode ser removido.");
+        } else {
             livros.remove(livro1);
             System.out.println("Livro removido com sucesso!");
-        } else {
-            System.out.println("ISBN inválido!");
         }
     }
 
@@ -137,12 +166,7 @@ public class LivroController {
         return true; // O livro está disponível para empréstimo
     }
 
-    // No LivroController
     public boolean verificarLivroEmprestado(Livro livro) {
-        // Aqui você deve verificar se o livro está emprestado.
-        // Supondo que você tenha uma lista de empréstimos ou um método que consulte essa informação.
-
-        // Exemplo de verificação simples (ajuste conforme a lógica da sua aplicação):
         for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
             if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
                 return true; // Livro emprestado, sem data de devolução
