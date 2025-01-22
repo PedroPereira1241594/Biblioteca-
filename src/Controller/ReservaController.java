@@ -114,8 +114,6 @@ public class ReservaController {
         System.out.println("Reserva atualizada com sucesso!");
     }
 
-
-
     public void removerReserva(int numero) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {

@@ -10,18 +10,21 @@ public class LivroView {
 
     public void exibirLivros(ArrayList<Livro> livros) {
         if (livros.isEmpty()) {
-            System.out.println("Nenhum livro Registado.");
+            System.out.println("Nenhum livro registrado.");
         } else {
-            System.out.println("Lista de Livros:");
-            for (int i = 0; i < livros.size(); i++) {
-                Livro livro = livros.get(i);
-                System.out.println("ISBN: " + livro.getIsbn());
-                System.out.println("Título: " + livro.getNome());
-                System.out.println("Autor: " + livro.getAutor());
-                System.out.println("Editora: " + livro.getEditora());
-                System.out.println("Categoria: " + livro.getCategoria());
-                System.out.println("Ano: " + livro.getAno());
-                System.out.println("----------------------");
+            System.out.println("\n=== Lista de Livros ===");
+            System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10s\n",
+                    "ISBN", "Título", "Autor", "Editora", "Categoria", "Ano");
+            System.out.println("---------------------------------------------------------------------------------------------" +
+                    "-----------------------------------------------");
+            for (Livro livro : livros) {
+                System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10d\n",
+                        livro.getIsbn(),
+                        livro.getNome(),
+                        livro.getAutor(),
+                        livro.getEditora(),
+                        livro.getCategoria(),
+                        livro.getAno());
             }
         }
     }

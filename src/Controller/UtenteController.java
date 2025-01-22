@@ -73,13 +73,22 @@ public class UtenteController {
             System.out.println("Não há utentes com reservas ou empréstimos.");
         } else {
             System.out.println("\n=== Lista de Utentes com Reservas ou Empréstimos ===");
+            System.out.printf("%-30s %-15s %-15s %-10s\n", "Nome", "NIF", "Contacto", "Género");
+            System.out.println("--------------------------------------------------------------------------");
+
             for (Utentes utente : utentesComReservasOuEmprestimos) {
-                String genero = (utente.getGenero() == null) ? "Indefinido" : (utente.getGenero() ? "M" : "F");
-                System.out.println("Nome: " + utente.getNome() + " | NIF: " + utente.getNif() + " | Tel: " + utente.getContacto() + " | " + genero);
+                String genero = (utente.getGenero() == null)
+                        ? "Indefinido"
+                        : (utente.getGenero() ? "Masculino" : "Feminino");
+
+                System.out.printf("%-30s %-15s %-15s %-10s\n",
+                        utente.getNome(),
+                        utente.getNif(),
+                        utente.getContacto(),
+                        genero);
             }
         }
     }
-
 
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);

@@ -350,7 +350,6 @@ public class ReservaView {
         }
     }
 
-
     private void removerReserva() {
         System.out.println("\n=== Remover Reserva ===");
         System.out.print("Número da Reserva: ");
