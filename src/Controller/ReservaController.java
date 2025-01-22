@@ -25,12 +25,8 @@ public class ReservaController {
         this.scanner = new Scanner(System.in);
     }
 
-
-    // Modificado para receber a lista de reservas do Main
-    public ReservaController(List<Reserva> reservas) {
-        this.reservas = reservas;  // Agora a lista de reservas vem do Main
-        this.contadorReservas = 1;
-        this.scanner = new Scanner(System.in);
+    public void setEmprestimosController(EmprestimosController emprestimosController) {
+        this.emprestimosController = emprestimosController;
     }
 
     public boolean criarReserva(Utentes utente, List<Livro> livrosParaReserva, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim, EmprestimosController emprestimosController) {
@@ -193,6 +189,7 @@ public class ReservaController {
     public Reserva buscarReservaPorNumero(int numero) {
         for (Reserva reserva : reservas) {
             if (reserva.getNumero() == numero) {
+                exibirDetalhesReserva(reserva);
                 return reserva; // Retorna a reserva se o número corresponder
             }
         }
@@ -272,6 +269,22 @@ public class ReservaController {
         return false; // O livro não está emprestado nem reservado no intervalo de datas
     }
 
+    public boolean verificarLivroReservado(Livro livro, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
+        for (Reserva reserva : reservas) {
+            for (Livro l : reserva.getLivros()) {
+                if (l.getIsbn().equals(livro.getIsbn())) {
+                    LocalDate dataInicioReserva = reserva.getDataInicio();
+                    LocalDate dataFimReserva = reserva.getDataFim();
 
+                    // Verifica se há sobreposição de datas
+                    if (!(dataFimEmprestimo.isBefore(dataInicioReserva) || dataInicioEmprestimo.isAfter(dataFimReserva))) {
+                        System.out.println("Erro: Livro '" + livro.getNome() + "' já está reservado no período do empréstimo.");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false; // O livro não está reservado no período informado
+    }
 
 }

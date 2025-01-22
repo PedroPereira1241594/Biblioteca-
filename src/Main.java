@@ -38,11 +38,12 @@ public class Main {
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
-        EmprestimosController emprestimosController = new EmprestimosController(emprestimos);
         LivroView livroView = new LivroView();
+        ReservaController reservaController = new ReservaController(null, reservas);
+        EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
+        reservaController.setEmprestimosController(emprestimosController);
         LivroController livroController = new LivroController(livros, livroView, emprestimosController, reservas);
         emprestimosController.setLivroController(livroController);
-        ReservaController reservaController = new ReservaController(emprestimosController, reservas);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);

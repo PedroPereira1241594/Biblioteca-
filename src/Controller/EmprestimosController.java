@@ -14,10 +14,14 @@ public class EmprestimosController {
     private LivroController livroController;
     private static int proximoNumeroEmprestimo = 1;
     private Scanner scanner;
+    private ReservaController reservaController; // Adicionando a referência ao ReservaController
+
 
     // Construtor
-    public EmprestimosController(List<Emprestimos> emprestimos) {
+    public EmprestimosController(ReservaController reservaController, List<Emprestimos> emprestimos) {
         this.emprestimos = emprestimos; // Use a mesma lista do main
+        this.reservaController = reservaController; // Atribui o ReservaController
+
     }
 
     // Setter para LivroController (evita dependências circulares)
@@ -58,7 +62,7 @@ public class EmprestimosController {
     }
 
     // Exibe detalhes do empréstimo de forma estruturada
-    private void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
+    public void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
         System.out.println("\n=====================================");
         System.out.println("Número do Empréstimo: " + emprestimo.getNumero());
         System.out.println("Utente: " + emprestimo.getUtente().getNome() + " (NIF: " + emprestimo.getUtente().getNif() + ")");
@@ -80,17 +84,26 @@ public class EmprestimosController {
 
     // CRUD: Read
     public Emprestimos consultarEmprestimo(int numero) {
-        Emprestimos emprestimo = emprestimos.stream()
-                .filter(e -> e.getNumero() == numero)
-                .findFirst()
-                .orElse(null);
-
-        if (emprestimo == null) {
-            System.out.println("Empréstimo com número '" + numero + "' não encontrado.");
-        } else {
-            exibirDetalhesEmprestimo(emprestimo);
+        // Itera sobre a lista de empréstimos para encontrar o empréstimo pelo número
+        for (Emprestimos emprestimo : emprestimos) {
+            if (emprestimo.getNumero() == numero) {
+                return emprestimo;  // Se encontrado, retorna o empréstimo
+            }
         }
-        return emprestimo; // Retorna o empréstimo encontrado
+        // Se não encontrar o empréstimo, retorna null
+        return null;
+    }
+
+    public Emprestimos buscarEmprestimoPorNumero(int numero) {
+        // Itera sobre a lista de empréstimos para encontrar o empréstimo pelo número
+        for (Emprestimos emprestimo : emprestimos) {
+            if (emprestimo.getNumero() == numero) {
+                exibirDetalhesEmprestimo(emprestimo);
+                return emprestimo;  // Se encontrado, retorna o empréstimo
+            }
+        }
+        // Se não encontrar o empréstimo, retorna null
+        return null;
     }
 
     // CRUD: Update
@@ -160,6 +173,76 @@ public class EmprestimosController {
             return true;  // Se a data efetiva de devolução for null, considera válido
         }
         return !dataDevolucao.isBefore(dataInicio);  // Verifica se a data de devolução não é anterior à data de início
+    }
+
+    public void adicionarLivroNoEmprestimo(Emprestimos emprestimo, Livro livro, LocalDate dataInicio, LocalDate dataEfetivaDevolucao) {
+        if (emprestimo == null || livro == null) {
+            System.out.println("Erro: Empréstimo ou livro inválido.");
+            return;
+        }
+
+        // Verifica se o livro já está emprestado ou reservado no período
+        if (verificarLivroEmprestadoOuReservado(livro, dataInicio, dataEfetivaDevolucao)) {
+            return;
+        }
+
+        // Adiciona o livro à lista de livros do empréstimo
+        emprestimo.getLivros().add(livro);
+        System.out.println("Livro '" + livro.getNome() + "' adicionado com sucesso ao empréstimo.");
+    }
+
+    // Método para remover livro do empréstimo
+    public void removerLivroDoEmprestimo(Emprestimos emprestimo, Livro livro) {
+        if (emprestimo == null || livro == null) {
+            System.out.println("Erro: Empréstimo ou livro inválido.");
+            return;
+        }
+
+        // Verifica se o empréstimo tem mais de um livro
+        if (emprestimo.getLivros().size() <= 1) {
+            System.out.println("Erro: O empréstimo precisa ter pelo menos dois livros para poder remover um.");
+            return;
+        }
+
+        // Verifica se o livro está na lista de livros do empréstimo
+        if (emprestimo.getLivros().contains(livro)) {
+            emprestimo.getLivros().remove(livro);
+            System.out.println("Livro '" + livro.getNome() + "' removido com sucesso do empréstimo.");
+        } else {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' não está no empréstimo.");
+        }
+    }
+
+    private boolean verificarLivroEmprestadoOuReservado(Livro livro, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
+
+        // verifica se o livro já está reservado
+        if (reservaController.verificarLivroReservado(livro, dataInicioEmprestimo, dataFimEmprestimo)) {
+            return true;
+        }
+
+        for (Emprestimos emprestimo : emprestimos) {
+            for (Livro l : emprestimo.getLivros()) {
+                if (l.getIsbn().equals(livro.getIsbn())) {  // Comparação pelo ISBN
+                    LocalDate dataInicioOutroEmprestimo = emprestimo.getDataInicio();
+                    LocalDate dataFimOutroEmprestimo = emprestimo.getDataEfetivaDevolucao();
+
+                    // Se a devolução ainda não foi registrada, usamos a data prevista para devolução
+                    if (dataFimOutroEmprestimo == null) {
+                        dataFimOutroEmprestimo = emprestimo.getDataPrevistaDevolucao();
+                    }
+
+                    // Verifica se há sobreposição de datas
+                    if ((dataInicioEmprestimo.isBefore(dataFimOutroEmprestimo) || dataInicioEmprestimo.isEqual(dataFimOutroEmprestimo)) &&
+                            (dataFimEmprestimo.isAfter(dataInicioOutroEmprestimo) || dataFimEmprestimo.isEqual(dataInicioOutroEmprestimo))) {
+                        System.out.println("Erro: Livro '" + livro.getNome() + "' já está emprestado para o período entre "
+                                + dataInicioOutroEmprestimo + " e " + dataFimOutroEmprestimo + ".");
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false; // O livro não está emprestado nem reservado no intervalo de datas
     }
 
     public boolean verificarLivroEmprestado(Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {

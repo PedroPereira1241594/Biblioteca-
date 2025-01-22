@@ -204,10 +204,17 @@ public class EmprestimosView {
         System.out.println("\n=== Consultar Empréstimo ===");
         System.out.print("Número do Empréstimo: ");
         int numero = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer após o número
+        scanner.nextLine();  // Limpar buffer
 
-        // Chama o método atualizado para consultar o empréstimo
-        emprestimosController.consultarEmprestimo(numero);
+        // Chama o método consultarEmprestimo do controller
+        Emprestimos emprestimo = emprestimosController.consultarEmprestimo(numero);
+
+        // Se o empréstimo for encontrado, exibe os detalhes
+        if (emprestimo != null) {
+            emprestimosController.exibirDetalhesEmprestimo(emprestimo);
+        } else {
+            System.out.println("Empréstimo com o número " + numero + " não encontrado.");
+        }
     }
 
     public void atualizarEmprestimo() {
@@ -216,15 +223,47 @@ public class EmprestimosView {
         int numero = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer
 
-        Emprestimos emprestimo = emprestimosController.consultarEmprestimo(numero); // Consulta o empréstimo
-        if (emprestimo == null) return;
+        Emprestimos emprestimo = emprestimosController.buscarEmprestimoPorNumero(numero);
+        if (emprestimo == null) {
+            System.out.println("Erro: Empréstimo não encontrado.");
+            return;
+        }
+
+        LocalDate dataInicio = emprestimo.getDataInicio();
+        LocalDate dataEfetivaDevolucao = emprestimo.getDataEfetivaDevolucao();
+
+        System.out.println("O que você deseja atualizar?");
+        System.out.println("1. Atualizar as datas do empréstimo");
+        System.out.println("2. Alterar livros do empréstimo");
+        System.out.println("0. Cancelar");
+        System.out.print("Escolha uma opção: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer
+
+        switch (opcao) {
+            case 1:
+                atualizarDatasEmprestimo(emprestimo, numero);
+                break;
+            case 2:
+                modificarLivrosEmprestimo(emprestimo, dataInicio, dataEfetivaDevolucao);
+                break;
+            case 0:
+                System.out.println("Operação cancelada.");
+                return;
+            default:
+                System.out.println("Opção inválida.");
+        }
+    }
+
+    private void atualizarDatasEmprestimo(Emprestimos emprestimo, int numero) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDate novaDataEfetivaDevolucao = null;
         boolean dataValida = false;
 
         while (!dataValida) {
             System.out.print("Informe a nova data efetiva de devolução (dd/MM/yyyy): ");
-            novaDataEfetivaDevolucao = lerData(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            novaDataEfetivaDevolucao = lerData(formato);
 
             if (!emprestimosController.verificarDataAnterior(emprestimo.getDataInicio(), novaDataEfetivaDevolucao)) {
                 System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início do empréstimo.");
@@ -243,6 +282,71 @@ public class EmprestimosView {
         emprestimosController.atualizarEmprestimo(numero, novaDataEfetivaDevolucao);
     }
 
+    private void modificarLivrosEmprestimo(Emprestimos emprestimo, LocalDate dataInicio, LocalDate dataEfetivaDevolucao) {
+        System.out.println("O que você deseja fazer com os livros do empréstimo?");
+        System.out.println("1. Adicionar livro");
+        System.out.println("2. Remover livro");
+        System.out.println("0. Cancelar");
+        System.out.print("Escolha uma opção: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer
+
+        switch (opcao) {
+            case 1:
+                adicionarLivroNoEmprestimo(emprestimo, dataInicio, dataEfetivaDevolucao);
+                break;
+            case 2:
+                removerLivroDoEmprestimo(emprestimo);
+                break;
+            case 0:
+                System.out.println("Operação cancelada.");
+                return;
+            default:
+                System.out.println("Opção inválida.");
+        }
+    }
+
+    private void adicionarLivroNoEmprestimo(Emprestimos emprestimo, LocalDate dataInicio, LocalDate dataEfetivaDevolucao) {
+        System.out.println("\n=== Adicionar Livro ao Empréstimo ===");
+
+        System.out.print("Informe o ISBN do livro: ");
+        String isbn = scanner.nextLine();
+
+        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        if (livro == null) {
+            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
+            return;
+        }
+
+        if (emprestimo.getLivros().contains(livro)) {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' já está neste empréstimo.");
+            return;
+        }
+
+        // Adicionar o livro ao empréstimo
+        emprestimosController.adicionarLivroNoEmprestimo(emprestimo, livro, dataInicio, dataEfetivaDevolucao);
+    }
+
+    private void removerLivroDoEmprestimo(Emprestimos emprestimo) {
+        System.out.println("\n=== Remover Livro do Empréstimo ===");
+
+        System.out.print("Informe o ISBN do livro a ser removido: ");
+        String isbn = scanner.nextLine();
+
+        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        if (livro == null) {
+            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
+            return;
+        }
+
+        if (!emprestimo.getLivros().contains(livro)) {
+            System.out.println("Erro: O livro '" + livro.getNome() + "' não está neste empréstimo.");
+            return;
+        }
+
+        // Remover o livro do empréstimo
+        emprestimosController.removerLivroDoEmprestimo(emprestimo, livro);
+    }
 
     private void removerEmprestimo() {
         System.out.println("\n=== Remover Empréstimo ===");

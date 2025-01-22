@@ -4,6 +4,7 @@ import Controller.EmprestimosController;
 import Controller.LivroController;
 import Controller.ReservaController;
 import Controller.UtenteController;
+import Model.Emprestimos;
 import Model.Livro;
 import Model.Reserva;
 import Model.Utentes;
@@ -223,6 +224,7 @@ public class ReservaView {
         System.out.println("O que você deseja atualizar?");
         System.out.println("1. Atualizar as datas da reserva");
         System.out.println("2. Alterar livros da reserva");
+        System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
         int opcao = scanner.nextInt();
         scanner.nextLine();  // Limpar buffer
@@ -236,6 +238,9 @@ public class ReservaView {
                 // Adicionar/remover livros
                 modificarLivrosReserva(reserva, dataInicioReserva, dataFimReserva);
                 break;
+            case 0:
+                System.out.println("Operação cancelada.");
+                return;
             default:
                 System.out.println("Opção inválida.");
         }
@@ -277,6 +282,7 @@ public class ReservaView {
         System.out.println("O que você deseja fazer com os livros da reserva?");
         System.out.println("1. Adicionar livro");
         System.out.println("2. Remover livro");
+        System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
         int opcao = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer
@@ -288,6 +294,9 @@ public class ReservaView {
             case 2:
                 removerLivroDaReserva(reserva);
                 break;
+            case 0:
+                System.out.println("Operação cancelada.");
+                return;
             default:
                 System.out.println("Opção inválida.");
         }
