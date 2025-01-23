@@ -7,7 +7,7 @@ public class Jornal {
     private String editora;          // Editora responsável
     private String categoria;        // Categoria do jornal ou revista
     private String issn;             // ISSN
-    private String dataPublicacao;   // Data de publicação
+    private LocalDate dataPublicacao;   // Data de publicação
 
     // Construtor
     public Jornal(String titulo, String editora, String categoria, String issn, LocalDate dataPublicacao) {
@@ -15,7 +15,7 @@ public class Jornal {
         this.editora = editora;
         this.categoria = categoria;
         this.issn = issn;
-        this.dataPublicacao = String.valueOf(dataPublicacao);
+        this.dataPublicacao = dataPublicacao;
     }
 
     // Getters
@@ -35,7 +35,7 @@ public class Jornal {
         return issn;
     }
 
-    public String getDataPublicacao() {
+    public LocalDate getDataPublicacao() {
         return dataPublicacao;
     }
 
@@ -56,7 +56,7 @@ public class Jornal {
         this.issn = issn;
     }
 
-    public void setDataPublicacao(String dataPublicacao) {
+    public void setDataPublicacao(LocalDate dataPublicacao) {
         this.dataPublicacao = dataPublicacao;
     }
 

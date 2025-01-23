@@ -15,10 +15,9 @@ public class JornalController {
     }
 
     // Método para criar um novo jornal ou uma revista
-    public void criarJornal(String titulo, String editora, String categoria, String issn, String dataPublicacao) {
+    public void criarJornal(String titulo, String editora, String categoria, String issn, LocalDate dataPublicacao) {
         try {
-            LocalDate data = LocalDate.parse(dataPublicacao, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            Jornal novoJornal = new Jornal(titulo, editora, categoria, issn, data);
+            Jornal novoJornal = new Jornal(titulo, editora, categoria, issn, dataPublicacao);
             jornais.add(novoJornal);
             System.out.println("Jornal/Revista adicionado com sucesso!");
         } catch (DateTimeParseException e) {
@@ -53,7 +52,7 @@ public class JornalController {
     }
 
     // Método para atualizar um jornal ou uma revista
-    public void atualizarJornal(String issn, String novoTitulo, String novaEditora, String novaCategoria, String novoIssn, String novaDataPublicacao) {
+    public void atualizarJornal(String issn, String novoTitulo, String novaEditora, String novaCategoria, String novoIssn, LocalDate novaDataPublicacao) {
         Jornal jornalEncontrado = null;
 
         // Buscando o jornal pelo ISSN
@@ -75,10 +74,9 @@ public class JornalController {
         if (!novaCategoria.isEmpty()) jornalEncontrado.setCategoria(novaCategoria);
         if (!novoIssn.isEmpty()) jornalEncontrado.setIssn(novoIssn);
 
-        if (!novaDataPublicacao.isEmpty()) {
+        if (novaDataPublicacao != null) {
             try {
-                LocalDate novaData = LocalDate.parse(novaDataPublicacao, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                jornalEncontrado.setDataPublicacao(String.valueOf(novaData));
+                jornalEncontrado.setDataPublicacao(novaDataPublicacao);
             } catch (DateTimeParseException e) {
                 System.out.println("Data de publicação inválida! Utilize o formato dd/MM/yyyy.");
             }

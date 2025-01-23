@@ -1,6 +1,10 @@
 package View;
 
 import Controller.JornalController;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class JornalView {
@@ -69,10 +73,22 @@ public class JornalView {
         System.out.print("ISSN: ");
         String issn = scanner.nextLine();
 
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         System.out.print("Data de Publicação (dd/MM/yyyy): ");
-        String dataPublicacao = scanner.nextLine();
+        LocalDate dataPublicacao = lerData(formato);
 
         jornalController.criarJornal(titulo, editora, categoria, issn, dataPublicacao);
+    }
+
+    private LocalDate lerData(DateTimeFormatter formato) {
+        while (true) {
+            try {
+                String dataTexto = scanner.nextLine();
+                return LocalDate.parse(dataTexto, formato);
+            } catch (DateTimeParseException e) {
+                System.out.print("Data inválida. Insira novamente (dd/MM/yyyy): ");
+            }
+        }
     }
 
     // Método para listar todos os jornais
@@ -99,7 +115,8 @@ public class JornalView {
         String novoIssn = scanner.nextLine();
 
         System.out.print("Nova Data de Publicação (dd/MM/yyyy): ");
-        String dataPublicacao = scanner.nextLine();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataPublicacao = lerData(formato);
 
         jornalController.atualizarJornal(issn, titulo, editora, categoria, novoIssn, dataPublicacao);
     }
