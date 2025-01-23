@@ -78,7 +78,7 @@ public class JornalController {
         if (!novaDataPublicacao.isEmpty()) {
             try {
                 LocalDate novaData = LocalDate.parse(novaDataPublicacao, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                jornalEncontrado.setDataPublicacao(novaData);
+                jornalEncontrado.setDataPublicacao(String.valueOf(novaData));
             } catch (DateTimeParseException e) {
                 System.out.println("Data de publicação inválida! Utilize o formato dd/MM/yyyy.");
             }

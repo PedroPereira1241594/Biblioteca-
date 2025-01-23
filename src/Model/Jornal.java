@@ -7,7 +7,7 @@ public class Jornal {
     private String editora;          // Editora responsável
     private String categoria;        // Categoria do jornal ou revista
     private String issn;             // ISSN
-    private LocalDate dataPublicacao;   // Data de publicação
+    private String dataPublicacao;   // Data de publicação
 
     // Construtor
     public Jornal(String titulo, String editora, String categoria, String issn, LocalDate dataPublicacao) {
@@ -15,47 +15,49 @@ public class Jornal {
         this.editora = editora;
         this.categoria = categoria;
         this.issn = issn;
-        this.dataPublicacao = dataPublicacao;
+        this.dataPublicacao = String.valueOf(dataPublicacao);
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
+    // Getters
     public String getTitulo() {
         return titulo;
-    }
-
-    public void setEditora(String editora) {
-        this.editora = editora;
     }
 
     public String getEditora() {
         return editora;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public String getCategoria() {
         return categoria;
-    }
-
-    public void setIssn(String issn) {
-        this.issn = issn;
     }
 
     public String getIssn() {
         return issn;
     }
 
-    public void setDataPublicacao(LocalDate dataPublicacao) {
-        this.dataPublicacao = dataPublicacao;
+    public String getDataPublicacao() {
+        return dataPublicacao;
     }
 
-    public LocalDate getDataPublicacao() {
-        return dataPublicacao;
+    // Setters
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setIssn(String issn) {
+        this.issn = issn;
+    }
+
+    public void setDataPublicacao(String dataPublicacao) {
+        this.dataPublicacao = dataPublicacao;
     }
 
     @Override
