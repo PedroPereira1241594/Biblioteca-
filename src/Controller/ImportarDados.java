@@ -108,6 +108,7 @@ public class ImportarDados {
 
     public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
         List<Emprestimos> emprestimos = new ArrayList<>();
+        int maiorId = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoEmprestimo))) {
             String linha;
@@ -134,6 +135,11 @@ public class ImportarDados {
                     int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim()); // Remover "ID: " e converter para inteiro
                     String nomeUtente = dados[1].replace("Nome: ", "").trim(); // Remover "Nome: " e pegar o nome do utente
                     String livrosEmprestadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros emprestados no formato de ISBN
+
+                    // Atualiza o maior ID encontrado
+                    if (numero > maiorId) {
+                        maiorId = numero;
+                    }
 
                     // Verifica se a string de livros emprestados está vazia
                     if (livrosEmprestadosStr.isEmpty()) {
@@ -208,6 +214,7 @@ public class ImportarDados {
 
     public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
         List<Reserva> reservas = new ArrayList<>();
+        int maiorId = 0;  // Inicializa com 0, assumindo que todos os IDs serão positivos
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoReserva))) {
             String linha;
@@ -228,6 +235,12 @@ public class ImportarDados {
 
                 try {
                     int numeroReserva = Integer.parseInt(dados[0].replace("ID: ", "").trim()); // Remover "ID: " e converter para inteiro
+
+                    // Atualiza o maior ID encontrado
+                    if (numeroReserva > maiorId) {
+                        maiorId = numeroReserva;
+                    }
+
                     String nomeUtente = dados[1].replace("Nome: ", "").trim(); // Remover "Nome: " e pegar o nome do utente
                     String livrosReservadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros reservados no formato de ISBN
                     String[] isbnLivros = livrosReservadosStr.split(","); // Separa os ISBNs por vírgula
@@ -278,7 +291,9 @@ public class ImportarDados {
             System.out.println("Erro ao carregar reservas do ficheiro: " + e.getMessage());
         }
 
+        // Aqui você pode usar o maiorId conforme necessário
+        System.out.println("Maior ID encontrado: " + maiorId);
+
         return reservas;
     }
-
 }

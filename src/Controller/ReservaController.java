@@ -14,14 +14,22 @@ import java.util.Scanner;
 
 public class ReservaController {
     private List<Reserva> reservas;
-    private int contadorReservas;
+    private int maiorId;
     private Scanner scanner;
     private EmprestimosController emprestimosController;
 
     public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas) {
         this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
         this.reservas = reservas; // Atribui a lista de reservas
-        this.contadorReservas = 1;
+
+        // Inicializa o maiorId com o maior ID das reservas existentes
+        this.maiorId = 0;
+        for (Reserva reserva : reservas) {
+            if (reserva.getNumero() > maiorId) {
+                maiorId = reserva.getNumero(); // Atualiza maiorId com o maior ID encontrado
+            }
+        }
+
         this.scanner = new Scanner(System.in);
     }
 
@@ -54,7 +62,6 @@ public class ReservaController {
                 System.out.println("Erro: O livro '" + livro.getNome() + "' está emprestado no intervalo de datas fornecido.");
                 return false;
             }
-
         }
 
         // Verifica a disponibilidade dos livros nas reservas existentes
@@ -73,8 +80,11 @@ public class ReservaController {
             }
         }
 
+        int numeroReserva = maiorId + 1;  // Número da nova reserva será o maior ID + 1
+        maiorId = numeroReserva;  // Atualiza o maiorId para o próximo valor
+
         // Se todas as verificações passarem, cria a reserva
-        Reserva reserva = new Reserva(contadorReservas++, utente, livrosParaReserva, dataRegisto, dataInicio, dataFim);
+        Reserva reserva = new Reserva(numeroReserva, utente, livrosParaReserva, dataRegisto, dataInicio, dataFim);
         reservas.add(reserva);
 
         // Exibe detalhes da reserva criada

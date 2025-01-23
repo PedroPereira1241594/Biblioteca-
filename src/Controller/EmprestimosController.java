@@ -12,16 +12,23 @@ import java.util.*;
 public class EmprestimosController {
     private final List<Emprestimos> emprestimos;
     private LivroController livroController;
-    private static int proximoNumeroEmprestimo = 1;
+    private int maiorId;  // Inicializa com o maior ID dos empréstimos existentes
     private Scanner scanner;
     private ReservaController reservaController; // Adicionando a referência ao ReservaController
-
 
     // Construtor
     public EmprestimosController(ReservaController reservaController, List<Emprestimos> emprestimos) {
         this.emprestimos = emprestimos; // Use a mesma lista do main
-        this.reservaController = reservaController; // Atribui o ReservaController
+        this.reservaController = reservaController;
+        this.scanner = new Scanner(System.in);
 
+        // Inicializa maiorId com o maior ID dos empréstimos já existentes
+        this.maiorId = 0;
+        for (Emprestimos emprestimo : emprestimos) {
+            if (emprestimo.getNumero() > maiorId) {
+                maiorId = emprestimo.getNumero(); // Atualiza maiorId com o maior ID encontrado
+            }
+        }
     }
 
     // Setter para LivroController (evita dependências circulares)
@@ -38,12 +45,14 @@ public class EmprestimosController {
             System.out.println("Erro: Nenhum livro foi selecionado.");
             return;
         }
+
         // Verifica duplicados na lista de livros
         Set<Livro> livrosUnicos = new HashSet<>(livrosParaEmprestimo);
         if (livrosUnicos.size() < livrosParaEmprestimo.size()) {
             System.out.println("Erro: Não é permitido incluir livros repetidos no mesmo empréstimo.");
             return;
         }
+
         // Verifica conflitos com reservas e disponibilidade de livros
         for (Livro livro : livrosParaEmprestimo) {
             // Verifica se o livro está reservado ou emprestado no período
@@ -52,8 +61,12 @@ public class EmprestimosController {
                 return;
             }
         }
+
+        // Atualiza o número do empréstimo com o maior ID encontrado + 1
+        int numeroEmprestimo = maiorId + 1;
+        maiorId = numeroEmprestimo;  // Atualiza o maiorId para o próximo valor
+
         // Criação do empréstimo
-        int numeroEmprestimo = proximoNumeroEmprestimo++;
         Emprestimos novoEmprestimo = new Emprestimos(numeroEmprestimo, utente, livrosParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
         emprestimos.add(novoEmprestimo);
 
