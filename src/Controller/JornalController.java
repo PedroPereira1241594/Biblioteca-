@@ -45,7 +45,7 @@ public class JornalController {
                     jornal.getTitulo(),
                     jornal.getCategoria(),
                     jornal.getEditora(),
-                    jornal.getDataPublicacao()
+                    jornal.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             );
         }
 
