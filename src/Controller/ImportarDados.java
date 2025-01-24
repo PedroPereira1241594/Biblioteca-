@@ -82,16 +82,16 @@ public class ImportarDados {
                     String[] dados = linha.split(";");
 
                     if (dados.length == 5) {
-                        String titulo = dados[0].replace("Titulo: ", "").trim();
-                        String editora = dados[1].replace("Editora: ", "").trim();
+                        String issn = dados[0].replace("ISSN: ", "").trim();
+                        String titulo = dados[1].replace("Titulo: ", "").trim();
                         String categoria = dados[2].replace("Categoria: ", "").trim();
-                        String issn = dados[3].replace("ISSN: ", "").trim();
+                        String editora = dados[3].replace("Editora: ", "").trim();
                         String dataPublicacaoStr = dados[4].replace("Data Publicação: ", "").trim();
 
                         // Converte a dataPublicacao de String para LocalDate
                         LocalDate dataPublicacao = LocalDate.parse(dataPublicacaoStr);
 
-                        Jornal jornal = new Jornal(titulo, editora, categoria, issn, dataPublicacao);
+                        Jornal jornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
                         jornais.add(jornal);
                     } else {
                         System.out.println("Linha mal formatada. Ignorada.");

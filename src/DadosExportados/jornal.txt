@@ -1,21 +1,20 @@
-ISSN: Editora: Titulo: A Vida Secreta; Titulo: ISSN: Editora: Editora ABC; Categoria: Ficção; Editora: Titulo: ISSN: 9876-5432; Data Publicação: 2020-05-15
-ISSN: Editora: Titulo: O Mistério das Sombras; Titulo: ISSN: Editora: Editora XYZ; Categoria: Suspense; Editora: Titulo: ISSN: 1234-5678; Data Publicação: 2019-08-23
-ISSN: Editora: Titulo: O Mundo Perdido; Titulo: ISSN: Editora: Editora Bravo; Categoria: Aventura; Editora: Titulo: ISSN: 4567-1234; Data Publicação: 2021-02-10
-ISSN: Editora: Titulo: Luz no Fim do Túnel; Titulo: ISSN: Editora: Editora Solar; Categoria: Drama; Editora: Titulo: ISSN: 7890-2345; Data Publicação: 2022-01-05
-ISSN: Editora: Titulo: Além da Linha do Horizonte; Titulo: ISSN: Editora: Editora Horizonte; Categoria: Ficção Científica; Editora: Titulo: ISSN: 1122-3344; Data Publicação: 2021-11-30
-ISSN: Editora: Titulo: O Último Suspiro; Titulo: ISSN: Editora: Editora Lira; Categoria: Mistério; Editora: Titulo: ISSN: 3344-5566; Data Publicação: 2020-12-01
-ISSN: Editora: Titulo: No Coração da Tempestade; Titulo: ISSN: Editora: Editora Nexus; Categoria: Ação; Editora: Titulo: ISSN: 7766-8899; Data Publicação: 2021-07-18
-ISSN: Editora: Titulo: Fragmentos de um Sonho; Titulo: ISSN: Editora: Editora Novo Mundo; Categoria: Poesia; Editora: Titulo: ISSN: 9988-7766; Data Publicação: 2019-10-12
-ISSN: Editora: Titulo: O Caminho dos Guerreiros; Titulo: ISSN: Editora: Editora Fênix; Categoria: História; Editora: Titulo: ISSN: 1122-5566; Data Publicação: 2020-06-21
-ISSN: Editora: Titulo: O Enigma da Mente; Titulo: ISSN: Editora: Editora Alpha; Categoria: Psicologia; Editora: Titulo: ISSN: 3344-8899; Data Publicação: 2021-03-03
-ISSN: Editora: Titulo: Quando o Sol Se Põe; Titulo: ISSN: Editora: Editora Lua; Categoria: Romance; Editora: Titulo: ISSN: 5555-6666; Data Publicação: 2019-09-14
-ISSN: Editora: Titulo: A Última Viagem; Titulo: ISSN: Editora: Editora Estrela; Categoria: Aventura; Editora: Titulo: ISSN: 7777-8888; Data Publicação: 2020-01-28
-ISSN: Editora: Titulo: O Poder da Mente; Titulo: ISSN: Editora: Editora Nova Era; Categoria: Autoajuda; Editora: Titulo: ISSN: 2222-3333; Data Publicação: 2022-04-25
-ISSN: Editora: Titulo: A Ilha das Sombras; Titulo: ISSN: Editora: Editora Mar; Categoria: Terror; Editora: Titulo: ISSN: 6666-7777; Data Publicação: 2021-09-09
-ISSN: Editora: Titulo: O Último Desejo; Titulo: ISSN: Editora: Editora Sol; Categoria: Drama; Editora: Titulo: ISSN: 9999-8888; Data Publicação: 2020-11-14
-ISSN: Editora: Titulo: Sob o Céu Estrelado; Titulo: ISSN: Editora: Editora Galáxia; Categoria: Romance; Editora: Titulo: ISSN: 5555-4444; Data Publicação: 2021-06-18
-ISSN: Editora: Titulo: A Conquista do Império; Titulo: ISSN: Editora: Editora Águia; Categoria: História; Editora: Titulo: ISSN: 2345-6789; Data Publicação: 2019-12-01
-ISSN: Editora: Titulo: Ecos do Passado; Titulo: ISSN: Editora: Editora Echo; Categoria: Suspense; Editora: Titulo: ISSN: 1111-4444; Data Publicação: 2022-05-22
-ISSN: Editora: Titulo: A Última Fronteira; Titulo: ISSN: Editora: Editora Universo; Categoria: Ficção Científica; Editora: Titulo: ISSN: 9876-4321; Data Publicação: 2021-08-17
-ISSN: Editora: Titulo: À Beira do Abismo; Titulo: ISSN: Editora: Editora Abismo; Categoria: Thriller; Editora: Titulo: ISSN: 4444-2222; Data Publicação: 2020-03-07
-ISSN: 1111-1111; Titulo: aaa; Categoria: Romance; Editora: bbb; Data Publicação: 2026-01-31
+ISSN: 123456789; Titulo: Revista de Ciências; Categoria: Educação; Editora: Editora ABC; Data Publicação: 2023-01-01
+ISSN: 987654321; Titulo: Jornal da Tecnologia; Categoria: Tecnologia; Editora: TechPub; Data Publicação: 2023-02-15
+ISSN: 111222333; Titulo: Saúde em Foco; Categoria: Saúde; Editora: Vida Saudável; Data Publicação: 2023-03-10
+ISSN: 444555666; Titulo: Mundo dos Negócios; Categoria: Economia; Editora: Negócios Global; Data Publicação: 2023-04-20
+ISSN: 777888999; Titulo: Universo Literário; Categoria: Literatura; Editora: Letras Vivas; Data Publicação: 2023-05-25
+ISSN: 222333444; Titulo: Ciência e Inovação; Categoria: Ciência; Editora: Inovação Editora; Data Publicação: 2023-06-30
+ISSN: 555666777; Titulo: Esporte Total; Categoria: Esportes; Editora: Bola na Rede; Data Publicação: 2023-07-05
+ISSN: 888999000; Titulo: Arte & Cultura; Categoria: Artes; Editora: Cultura Viva; Data Publicação: 2023-08-10
+ISSN: 333444555; Titulo: Viagem e Turismo; Categoria: Turismo; Editora: Viajar Sempre; Data Publicação: 2023-09-15
+ISSN: 666777888; Titulo: Ambiente e Sustentabilidade; Categoria: Meio Ambiente; Editora: Planeta Verde; Data Publicação: 2023-10-20
+ISSN: 999000111; Titulo: História Viva; Categoria: História; Editora: Memórias; Data Publicação: 2023-11-25
+ISSN: 444555666; Titulo: Tecnologia do Amanhã; Categoria: Tecnologia; Editora: FutureTech; Data Publicação: 2023-12-01
+ISSN: 777888999; Titulo: Negócios em Revista; Categoria: Economia; Editora: Business World; Data Publicação: 2024-01-05
+ISSN: 222333444; Titulo: Jornal da Saúde; Categoria: Saúde; Editora: Saúde Global; Data Publicação: 2024-02-10
+ISSN: 555666777; Titulo: Literatura em Pauta; Categoria: Literatura; Editora: Letras e Prosa; Data Publicação: 2024-03-15
+ISSN: 888999000; Titulo: Ciência Atual; Categoria: Ciência; Editora: Atualidade Científica; Data Publicação: 2024-04-20
+ISSN: 333444555; Titulo: O Melhor do Esporte; Categoria: Esportes; Editora: Esporte Atual; Data Publicação: 2024-05-25
+ISSN: 666777888; Titulo: Cultura e Sociedade; Categoria: Artes; Editora: Expressão Cultural; Data Publicação: 2024-06-30
+ISSN: 999000111; Titulo: Turismo no Mundo; Categoria: Turismo; Editora: Viagem Livre; Data Publicação: 2024-07-05
+ISSN: 111222333; Titulo: Ecologia em Foco; Categoria: Meio Ambiente; Editora: Natureza Pura; Data Publicação: 2024-08-10

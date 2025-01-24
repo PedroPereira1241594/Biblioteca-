@@ -10,11 +10,11 @@ public class Jornal {
     private LocalDate dataPublicacao;   // Data de publicação
 
     // Construtor
-    public Jornal(String titulo, String editora, String categoria, String issn, LocalDate dataPublicacao) {
-        this.titulo = titulo;
-        this.editora = editora;
-        this.categoria = categoria;
+    public Jornal(String issn, String titulo, String categoria, String editora, LocalDate dataPublicacao) {
         this.issn = issn;
+        this.titulo = titulo;
+        this.categoria = categoria;
+        this.editora = editora;
         this.dataPublicacao = dataPublicacao;
     }
 
@@ -63,10 +63,10 @@ public class Jornal {
     @Override
     public String toString() {
         return "Jornal {" +
-                "Título='" + titulo + '\'' +
-                ", Editora='" + editora + '\'' +
+                " ISSN='" + issn + '\'' +
+                ", Título='" + titulo + '\'' +
                 ", Categoria='" + categoria + '\'' +
-                ", ISSN='" + issn + '\'' +
+                ", Editora='" + editora + '\'' +
                 ", Data de Publicação='" + dataPublicacao + '\'' +
                 '}';
     }

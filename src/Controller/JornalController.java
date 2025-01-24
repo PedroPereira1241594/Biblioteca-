@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Jornal;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,9 +16,9 @@ public class JornalController {
     }
 
     // Método para criar um novo jornal ou uma revista
-    public void criarJornal(String titulo, String editora, String categoria, String issn, LocalDate dataPublicacao) {
+    public void criarJornal(String issn, String titulo, String categoria, String editora, LocalDate dataPublicacao) {
         try {
-            Jornal novoJornal = new Jornal(titulo, editora, categoria, issn, dataPublicacao);
+            Jornal novoJornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
             jornais.add(novoJornal);
             System.out.println("Jornal/Revista adicionado com sucesso!");
         } catch (DateTimeParseException e) {
@@ -33,17 +34,17 @@ public class JornalController {
         }
 
         System.out.println("\n=== Lista de Jornais/Revistas ===");
-        System.out.printf("%-35s %-25s %-20s %-15s %-15s%n",
-                "Título", "Editora", "Categoria", "ISSN", "Data Publicação");
+        System.out.printf("%-20s %-35s %-20s %-15s %-15s%n",
+                "ISSN", "Título", "Categoria", "Editora", "Data Publicação");
         System.out.println("-".repeat(115));
 
         for (Jornal jornal : jornais) {
             System.out.printf(
-                    "%-35s %-25s %-20s %-15s %-15s%n",
-                    jornal.getTitulo(),
-                    jornal.getEditora(),
-                    jornal.getCategoria(),
+                    "%-20s %-35s %-20s %-15s %-15s%n",
                     jornal.getIssn(),
+                    jornal.getTitulo(),
+                    jornal.getCategoria(),
+                    jornal.getEditora(),
                     jornal.getDataPublicacao()
             );
         }
@@ -69,10 +70,10 @@ public class JornalController {
         }
 
         // Atualizando os dados do jornal encontrado
-        if (!novoTitulo.isEmpty()) jornalEncontrado.setTitulo(novoTitulo);
-        if (!novaEditora.isEmpty()) jornalEncontrado.setEditora(novaEditora);
-        if (!novaCategoria.isEmpty()) jornalEncontrado.setCategoria(novaCategoria);
         if (!novoIssn.isEmpty()) jornalEncontrado.setIssn(novoIssn);
+        if (!novoTitulo.isEmpty()) jornalEncontrado.setTitulo(novoTitulo);
+        if (!novaCategoria.isEmpty()) jornalEncontrado.setCategoria(novaCategoria);
+        if (!novaEditora.isEmpty()) jornalEncontrado.setEditora(novaEditora);
 
         if (novaDataPublicacao != null) {
             try {
