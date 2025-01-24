@@ -61,23 +61,23 @@ public class JornalView {
     public void criarJornal() {
         System.out.println("Insira os dados do novo Jornal/Revista:");
 
+        System.out.print("ISSN: ");
+        String issn = scanner.nextLine();
+
         System.out.print("Título: ");
         String titulo = scanner.nextLine();
-
-        System.out.print("Editora: ");
-        String editora = scanner.nextLine();
 
         System.out.print("Categoria: ");
         String categoria = scanner.nextLine();
 
-        System.out.print("ISSN: ");
-        String issn = scanner.nextLine();
+        System.out.print("Editora: ");
+        String editora = scanner.nextLine();
 
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         System.out.print("Data de Publicação (dd/MM/yyyy): ");
         LocalDate dataPublicacao = lerData(formato);
 
-        jornalController.criarJornal(titulo, editora, categoria, issn, dataPublicacao);
+        jornalController.criarJornal(issn, titulo, categoria, editora, dataPublicacao);
     }
 
     private LocalDate lerData(DateTimeFormatter formato) {
@@ -102,23 +102,23 @@ public class JornalView {
         String issn = scanner.nextLine();
 
         System.out.println("Introduza os novos dados (deixe em branco para manter o valor atual):");
+        System.out.print("Novo ISSN: ");
+        String novoIssn = scanner.nextLine();
+
         System.out.print("Novo Título: ");
         String titulo = scanner.nextLine();
-
-        System.out.print("Nova Editora: ");
-        String editora = scanner.nextLine();
 
         System.out.print("Nova Categoria: ");
         String categoria = scanner.nextLine();
 
-        System.out.print("Novo ISSN: ");
-        String novoIssn = scanner.nextLine();
+        System.out.print("Nova Editora: ");
+        String editora = scanner.nextLine();
 
         System.out.print("Nova Data de Publicação (dd/MM/yyyy): ");
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataPublicacao = lerData(formato);
 
-        jornalController.atualizarJornal(issn, titulo, editora, categoria, novoIssn, dataPublicacao);
+        jornalController.atualizarJornal(issn, novoIssn, titulo, categoria, editora, dataPublicacao);
     }
 
     // Método para eliminar um jornal
