@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import static Controller.ExportarDados.*;
 import static View.LivroView.gerirLivros;
-import static View.UtenteView.gerirUtentes;
 import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
@@ -35,7 +34,9 @@ public class Main {
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
+        utenteView.setScanner(new Scanner(System.in));    // Configura o scanner
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
+        utenteView.setUtenteController(utenteController); // Configura o controller
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
         LivroView livroView = new LivroView();
@@ -49,11 +50,8 @@ public class Main {
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
-
-
         // Carregar Ficheiros
         ImportarDados importarDados = new ImportarDados();
-
 
         int opcao;
 
@@ -77,7 +75,7 @@ public class Main {
                     jornalView.exibirMenu();
                     break;
                 case 3:
-                    gerirUtentes(utenteController, utentes, reservas, emprestimos, scanner);
+                    utenteView.gerirUtentes(utentes, reservas, emprestimos);
                     break;
                 case 4:
                     emprestimosView.exibirMenu();

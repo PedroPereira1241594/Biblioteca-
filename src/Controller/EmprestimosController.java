@@ -94,7 +94,6 @@ public class EmprestimosController {
             System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
         }
     }
-
     // CRUD: Read
     public Emprestimos consultarEmprestimo(int numero) {
         // Itera sobre a lista de empréstimos para encontrar o empréstimo pelo número
@@ -118,7 +117,6 @@ public class EmprestimosController {
         // Se não encontrar o empréstimo, retorna null
         return null;
     }
-
     // CRUD: Update
     public void atualizarEmprestimo(int numero, LocalDate novaDataEfetivaDevolucao) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
@@ -135,7 +133,6 @@ public class EmprestimosController {
         emprestimo.setDataEfetivaDevolucao(novaDataEfetivaDevolucao);
         System.out.println("Data efetiva de devolução atualizada com sucesso para: " + novaDataEfetivaDevolucao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
-
 
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
