@@ -111,7 +111,7 @@ public class PesquisaEstatisticasController {
 
         // Contabilizar os empréstimos
         for (Emprestimos emprestimo : emprestimos) {
-            if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim)) {
+            if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim) && !emprestimo.getDataEfetivaDevolucao().isBefore(dataInicio) && !emprestimo.getDataEfetivaDevolucao().isAfter(dataFim)) {
                 for (Livro livro : emprestimo.getLivros()) {
                     itemRequisitado.put(livro.getNome(), itemRequisitado.getOrDefault(livro.getNome(), 0) + 1);
                 }
@@ -120,7 +120,7 @@ public class PesquisaEstatisticasController {
 
         // Contabilizar as reservas
         for (Reserva reserva : reservas) {
-            if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim)) {
+            if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim) && !reserva.getDataFim().isBefore(dataInicio) && !reserva.getDataFim().isAfter(dataFim)) {
                 for (Livro livro : reserva.getLivros()) {
                     itemRequisitado.put(livro.getNome(), itemRequisitado.getOrDefault(livro.getNome(), 0) + 1);
                 }
