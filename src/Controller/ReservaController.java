@@ -103,8 +103,6 @@ public class ReservaController {
         return null;
     }
 
-
-
     public void atualizarReserva(int numero, LocalDate novaDataInicio, LocalDate novaDataFim) {
         Reserva reserva = consultarReserva(numero);
         if (reserva == null) {
@@ -178,7 +176,6 @@ public class ReservaController {
         }
     }
 
-
     // Método auxiliar para exibir detalhes de uma reserva
     public void exibirDetalhesReserva(Reserva reserva) {
         System.out.println("\n======= Detalhes da Reserva =======");
@@ -204,6 +201,7 @@ public class ReservaController {
         }
         return null; // Retorna null se a reserva não for encontrada
     }
+
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
         if (dataFim.isBefore(dataInicio)) {
             return false;
@@ -252,7 +250,6 @@ public class ReservaController {
         }
     }
 
-
     private boolean verificarLivroEmOutraReservaOuEmprestimo(Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
 
         // Verifica se o livro está emprestado no intervalo de datas
@@ -287,7 +284,6 @@ public class ReservaController {
 
                     // Verifica se há sobreposição de datas
                     if (!(dataFimEmprestimo.isBefore(dataInicioReserva) || dataInicioEmprestimo.isAfter(dataFimReserva))) {
-                        System.out.println("Erro: Livro '" + livro.getNome() + "' já está reservado no período do empréstimo.");
                         return true;
                     }
                 }
