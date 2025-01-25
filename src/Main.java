@@ -57,6 +57,7 @@ public class Main {
         ImportarDados importarDados = new ImportarDados();
 
         int opcao;
+        int escolha;
 
         do {
             System.out.println("\n=== Sistema de Gestão de Biblioteca ===");
@@ -66,6 +67,7 @@ public class Main {
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
             System.out.println("6. Pesquisas/Estatísticas");
+            System.out.println("7. Ler/Guardar dados");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -89,16 +91,29 @@ public class Main {
                 case 6:
                     pesquisaEstatisticasView.exibirMenu();  // Já está correto
                     break;
-                case 0:
-                    System.out.print("Tem certeza de que deseja sair? (S/N): ");
-                    char confirmacao = scanner.next().toUpperCase().charAt(0);
-                    if (confirmacao == 'S') {
-                        // Exportação dos dados
+                case 7:
+                    System.out.println("1. Ler dados");
+                    System.out.println("2. Carregar dados");
+                    System.out.println("0. Voltar");
+                    escolha = scanner.nextInt();
+                    if (escolha == '1' ){
+                        System.out.println("\nCarregando dados...");
+                    } else if ( escolha == '2') {
+                        System.out.println("\nGuardado dados...");
                         exportarLivros(caminhoLivros, livros);
                         exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);
                         exportarEmprestimos(caminhoEmprestimo, emprestimos);
                         exportarReservas(caminhoReserva, reservas);
+                    } else if ( escolha == '0') {
+
+
+                    }
+
+                case 0:
+                    System.out.print("Tem certeza de que deseja sair? (S/N): ");
+                    char confirmacao = scanner.next().toUpperCase().charAt(0);
+                    if (confirmacao == 'S') {
                         System.out.println("\nSaindo do sistema...");
                     } else {
                         opcao = -1; // Continua o loop
