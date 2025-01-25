@@ -11,9 +11,13 @@ import java.util.Scanner;
 
 public class LivroController {
     private final ArrayList<Livro> livros;
-    private final LivroView livroView;
+    private LivroView livroView;
     private final EmprestimosController emprestimosController;
     private final List<Reserva> reservas; // Adicionada a lista de reservas
+
+    public void setLivroView(LivroView livroView) {
+        this.livroView = livroView;
+    }
 
     public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas) {
         this.livros = livros;

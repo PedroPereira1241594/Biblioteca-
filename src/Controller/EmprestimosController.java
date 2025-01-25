@@ -76,7 +76,7 @@ public class EmprestimosController {
 
     // Exibe detalhes do empréstimo de forma estruturada
     public void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
-        System.out.println("\n=====================================");
+        System.out.println("\n======= Detalhes do Empréstimo =======");
         System.out.println("Número do Empréstimo: " + emprestimo.getNumero());
         System.out.println("Utente: " + emprestimo.getUtente().getNome() + " (NIF: " + emprestimo.getUtente().getNif() + ")");
         System.out.println("Data de Início: " + emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -93,6 +93,8 @@ public class EmprestimosController {
         for (Livro livro : emprestimo.getLivros()) {
             System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
         }
+        System.out.println("=".repeat(35));
+
     }
     // CRUD: Read
     public Emprestimos consultarEmprestimo(int numero) {

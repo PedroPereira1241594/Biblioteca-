@@ -23,10 +23,10 @@ public class JornalView {
         do {
             System.out.println("\nMenu:");
             System.out.println("1. Criar Jornal/Revista");
-            System.out.println("2. Listar Jornais/Revistas");
+            System.out.println("2. Procurar Jornal/Revista por ISSN");
             System.out.println("3. Atualizar Jornal/Revista");
             System.out.println("4. Eliminar Jornal/Revista");
-            System.out.println("5. Procurar Jornal/Revista por ISSN");
+            System.out.println("5. Listar Jornais/Revistas");
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -37,7 +37,7 @@ public class JornalView {
                     criarJornal();
                     break;
                 case 2:
-                    listarJornais();
+                    procurarJornalPorIssn();
                     break;
                 case 3:
                     atualizarJornal();
@@ -46,7 +46,7 @@ public class JornalView {
                     eliminarJornal();
                     break;
                 case 5:
-                    procurarJornalPorIssn();
+                    listarJornais();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -137,13 +137,13 @@ public class JornalView {
         var jornal = jornalController.procurarPorIssn(issn);
         if (jornal != null) {
             System.out.println("\nJornal/Revista encontrado:");
-            System.out.println("-------------------------------");
+            System.out.println("=".repeat(24));
             System.out.println("Título: " + jornal.getTitulo());
             System.out.println("Editora: " + jornal.getEditora());
             System.out.println("Categoria: " + jornal.getCategoria());
             System.out.println("ISSN: " + jornal.getIssn());
             System.out.println("Data de Publicação: " + jornal.getDataPublicacao());
-            System.out.println("-------------------------------");
+            System.out.println("=".repeat(24));
         } else {
             System.out.println("\nJornal não encontrado.");
             System.out.println("Certifique-se de que o ISSN introduzido está correto.");

@@ -23,16 +23,6 @@ public class UtenteView {
         this.scanner = scanner;
     }
 
-    public void exibirUtenteDetalhado(Utentes utente) {
-        System.out.println("=".repeat(24));
-        System.out.println("Detalhes do Utente:");
-        System.out.println("Nome: " + utente.getNome());
-        System.out.println("NIF: " + utente.getNif());
-        System.out.println("Género: " + (utente.getGenero() ? "Masculino" : "Feminino"));
-        System.out.println("Contacto: " + utente.getContacto());
-        System.out.println("=".repeat(24));
-    }
-
     public void gerirUtentes(List<Utentes> utentes, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         int opcao;
 
@@ -77,6 +67,16 @@ public class UtenteView {
                     System.out.println("Opção inválida. Tente novamente.");
             }
         } while (opcao != 0);
+    }
+
+    public void exibirUtenteDetalhado(Utentes utente) {
+        System.out.println("=".repeat(24));
+        System.out.println("Detalhes do Utente:");
+        System.out.println("Nome: " + utente.getNome());
+        System.out.println("NIF: " + utente.getNif());
+        System.out.println("Género: " + (utente.getGenero() ? "Masculino" : "Feminino"));
+        System.out.println("Contacto: " + utente.getContacto());
+        System.out.println("=".repeat(24));
     }
 
     private void consultarUtente() {
