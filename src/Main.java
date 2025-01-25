@@ -25,11 +25,11 @@ public class Main {
         String caminhoReserva = configReader.getCaminhoReserva();
 
         // Dados compartilhados
-        ArrayList<Livro> livros = new ArrayList<>(ImportarDados.carregarLivros(caminhoLivros));
-        ArrayList<Utentes> utentes = new ArrayList<>(ImportarDados.carregarUtentes(caminhoUtentes));
-        ArrayList<Jornal> jornals = new ArrayList<>(ImportarDados.carregarJornais(caminhoJornal));
-        ArrayList<Emprestimos> emprestimos = new ArrayList<>(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
-        ArrayList<Reserva> reservas = new ArrayList<>(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
+        ArrayList<Livro> livros = new ArrayList<>();
+        ArrayList<Utentes> utentes = new ArrayList<>();
+        ArrayList<Jornal> jornals = new ArrayList<>();
+        ArrayList<Emprestimos> emprestimos = new ArrayList<>();
+        ArrayList<Reserva> reservas = new ArrayList<>();
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
@@ -52,9 +52,6 @@ public class Main {
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
-
-        // Carregar Ficheiros
-        ImportarDados importarDados = new ImportarDados();
 
         int opcao;
         int escolha;
@@ -96,19 +93,26 @@ public class Main {
                     System.out.println("2. Carregar dados");
                     System.out.println("0. Voltar");
                     escolha = scanner.nextInt();
-                    if (escolha == '1' ){
+
+                    if (escolha == 1) {
                         System.out.println("\nCarregando dados...");
-                    } else if ( escolha == '2') {
-                        System.out.println("\nGuardado dados...");
+                        livros.addAll(ImportarDados.carregarLivros(caminhoLivros));
+                        utentes.addAll(ImportarDados.carregarUtentes(caminhoUtentes));
+                        jornals.addAll(ImportarDados.carregarJornais(caminhoJornal));
+                        emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
+                        reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
+                        System.out.println("Dados carregados com sucesso!");
+                    } else if (escolha == 2) {
+                        System.out.println("\nGuardando dados...");
                         exportarLivros(caminhoLivros, livros);
                         exportarUtentes(caminhoUtentes, utentes);
                         exportarJornal(caminhoJornal, jornals);
                         exportarEmprestimos(caminhoEmprestimo, emprestimos);
                         exportarReservas(caminhoReserva, reservas);
-                    } else if ( escolha == '0') {
-
-
+                    } else if (escolha != 0) {
+                        System.out.println("\nOpção inválida. Tente novamente.");
                     }
+                    break;
 
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
