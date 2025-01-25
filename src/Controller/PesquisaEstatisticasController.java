@@ -106,40 +106,36 @@ public class PesquisaEstatisticasController {
 
     // Método para buscar o item mais requisitado (empréstimos e reservas) durante um intervalo de datas
     public List<String> pesquisarItensMaisRequisitados(LocalDate dataInicio, LocalDate dataFim) {
-        // Map para armazenar a quantidade de requisições por livro/jornal
         Map<String, Integer> itemRequisitado = new HashMap<>();
 
-        // Contabilizar os empréstimos
         for (Emprestimos emprestimo : emprestimos) {
-            if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim) && !emprestimo.getDataEfetivaDevolucao().isBefore(dataInicio) && !emprestimo.getDataEfetivaDevolucao().isAfter(dataFim)) {
+            if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim) &&
+                    !emprestimo.getDataEfetivaDevolucao().isBefore(dataInicio) && !emprestimo.getDataEfetivaDevolucao().isAfter(dataFim)) {
+
                 for (Livro livro : emprestimo.getLivros()) {
-                    itemRequisitado.put(livro.getNome(), itemRequisitado.getOrDefault(livro.getNome(), 0) + 1);
+                    itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
+                            itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
                 }
             }
         }
 
-        // Contabilizar as reservas
         for (Reserva reserva : reservas) {
-            if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim) && !reserva.getDataFim().isBefore(dataInicio) && !reserva.getDataFim().isAfter(dataFim)) {
+            if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim) &&
+                    !reserva.getDataFim().isBefore(dataInicio) && !reserva.getDataFim().isAfter(dataFim)) {
+
                 for (Livro livro : reserva.getLivros()) {
-                    itemRequisitado.put(livro.getNome(), itemRequisitado.getOrDefault(livro.getNome(), 0) + 1);
+                    itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
+                            itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
                 }
             }
         }
 
-        // Encontrar o valor máximo de requisições
-        int maxRequisicoes = 0;
-        for (Integer requisicoes : itemRequisitado.values()) {
-            if (requisicoes > maxRequisicoes) {
-                maxRequisicoes = requisicoes;
-            }
-        }
+        int maxRequisicoes = itemRequisitado.values().stream().max(Integer::compare).orElse(0);
 
-        // Adicionar todos os itens com o número máximo de requisições a uma lista
         List<String> itensMaisRequisitados = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : itemRequisitado.entrySet()) {
             if (entry.getValue() == maxRequisicoes) {
-                itensMaisRequisitados.add(entry.getKey());
+                itensMaisRequisitados.add(entry.getKey()); // "Título - ISBN"
             }
         }
 
