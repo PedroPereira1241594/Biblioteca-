@@ -181,7 +181,7 @@ public class ReservaController {
 
     // Método auxiliar para exibir detalhes de uma reserva
     public void exibirDetalhesReserva(Reserva reserva) {
-        System.out.println("\n=== Detalhes da Reserva ===");
+        System.out.println("\n======= Detalhes da Reserva =======");
         System.out.println("Número: " + reserva.getNumero());
         System.out.println("Utente: " + reserva.getUtente().getNome());
         System.out.println("Data de Registo: " + reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -192,6 +192,7 @@ public class ReservaController {
         for (Livro livro : reserva.getLivros()) {
             System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
         }
+        System.out.println("=".repeat(35));
     }
 
     public Reserva buscarReservaPorNumero(int numero) {

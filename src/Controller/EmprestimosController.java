@@ -76,7 +76,7 @@ public class EmprestimosController {
 
     // Exibe detalhes do empréstimo de forma estruturada
     public void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
-        System.out.println("\n=====================================");
+        System.out.println("\n======= Detalhes do Empréstimo =======");
         System.out.println("Número do Empréstimo: " + emprestimo.getNumero());
         System.out.println("Utente: " + emprestimo.getUtente().getNome() + " (NIF: " + emprestimo.getUtente().getNif() + ")");
         System.out.println("Data de Início: " + emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -93,8 +93,9 @@ public class EmprestimosController {
         for (Livro livro : emprestimo.getLivros()) {
             System.out.println(" - " + livro.getNome() + " (ISBN: " + livro.getIsbn() + ")");
         }
-    }
+        System.out.println("=".repeat(35));
 
+    }
     // CRUD: Read
     public Emprestimos consultarEmprestimo(int numero) {
         // Itera sobre a lista de empréstimos para encontrar o empréstimo pelo número
@@ -118,7 +119,6 @@ public class EmprestimosController {
         // Se não encontrar o empréstimo, retorna null
         return null;
     }
-
     // CRUD: Update
     public void atualizarEmprestimo(int numero, LocalDate novaDataEfetivaDevolucao) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
@@ -135,7 +135,6 @@ public class EmprestimosController {
         emprestimo.setDataEfetivaDevolucao(novaDataEfetivaDevolucao);
         System.out.println("Data efetiva de devolução atualizada com sucesso para: " + novaDataEfetivaDevolucao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
-
 
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {

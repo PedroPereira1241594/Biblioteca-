@@ -201,4 +201,16 @@ public class UtenteController {
         return null;
     }
 
+    public Utentes consultarUtente(String nif) {
+        // Itera sobre a lista de utentes para encontrar o utente pelo NIF
+        for (Utentes utente : utentes) {
+            if (utente.getNif().equals(nif)) {
+                return utente; // Se encontrado, retorna o utente
+            }
+        }
+        // Se não encontrar o utente, retorna null
+        return null;
+    }
+
+
 }

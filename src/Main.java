@@ -7,8 +7,6 @@ import java.util.Scanner;
 import java.io.IOException;
 
 import static Controller.ExportarDados.*;
-import static View.LivroView.gerirLivros;
-import static View.UtenteView.gerirUtentes;
 import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
@@ -35,25 +33,28 @@ public class Main {
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
+        utenteView.setScanner(new Scanner(System.in));    // Configura o scanner
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
+        utenteView.setUtenteController(utenteController); // Configura o controller
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
-        LivroView livroView = new LivroView();
         ReservaController reservaController = new ReservaController(null, reservas);
         EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
         reservaController.setEmprestimosController(emprestimosController);
-        LivroController livroController = new LivroController(livros, livroView, emprestimosController, reservas);
+        LivroController livroController = new LivroController(livros, null, emprestimosController, reservas);
+
+        // Agora configura o livroView antes de usá-lo
+        LivroView livroView = new LivroView(livroController, scanner);
+        livroController.setLivroView(livroView); // Configura o livroView no livroController
+
         emprestimosController.setLivroController(livroController);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
-
-
         // Carregar Ficheiros
         ImportarDados importarDados = new ImportarDados();
-
 
         int opcao;
         int escolha;
@@ -73,22 +74,22 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    gerirLivros(livroController, scanner);
+                    livroView.gerirLivros();  // Chamando o método de gerir livros diretamente no livroView
                     break;
                 case 2:
-                    jornalView.exibirMenu();
+                    jornalView.exibirMenu();  // Já está correto
                     break;
                 case 3:
-                    gerirUtentes(utenteController, utentes, reservas, emprestimos, scanner);
+                    utenteView.gerirUtentes(utentes, reservas, emprestimos);  // Já está correto
                     break;
                 case 4:
-                    emprestimosView.exibirMenu();
+                    emprestimosView.exibirMenu();  // Já está correto
                     break;
                 case 5:
-                    reservaView.exibirMenu();
+                    reservaView.exibirMenu();  // Já está correto
                     break;
                 case 6:
-                    pesquisaEstatisticasView.exibirMenu();
+                    pesquisaEstatisticasView.exibirMenu();  // Já está correto
                     break;
                 case 7:
                     System.out.println("1. Ler dados");
@@ -126,3 +127,4 @@ public class Main {
         scanner.close();
     }
 }
+
