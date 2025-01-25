@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Emprestimos;
 import Model.Livro;
+import Model.Reserva;
 import Model.Utentes;
 
 import java.time.LocalDate;
@@ -55,7 +56,14 @@ public class EmprestimosController {
 
         // Verifica conflitos com reservas e disponibilidade de livros
         for (Livro livro : livrosParaEmprestimo) {
-            // Verifica se o livro está reservado ou emprestado no período
+            // Verifica se o livro está reservado no período de empréstimo usando reservaController
+            if (reservaController.verificarLivroReservado(livro, dataInicio, dataPrevistaDevolucao)) {
+                // Aqui você pode colocar uma única mensagem
+                System.out.println("Erro: O livro '" + livro.getNome() + "' já está reservado para o período entre " + dataInicio + " e " + dataPrevistaDevolucao + " e não pode ser emprestado.");
+                return;
+            }
+
+            // Verifica se o livro está emprestado no período solicitado
             if (livroPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
                 System.out.println("Erro: O livro '" + livro.getNome() + "' com o ISBN '" + livro.getIsbn() + "' já está emprestado no período solicitado.");
                 return;
@@ -73,6 +81,7 @@ public class EmprestimosController {
         // Exibe detalhes do novo empréstimo
         exibirDetalhesEmprestimo(novoEmprestimo);
     }
+
 
     // Exibe detalhes do empréstimo de forma estruturada
     public void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
