@@ -116,6 +116,11 @@ public class PesquisaEstatisticasController {
                     itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
                             itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
                 }
+
+                for (Jornal jornal : emprestimo.getJornais()) {
+                    itemRequisitado.put(jornal.getTitulo() + " - " + jornal.getIssn(),
+                            itemRequisitado.getOrDefault(jornal.getTitulo() + " - " + jornal.getIssn(), 0) + 1);
+                }
             }
         }
 
@@ -126,6 +131,11 @@ public class PesquisaEstatisticasController {
                 for (Livro livro : reserva.getLivros()) {
                     itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
                             itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
+                }
+
+                for (Jornal jornal : reserva.getJornais()) {
+                    itemRequisitado.put(jornal.getTitulo() + " - " + jornal.getIssn(),
+                            itemRequisitado.getOrDefault(jornal.getTitulo() + " - " + jornal.getIssn(), 0) + 1);
                 }
             }
         }
