@@ -196,8 +196,8 @@ public class ImportarDados {
                     }
 
                     // Cria e adiciona o objeto Emprestimos à lista
-                    Emprestimos emprestimo = new Emprestimos(numero, utente, livrosEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
-                    emprestimos.add(emprestimo);
+                    //Emprestimos emprestimo = new Emprestimos(numero, utente, livrosEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
+                    //emprestimos.add(emprestimo);
 
                 } catch (Exception e) {
                     // Exibe o erro caso ocorra durante o processamento da linha
@@ -280,8 +280,8 @@ public class ImportarDados {
                     LocalDate dataInicio = LocalDate.parse(dados[4].replace("DataInicioReserva: ", "").trim());
                     LocalDate dataFim = LocalDate.parse(dados[5].replace("DataFimReserva: ", "").trim());
 
-                    Reserva reserva = new Reserva(numeroReserva, utente, livrosReservados, dataRegisto, dataInicio, dataFim);
-                    reservas.add(reserva);
+                    //Reserva reserva = new Reserva(numeroReserva, utente, livrosReservados, dataRegisto, dataInicio, dataFim);
+                    //reservas.add(reserva);
 
                 } catch (Exception e) {
                     System.out.println("Erro ao processar linha " + linhaNumero + ": " + e.getMessage());

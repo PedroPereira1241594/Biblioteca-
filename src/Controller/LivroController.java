@@ -5,6 +5,7 @@ import Model.Emprestimos;
 import Model.Reserva;
 import View.LivroView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 public class LivroController {
     private final ArrayList<Livro> livros;
     private LivroView livroView;
-    private final EmprestimosController emprestimosController;
+    private EmprestimosController emprestimosController;
     private final List<Reserva> reservas; // Adicionada a lista de reservas
 
     public void setLivroView(LivroView livroView) {
@@ -123,8 +124,13 @@ public class LivroController {
         // Verificar se o livro está associado a alguma reserva
         boolean livroReservado = false;
         for (Reserva reserva : reservas) {
-            if (reserva.getLivros().contains(livro1)) {
-                livroReservado = true;
+            for (Object item : reserva.getLivros()) {
+                if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                    livroReservado = true;
+                    break;
+                }
+            }
+            if (livroReservado) {
                 break;
             }
         }
@@ -132,8 +138,13 @@ public class LivroController {
         // Verificar se o livro está associado a algum empréstimo ativo
         boolean livroEmprestado = false;
         for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
-            if (emprestimo.getLivros().contains(livro1)) {
-                livroEmprestado = true;
+            for (Object item : emprestimo.getLivros()) {
+                if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                    livroEmprestado = true;
+                    break;
+                }
+            }
+            if (livroEmprestado) {
                 break;
             }
         }
@@ -148,6 +159,7 @@ public class LivroController {
         }
     }
 
+
     public Livro buscarLivroPorIsbn(String isbn) {
         for (Livro livro : livros) {
             if (livro.getIsbn().equalsIgnoreCase(isbn)) {
@@ -159,9 +171,8 @@ public class LivroController {
 
     public boolean verificarLivroDisponivelParaEmprestimo(Livro livro) {
         // Recuperar todos os empréstimos ativos
-        List<Emprestimos> emprestimosAtivos = emprestimosController.listarEmprestimosAtivos();
 
-        for (Emprestimos emprestimo : emprestimosAtivos) {
+        for (Emprestimos emprestimo : livro) {
             // Verifica se o livro está na lista de livros do empréstimo e se não tem data efetiva de devolução
             if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
                 return false; // O livro está emprestado e ainda não foi devolvido
@@ -178,5 +189,43 @@ public class LivroController {
         }
 
         return false; // Livro não está emprestado ou já devolvido
+    }
+
+    public boolean verificarLivroIndisponivel(Livro livro, LocalDate dataInicio, LocalDate dataPrevistaFim, LocalDate dataFinal) {
+        // Verificar empréstimos
+        for (Emprestimos emprestimo : emp()) {
+            if (emprestimo.getLivros().contains(livro)) {
+                LocalDate inicioEmprestimo = emprestimo.getDataInicio();
+                LocalDate fimEmprestimo = emprestimo.getDataEfetivaDevolucao();
+                if(dataFinal == null) {
+                    if (!(dataPrevistaFim.isBefore(inicioEmprestimo) || dataInicio.isAfter(fimEmprestimo))) {
+                        return true; // O livro está emprestado no intervalo
+                    }
+                } else {
+                    if (!(dataFinal.isBefore(inicioEmprestimo) || dataInicio.isAfter(fimEmprestimo))) {
+                        return true; // O livro está emprestado no intervalo
+                    }
+                }
+            }
+        }
+
+        // Verificar reservas
+        for (Reserva reserva : reservas) {
+            if (reserva.getLivros().contains(livro)) {
+                LocalDate inicioReserva = reserva.getDataInicio();
+                LocalDate fimReserva = reserva.getDataFim();
+                if(dataFinal == null) {
+                    if (!(dataPrevistaFim.isBefore(inicioReserva) || dataInicio.isAfter(fimReserva))) {
+                        return true; // O livro está reservado no intervalo
+                    }
+                } else {
+                    if (!(dataFinal.isBefore(inicioReserva) || dataInicio.isAfter(fimReserva))) {
+                        return true; // O livro está reservado no intervalo
+                    }
+                }
+            }
+        }
+
+        return false; // O livro está disponível para o intervalo
     }
 }

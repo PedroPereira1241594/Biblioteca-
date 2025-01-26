@@ -2,27 +2,17 @@ import Controller.*;
 import Model.*;
 import View.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.IOException;
-
-import static Controller.ExportarDados.*;
-import static Controller.ExportarDados.exportarReservas;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in); // Cria o Scanner.
+        Scanner scanner = new Scanner(System.in); // Um único Scanner para todo o programa
         String caminhoConfig = "src\\DadosExportados\\Config.txt";
 
         // Inicializar o leitor de configurações
         Configurações configReader = new Configurações(caminhoConfig);
-
-        // Obter os caminhos do arquivo de configuração
-        String caminhoLivros = configReader.getCaminhoLivros();
-        String caminhoUtentes = configReader.getCaminhoUtentes();
-        String caminhoJornal = configReader.getCaminhoJornal();
-        String caminhoEmprestimo = configReader.getCaminhoEmprestimo();
-        String caminhoReserva = configReader.getCaminhoReserva();
 
         // Dados compartilhados
         ArrayList<Livro> livros = new ArrayList<>();
@@ -33,23 +23,27 @@ public class Main {
 
         // Inicialização das views e controladores
         UtenteView utenteView = new UtenteView();
-        utenteView.setScanner(new Scanner(System.in));    // Configura o scanner
+        utenteView.setScanner(scanner);  // Configura o scanner
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
         utenteView.setUtenteController(utenteController); // Configura o controller
-        JornalController jornalController = new JornalController(jornals);
+
+        JornalController jornalController = new JornalController(jornals, reservas, emprestimos);
         JornalView jornalView = new JornalView(jornalController);
-        ReservaController reservaController = new ReservaController(null, reservas);
+
+        // Inicialização de ReservaController e EmprestimosController
+        ReservaController reservaController = new ReservaController(reservas);
         EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
+
+// Garantindo que o EmprestimosController é passado corretamente para outros controladores
         reservaController.setEmprestimosController(emprestimosController);
         LivroController livroController = new LivroController(livros, null, emprestimosController, reservas);
 
-        // Agora configura o livroView antes de usá-lo
         LivroView livroView = new LivroView(livroController, scanner);
         livroController.setLivroView(livroView); // Configura o livroView no livroController
 
         emprestimosController.setLivroController(livroController);
-        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
-        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, jornalController, jornalView);
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController, jornalView);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
@@ -67,53 +61,67 @@ public class Main {
             System.out.println("7. Ler/Guardar dados");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
+
+            // Validação da entrada para o menu principal
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, insira um número válido.");
+                System.out.print("Escolha uma opção: ");
+                scanner.next(); // Limpa o buffer
+            }
             opcao = scanner.nextInt();
 
             switch (opcao) {
                 case 1:
-                    livroView.gerirLivros();  // Chamando o método de gerir livros diretamente no livroView
+                    livroView.gerirLivros();  // Gerir livros
                     break;
                 case 2:
-                    jornalView.exibirMenu();  // Já está correto
+                    jornalView.exibirMenu();  // Gerir jornais
                     break;
                 case 3:
-                    utenteView.gerirUtentes(utentes, reservas, emprestimos);  // Já está correto
+                    utenteView.gerirUtentes(utentes, reservas, emprestimos);  // Gerir utentes
                     break;
                 case 4:
-                    emprestimosView.exibirMenu();  // Já está correto
+                    emprestimosView.exibirMenuPrincipal();  // Gerir empréstimos
                     break;
                 case 5:
-                    reservaView.exibirMenu();  // Já está correto
+                    reservaView.exibirMenuPrincipal();  // Gerir reservas
                     break;
                 case 6:
-                    pesquisaEstatisticasView.exibirMenu();  // Já está correto
+                    pesquisaEstatisticasView.exibirMenu();  // Pesquisas e Estatísticas
                     break;
                 case 7:
                     System.out.println("1. Ler dados");
-                    System.out.println("2. Carregar dados");
+                    System.out.println("2. Guardar dados");
                     System.out.println("0. Voltar");
+                    System.out.print("Escolha uma opção: ");
+
+                    while (!scanner.hasNextInt()) {
+                        System.out.println("Por favor, insira um número válido.");
+                        System.out.print("Escolha uma opção: ");
+                        scanner.next(); // Limpa o buffer
+                    }
                     escolha = scanner.nextInt();
 
                     if (escolha == 1) {
                         System.out.println("\nCarregando dados...");
-                        livros.addAll(ImportarDados.carregarLivros(caminhoLivros));
-                        utentes.addAll(ImportarDados.carregarUtentes(caminhoUtentes));
-                        jornals.addAll(ImportarDados.carregarJornais(caminhoJornal));
-                        emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
-                        reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
+                        livros.addAll(ImportarDados.carregarLivros(configReader.getCaminhoLivros()));
+                        utentes.addAll(ImportarDados.carregarUtentes(configReader.getCaminhoUtentes()));
+                        jornals.addAll(ImportarDados.carregarJornais(configReader.getCaminhoJornal()));
+                        emprestimos.addAll(ImportarDados.carregarEmprestimos(configReader.getCaminhoEmprestimo(), utentes, livros));
+                        reservas.addAll(ImportarDados.carregarReservas(configReader.getCaminhoReserva(), utentes, livros));
                         System.out.println("Dados carregados com sucesso!");
                     } else if (escolha == 2) {
                         System.out.println("\nGuardando dados...");
-                        exportarLivros(caminhoLivros, livros);
-                        exportarUtentes(caminhoUtentes, utentes);
-                        exportarJornal(caminhoJornal, jornals);
-                        exportarEmprestimos(caminhoEmprestimo, emprestimos);
-                        exportarReservas(caminhoReserva, reservas);
+                        ExportarDados.exportarLivros(configReader.getCaminhoLivros(), livros);
+                        ExportarDados.exportarUtentes(configReader.getCaminhoUtentes(), utentes);
+                        ExportarDados.exportarJornal(configReader.getCaminhoJornal(), jornals);
+                        ExportarDados.exportarEmprestimos(configReader.getCaminhoEmprestimo(), emprestimos);
+                        ExportarDados.exportarReservas(configReader.getCaminhoReserva(), reservas);
+                        System.out.println("Dados guardados com sucesso!");
                     } else if (escolha != 0) {
                         System.out.println("\nOpção inválida. Tente novamente.");
                     }
                     break;
-
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
@@ -131,4 +139,3 @@ public class Main {
         scanner.close();
     }
 }
-

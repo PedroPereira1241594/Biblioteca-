@@ -7,15 +7,17 @@ public class Emprestimos {
     private int numero;
     private Utentes utente;
     private List<Livro> livros;
+    private List<Jornal> jornais;
     private LocalDate dataInicio;
     private LocalDate dataPrevistaDevolucao;
     private LocalDate dataEfetivaDevolucao;
 
     // Construtor atualizado para receber LocalDate
-    public Emprestimos(int numero, Utentes utente, List<Livro> livros, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
+    public Emprestimos(int numero, Utentes utente, List<Livro> livros, List<Jornal> jornais,LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
         this.numero = numero;
         this.utente = utente;
         this.livros = livros;
+        this.jornais = jornais;
         this.dataInicio = dataInicio;
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
@@ -46,6 +48,14 @@ public class Emprestimos {
         this.livros = livros;
     }
 
+    public List<Jornal> getJornais() {
+        return jornais;
+    }
+
+    public void setJornais(List<Jornal> jornais) {
+        this.jornais = jornais;
+    }
+
     public LocalDate getDataInicio() {
         return dataInicio;
     }
@@ -69,6 +79,7 @@ public class Emprestimos {
     public void setDataEfetivaDevolucao(LocalDate dataEfetivaDevolucao) {
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
     }
+
     public LocalDate getDataEmprestimo() {
         return getDataInicio();
     }
@@ -78,6 +89,7 @@ public class Emprestimos {
         return "Emprestimo [numero=" + numero +
                 ", utente=" + utente.getNome() +
                 ", livros=" + livros +
+                ", jornais=" + jornais +
                 ", dataInicio=" + dataInicio +
                 ", dataPrevistaDevolucao=" + dataPrevistaDevolucao +
                 ", dataEfetivaDevolucao=" + dataEfetivaDevolucao + "]";

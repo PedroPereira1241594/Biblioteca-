@@ -8,24 +8,21 @@ public class Reserva {
     private int numero;
     private Utentes utente;
     private List<Livro> livros;
+    private List<Jornal> jornais;
     private LocalDate dataRegisto;
     private LocalDate dataInicio;
     private LocalDate dataFim;
 
-    // Lista estática para armazenar todas as reservas
-    private static List<Reserva> listaReservas = new ArrayList<>();
-
     // Construtor atualizado para receber LocalDate
-    public Reserva(int numero, Utentes utente, List<Livro> livros, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim) {
+    public Reserva(int numero, Utentes utente, List<Livro> livros, List<Jornal> jornais, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim) {
         this.numero = numero;
         this.utente = utente;
         this.livros = livros;
+        this.jornais = jornais;
         this.dataRegisto = dataRegisto;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
 
-        // Adiciona a reserva à lista estática ao criar uma nova reserva
-        listaReservas.add(this);
     }
 
     public int getNumero() {
@@ -44,6 +41,14 @@ public class Reserva {
         this.utente = utente;
     }
 
+    public List<Jornal> getJornais() {
+        return jornais;
+    }
+
+    public void setJornais(List<Jornal> jornais) {
+        this.jornais = jornais;
+    }
+
     public List<Livro> getLivros() {
         return livros;
     }
@@ -51,7 +56,6 @@ public class Reserva {
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
-
 
     public LocalDate getDataRegisto() {
         return dataRegisto;
@@ -77,16 +81,13 @@ public class Reserva {
         this.dataFim = dataFim;
     }
 
-    // Método estático para acessar a lista de reservas
-    public static List<Reserva> getListaReservas() {
-        return listaReservas;
-    }
 
     @Override
     public String toString() {
-        return "Emprestimo [numero=" + numero +
+        return "Reserva [numero=" + numero +
                 ", utente=" + utente.getNome() +
                 ", livros=" + livros +
+                ", jornais=" + jornais +
                 ", dataRegisto=" + dataRegisto +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim + "]";

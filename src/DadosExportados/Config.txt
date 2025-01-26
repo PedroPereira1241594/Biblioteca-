@@ -1,5 +1,5 @@
-caminhoLivros=C:\Users\Utilizador\Downloads\Biblioteca-\src\DadosExportados\livros.txt
-caminhoUtentes=C:\Users\Utilizador\Downloads\Biblioteca-\src\DadosExportados\utentes.txt
-caminhoJornal=C:\Users\Utilizador\Downloads\Biblioteca-\src\DadosExportados\jornal.txt
-caminhoEmprestimos=C:\Users\Utilizador\Downloads\Biblioteca-\src\DadosExportados\Emprestimos.txt
-caminhoReservas=C:\Users\Utilizador\Downloads\Biblioteca-\src\DadosExportados\Reservas.txt
+caminhoLivros=C:\Users\pedr0\Desktop\Biblioteca\src\DadosExportados\livros.txt
+caminhoUtentes=C:\Users\pedr0\Desktop\Biblioteca\src\DadosExportados\utentes.txt
+caminhoJornal=C:\Users\pedr0\Desktop\Biblioteca\src\DadosExportados\jornal.txt
+caminhoEmprestimos=C:\Users\pedr0\Desktop\Biblioteca\src\DadosExportados\Emprestimos.txt
+caminhoReservas=C:\Users\pedr0\Desktop\Biblioteca\src\DadosExportados\Reservas.txt

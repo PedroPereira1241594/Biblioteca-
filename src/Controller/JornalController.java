@@ -1,18 +1,25 @@
 package Controller;
 
-import Model.Jornal;
+import Model.*;
+import Controller.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JornalController {
-    private ArrayList<Jornal> jornais; // Lista para armazenar os jornais
+    private ArrayList<Jornal> jornais;
+    private List<Emprestimos> emprestimos;
+    private EmprestimosController emprestimosController;
+    private final List<Reserva> reservas;// Lista para armazenar os jornais
 
     // Construtor
-    public JornalController(ArrayList<Jornal> jornais) {
+    public JornalController(ArrayList<Jornal> jornais, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.jornais = jornais;
+        this.reservas = reservas;
+        this.emprestimos = emprestimos;
     }
 
     // Método para criar um novo jornal ou uma revista
@@ -117,5 +124,43 @@ public class JornalController {
             }
         }
         return null;
+    }
+
+    public boolean verificarJornalIndisponivel(Jornal jornal, LocalDate dataInicio, LocalDate dataPrevistaFim, LocalDate dataFinal) {
+        // Verificar empréstimos
+        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
+            if (emprestimo.getJornais().contains(jornal)) {
+                LocalDate inicioEmprestimo = emprestimo.getDataInicio();
+                LocalDate fimEmprestimo = emprestimo.getDataEfetivaDevolucao();
+                if(dataFinal == null) {
+                    if (!(dataPrevistaFim.isBefore(inicioEmprestimo) || dataInicio.isAfter(fimEmprestimo))) {
+                        return true; // O livro está emprestado no intervalo
+                    }
+                } else {
+                    if (!(dataFinal.isBefore(inicioEmprestimo) || dataInicio.isAfter(fimEmprestimo))) {
+                        return true; // O livro está emprestado no intervalo
+                    }
+                }
+            }
+        }
+
+        // Verificar reservas
+        for (Reserva reserva : reservas) {
+            if (reserva.getJornais().contains(jornal)) {
+                LocalDate inicioReserva = reserva.getDataInicio();
+                LocalDate fimReserva = reserva.getDataFim();
+                if(dataFinal == null) {
+                    if (!(dataPrevistaFim.isBefore(inicioReserva) || dataInicio.isAfter(fimReserva))) {
+                        return true; // O livro está reservado no intervalo
+                    }
+                } else {
+                    if (!(dataFinal.isBefore(inicioReserva) || dataInicio.isAfter(fimReserva))) {
+                        return true; // O livro está reservado no intervalo
+                    }
+                }
+            }
+        }
+
+        return false; // O livro está disponível para o intervalo
     }
 }
