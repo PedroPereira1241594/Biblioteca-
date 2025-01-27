@@ -16,31 +16,31 @@ public class ImportarDados {
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoLivros))) {
             String linha;
+
             while ((linha = br.readLine()) != null) {
-                // Verifica se a linha não está vazia
-                if (!linha.trim().isEmpty()) {
-                    String[] dados = linha.split(";");
+                linha = linha.trim();
 
-                    if (dados.length == 6) {
-                        String isbn = dados[0].replace("ISBN: ", "").trim();
-                        String nome = dados[1].replace("Nome: ", "").trim();
-                        String editora = dados[2].replace("Editora: ", "").trim();
-                        String categoria = dados[3].replace("Categoria: ", "").trim();
-                        int ano = Integer.parseInt(dados[4].replace("Ano: ", "").trim());
-                        String autor = dados[5].replace("Autor: ", "").trim();
+                if (linha.isEmpty()) continue;
 
-                        Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn);
-                        livros.add(livro);
-                    } else {
-                        System.out.println("Linha mal formatada. Ignorada.");
-                    }
-                }
+                String[] dados = linha.split(";");
+
+                String isbn = dados[0].replace("ISBN: ", "").trim();
+                String nome = dados[1].replace("Nome: ", "").trim();
+                String editora = dados[2].replace("Editora: ", "").trim();
+                String categoria = dados[3].replace("Categoria: ", "").trim();
+                int ano = Integer.parseInt(dados[4].replace("Ano: ", "").trim());
+                String autor = dados[5].replace("Autor: ", "").trim();
+
+                Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn); // Certifique-se de passar o ISBN aqui
+                livros.add(livro);
             }
         } catch (IOException e) {
-            System.out.println("Erro ao carregar livros do ficheiro: " + e.getMessage());
+            System.out.println("Erro ao carregar livros: " + e.getMessage());
         }
+
         return livros;
     }
+
 
     public static List<Utentes> carregarUtentes(String caminhoUtentes) {
         List<Utentes> utentes = new ArrayList<>();
@@ -48,25 +48,24 @@ public class ImportarDados {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoUtentes))) {
             String linha;
             while ((linha = br.readLine()) != null) {
-
                 if (!linha.trim().isEmpty()) {
                     String[] dados = linha.split(";");
 
                     if (dados.length == 4) {
                         String nome = dados[0].replace("Nome: ", "").trim();
                         String nif = dados[1].replace("NIF: ", "").trim();
-                        Boolean genero = dados[2].replace("Genero: ", "").trim().equals("M") ? true : false;
+                        boolean genero = dados[2].replace("Genero: ", "").trim().equalsIgnoreCase("M");
                         String contacto = dados[3].replace("Contacto: ", "").trim();
 
                         Utentes utente = new Utentes(nome, nif, genero, contacto);
                         utentes.add(utente);
                     } else {
-                        System.out.println("Linha mal formatada. Ignorada.");
+                        System.out.println("Linha mal formatada no arquivo de utentes. Ignorada.");
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao carregar utentes do ficheiro: " + e.getMessage());
+            System.out.println("Erro ao carregar utentes do arquivo: " + e.getMessage());
         }
 
         return utentes;
@@ -86,29 +85,24 @@ public class ImportarDados {
                         String titulo = dados[1].replace("Titulo: ", "").trim();
                         String categoria = dados[2].replace("Categoria: ", "").trim();
                         String editora = dados[3].replace("Editora: ", "").trim();
-                        String dataPublicacaoStr = dados[4].replace("Data Publicação: ", "").trim();
-
-                        // Converte a dataPublicacao de String para LocalDate
-                        LocalDate dataPublicacao = LocalDate.parse(dataPublicacaoStr);
+                        LocalDate dataPublicacao = LocalDate.parse(dados[4].replace("Data Publicação: ", "").trim());
 
                         Jornal jornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
                         jornais.add(jornal);
                     } else {
-                        System.out.println("Linha mal formatada. Ignorada.");
+                        System.out.println("Linha mal formatada no arquivo de jornais. Ignorada.");
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao carregar jornais do ficheiro: " + e.getMessage());
+            System.out.println("Erro ao carregar jornais do arquivo: " + e.getMessage());
         }
 
         return jornais;
     }
 
-
-    public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
+    public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<ItemEmprestavel> itens) {
         List<Emprestimos> emprestimos = new ArrayList<>();
-        int maiorId = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoEmprestimo))) {
             String linha;
@@ -118,42 +112,26 @@ public class ImportarDados {
                 linhaNumero++;
                 linha = linha.trim();
 
-                if (linha.isEmpty()) {
-                    continue;
-                }
+                if (linha.isEmpty()) continue; // Ignora linhas vazias
 
                 String[] dados = linha.split(";");
 
-                // Verifica se o número de campos está correto
+                // Verifica se a linha possui todos os campos necessários
                 if (dados.length < 6) {
                     System.out.println("Linha " + linhaNumero + " mal formatada. Ignorada.");
                     continue;
                 }
 
                 try {
-                    // Processa os dados do empréstimo
-                    int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim()); // Remover "ID: " e converter para inteiro
-                    String nomeUtente = dados[1].replace("Nome: ", "").trim(); // Remover "Nome: " e pegar o nome do utente
-                    String livrosEmprestadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros emprestados no formato de ISBN
-
-                    // Atualiza o maior ID encontrado
-                    if (numero > maiorId) {
-                        maiorId = numero;
-                    }
-
-                    // Verifica se a string de livros emprestados está vazia
-                    if (livrosEmprestadosStr.isEmpty()) {
-                        System.out.println("Nenhum livro emprestado encontrado na linha " + linhaNumero);
-                        continue;
-                    }
-
-                    // Separa os livros por vírgula
-                    String[] isbnsLivros = livrosEmprestadosStr.split(",");
+                    // Extrai os dados da linha
+                    int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim());
+                    String nomeUtente = dados[1].replace("Nome: ", "").trim();
+                    String itensEmprestadosStr = dados[2].replace("ISBN: ", "").trim();
 
                     // Procura o utente pelo nome
                     Utentes utente = null;
                     for (Utentes u : utentes) {
-                        if (u.getNome().trim().equalsIgnoreCase(nomeUtente.trim())) {
+                        if (u.getNome().trim().equalsIgnoreCase(nomeUtente)) {
                             utente = u;
                             break;
                         }
@@ -164,52 +142,57 @@ public class ImportarDados {
                         continue;
                     }
 
-                    // Processa os livros emprestados
-                    List<Livro> livrosEmprestados = new ArrayList<>();
-                    for (String isbn : isbnsLivros) {
-                        String isbnLivro = isbn.trim(); // Remove espaços e pega o ISBN
+                    // Processa os itens emprestados
+                    List<ItemEmprestavel> itensEmprestados = new ArrayList<>();
+                    String[] idsItens = itensEmprestadosStr.split(",");
 
-                        Livro livro = null;
-                        for (Livro l : livrosDisponiveis) {
-                            if (l.getIsbn().equals(isbnLivro)) {
-                                livro = l;
+                    for (String idItem : idsItens) {
+                        idItem = idItem.trim();
+                        ItemEmprestavel itemEncontrado = null;
+
+                        // Procura o item pelo ISBN ou ISSN
+                        for (ItemEmprestavel item : itens) {
+                            if (item instanceof Livro && ((Livro) item).getIsbn().equals(idItem)) { // Corrigido para getIsbn()
+                                itemEncontrado = item;
+                                break;
+                            } else if (item instanceof Jornal && ((Jornal) item).getISSN().equals(idItem)) {
+                                itemEncontrado = item;
                                 break;
                             }
                         }
 
-                        if (livro != null) {
-                            livrosEmprestados.add(livro);
+                        if (itemEncontrado != null) {
+                            itensEmprestados.add(itemEncontrado);
                         } else {
-                            System.out.println("Livro com ISBN " + isbnLivro + " não encontrado entre os livros disponíveis. Ignorado.");
+                            System.out.println("Item com ID " + idItem + " não encontrado. Ignorado.");
                         }
                     }
 
-                    // Converte as datas
+                    // Processa datas
                     LocalDate dataInicio = LocalDate.parse(dados[3].replace("DataInicio: ", "").trim());
                     LocalDate dataPrevistaDevolucao = LocalDate.parse(dados[4].replace("DataPrevistaDevolução: ", "").trim());
                     LocalDate dataEfetivaDevolucao = null;
 
-                    // Verifica se a data efetiva de devolução é nula ou vazia
                     String dataEfetivaStr = dados[5].replace("DataEfetivaDevolução: ", "").trim();
                     if (!dataEfetivaStr.equalsIgnoreCase("null") && !dataEfetivaStr.isEmpty()) {
                         dataEfetivaDevolucao = LocalDate.parse(dataEfetivaStr);
                     }
 
-                    // Cria e adiciona o objeto Emprestimos à lista
-                    Emprestimos emprestimo = new Emprestimos(numero, utente, livrosEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
+                    // Cria o empréstimo
+                    Emprestimos emprestimo = new Emprestimos(numero, utente, itensEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
                     emprestimos.add(emprestimo);
 
                 } catch (Exception e) {
-                    // Exibe o erro caso ocorra durante o processamento da linha
                     System.out.println("Erro ao processar linha " + linhaNumero + ": " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao carregar empréstimos do ficheiro: " + e.getMessage());
+            System.out.println("Erro ao carregar empréstimos do arquivo: " + e.getMessage());
         }
 
         return emprestimos;
     }
+
 
 
     public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<Livro> livrosDisponiveis) {

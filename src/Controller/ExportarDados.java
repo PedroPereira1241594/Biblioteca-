@@ -63,8 +63,8 @@ public class ExportarDados {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
                 String livrosEmprestados = "";
-                for (Livro livro : emprestimo.getLivros()) {
-                    livrosEmprestados += livro.getIsbn() + ", "; // Adiciona ISBN com vírgula e espaço
+                for (ItemEmprestavel livro : emprestimo.getItens()) {
+                    livrosEmprestados += livro.getISBN() + ", "; // Adiciona ISBN com vírgula e espaço
                 }
 
                 // Remover a última vírgula e espaço, se necessário

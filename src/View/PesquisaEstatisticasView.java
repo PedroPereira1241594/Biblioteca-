@@ -1,10 +1,7 @@
 package View;
 
 import Controller.PesquisaEstatisticasController;
-import Model.Emprestimos;
-import Model.Jornal;
-import Model.Livro;
-import Model.Reserva;
+import Model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -169,8 +166,8 @@ public class PesquisaEstatisticasView {
             // Exibindo os empréstimos
             for (Emprestimos emprestimo : emprestimos) {
                 String livros = "";
-                for (Livro livro : emprestimo.getLivros()) {
-                    livros += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
+                for (ItemEmprestavel livro : emprestimo.getItens()) {
+                    livros += livro.getTitulo() + " (ISBN: " + livro.getISBN() + "), ";
                 }
                 // Remover última vírgula e espaço
                 if (!livros.isEmpty()) {

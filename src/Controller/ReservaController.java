@@ -58,7 +58,7 @@ public class ReservaController {
 
         // Verifica se os livros possuem empréstimos sem data efetiva de devolução
         for (Livro livro : livrosParaReserva) {
-            if (emprestimosController.livroPossuiEmprestimoAtivo(livro, dataInicio, dataFim)) {
+            if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicio, dataFim)) {
                 System.out.println("Erro: O livro '" + livro.getNome() + "' está emprestado no intervalo de datas fornecido.");
                 return false;
             }
@@ -253,7 +253,7 @@ public class ReservaController {
     private boolean verificarLivroEmOutraReservaOuEmprestimo(Livro livro, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
 
         // Verifica se o livro está emprestado no intervalo de datas
-        if (emprestimosController.verificarLivroEmprestado(livro, dataInicioReserva, dataFimReserva)) {
+        if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicioReserva, dataFimReserva)) {
             return true;
         }
 

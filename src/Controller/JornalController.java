@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Jornal;
+import Model.ItemEmprestavel;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,7 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class JornalController {
-    private ArrayList<Jornal> jornais; // Lista para armazenar os jornais
+    private static ArrayList<Jornal> jornais; // Lista para armazenar os jornais
 
     // Construtor
     public JornalController(ArrayList<Jornal> jornais) {
@@ -17,14 +18,32 @@ public class JornalController {
 
     // Método para criar um novo jornal ou uma revista
     public void criarJornal(String issn, String titulo, String categoria, String editora, LocalDate dataPublicacao) {
-        try {
-            Jornal novoJornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
-            jornais.add(novoJornal);
-            System.out.println("Jornal/Revista adicionado com sucesso!");
-        } catch (DateTimeParseException e) {
-            System.out.println("Data de publicação inválida! Use o formato dd/MM/yyyy.");
+        if (issn == null || issn.trim().isEmpty()) {
+            System.out.println("Erro: ISSN inválido. Não é possível criar o jornal.");
+            return;
         }
+        if (titulo == null || titulo.trim().isEmpty()) {
+            System.out.println("Erro: Título inválido. Não é possível criar o jornal.");
+            return;
+        }
+        if (categoria == null || categoria.trim().isEmpty()) {
+            System.out.println("Erro: Categoria inválida. Não é possível criar o jornal.");
+            return;
+        }
+        if (editora == null || editora.trim().isEmpty()) {
+            System.out.println("Erro: Editora inválida. Não é possível criar o jornal.");
+            return;
+        }
+        if (dataPublicacao == null) {
+            System.out.println("Erro: Data de publicação inválida.");
+            return;
+        }
+
+        Jornal novoJornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
+        jornais.add(novoJornal);
+        System.out.println("Jornal/Revista adicionado com sucesso!");
     }
+
 
     // Método para listar todos os jornais e revistas
     public void listarJornais() {
@@ -111,11 +130,27 @@ public class JornalController {
 
     // Método para procurar um jornal ou revista pelo ISSN
     public Jornal procurarPorIssn(String issn) {
+        if (issn == null || issn.trim().isEmpty()) {
+            System.out.println("Erro: ISSN inválido para busca.");
+            return null;
+        }
+
         for (Jornal jornal : jornais) {
-            if (jornal.getIssn().equalsIgnoreCase(issn)) {
+            if (jornal.getIssn() != null && jornal.getIssn().equalsIgnoreCase(issn)) {
                 return jornal;
             }
         }
+        System.out.println("Nenhum jornal encontrado com o ISSN fornecido.");
         return null;
+    }
+
+
+    // Método para obter todos os jornais como uma lista de ItemEmprestavel (para integração com o sistema de empréstimos)
+    public static ArrayList<ItemEmprestavel> obterJornaisComoItensEmprestaveis() {
+        ArrayList<ItemEmprestavel> itensEmprestaveis = new ArrayList<>();
+        for (Jornal jornal : jornais) {
+            itensEmprestaveis.add(jornal); // Adiciona cada jornal como um ItemEmprestavel
+        }
+        return itensEmprestaveis;
     }
 }

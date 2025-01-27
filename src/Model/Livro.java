@@ -2,7 +2,7 @@ package Model;
 
 import java.util.Objects;
 
-public class Livro {
+public class Livro extends ItemEmprestavel {
     private String nome;
     private String editora;
     private String categoria;
@@ -11,6 +11,7 @@ public class Livro {
     private String isbn;
 
     public Livro(String nome, String editora, String categoria, int ano, String autor, String isbn) {
+        super(isbn);
         this.nome = nome;
         this.editora = editora;
         this.categoria = categoria;
@@ -67,9 +68,15 @@ public class Livro {
         this.isbn = isbn;
     }
 
+    // Método toString adaptado para Livro
     @Override
     public String toString() {
-        return "Livro: " + nome + "\n" + "Editora: " + editora + "\n" + "Categoria: " + categoria + "\n" + "Ano: " + ano + "\n" + "Autor: " + autor + "\n" + "ISBN: " + isbn;
+        return "Livro: " + nome + "\n" +
+                "Editora: " + editora + "\n" +
+                "Categoria: " + categoria + "\n" +
+                "Ano: " + ano + "\n" +
+                "Autor: " + autor + "\n" +
+                "ISBN: " + isbn;
     }
 
     // Implementação de equals para comparar livros com base no ISBN
@@ -89,5 +96,11 @@ public class Livro {
     @Override
     public int hashCode() {
         return Objects.hash(isbn);  // Gera hash code com base no ISBN
+    }
+
+    // Implementação do método getIdentificador() da classe ItemEmprestavel
+    @Override
+    public String getIdentificador() {
+        return isbn;  // Retorna o ISBN como identificador único
     }
 }

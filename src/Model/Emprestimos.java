@@ -6,16 +6,16 @@ import java.util.List;
 public class Emprestimos {
     private int numero;
     private Utentes utente;
-    private List<Livro> livros;
+    private List<ItemEmprestavel> itens;  // Alterado para ItemEmprestavel para permitir diferentes tipos de itens
     private LocalDate dataInicio;
     private LocalDate dataPrevistaDevolucao;
     private LocalDate dataEfetivaDevolucao;
 
-    // Construtor atualizado para receber LocalDate
-    public Emprestimos(int numero, Utentes utente, List<Livro> livros, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
+    // Construtor atualizado para receber LocalDate e uma lista de ItemEmprestavel
+    public Emprestimos(int numero, Utentes utente, List<ItemEmprestavel> itens, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
         this.numero = numero;
         this.utente = utente;
-        this.livros = livros;
+        this.itens = itens;
         this.dataInicio = dataInicio;
         this.dataPrevistaDevolucao = dataPrevistaDevolucao;
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
@@ -38,12 +38,12 @@ public class Emprestimos {
         this.utente = utente;
     }
 
-    public List<Livro> getLivros() {
-        return livros;
+    public List<ItemEmprestavel> getItens() {
+        return itens;
     }
 
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
+    public void setItens(List<ItemEmprestavel> itens) {
+        this.itens = itens;
     }
 
     public LocalDate getDataInicio() {
@@ -69,17 +69,32 @@ public class Emprestimos {
     public void setDataEfetivaDevolucao(LocalDate dataEfetivaDevolucao) {
         this.dataEfetivaDevolucao = dataEfetivaDevolucao;
     }
+
+    // Método adicional para obter a data de empréstimo (igual à data de início)
     public LocalDate getDataEmprestimo() {
         return getDataInicio();
     }
 
     @Override
     public String toString() {
-        return "Emprestimo [numero=" + numero +
+        String result = "Emprestimo [numero=" + numero +
                 ", utente=" + utente.getNome() +
-                ", livros=" + livros +
-                ", dataInicio=" + dataInicio +
+                ", itens=";
+
+        // Adiciona os itens (livros ou jornais) à string
+        for (ItemEmprestavel item : itens) {
+            result += item.toString() + ", ";
+        }
+
+        // Remove a última vírgula e espaço
+        if (!itens.isEmpty()) {
+            result = result.substring(0, result.length() - 2); // Remove o ", " extra
+        }
+
+        result += ", dataInicio=" + dataInicio +
                 ", dataPrevistaDevolucao=" + dataPrevistaDevolucao +
                 ", dataEfetivaDevolucao=" + dataEfetivaDevolucao + "]";
+
+        return result;
     }
 }

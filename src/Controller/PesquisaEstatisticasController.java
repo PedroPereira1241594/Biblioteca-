@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Jornal;
-import Model.Livro;
-import Model.Emprestimos;
-import Model.Reserva;
+import Model.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -112,9 +109,9 @@ public class PesquisaEstatisticasController {
             if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim) &&
                     !emprestimo.getDataEfetivaDevolucao().isBefore(dataInicio) && !emprestimo.getDataEfetivaDevolucao().isAfter(dataFim)) {
 
-                for (Livro livro : emprestimo.getLivros()) {
-                    itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
-                            itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
+                for (ItemEmprestavel livro : emprestimo.getItens()) {
+                    itemRequisitado.put(livro.getISBN() + " - " + livro.getISBN(),
+                            itemRequisitado.getOrDefault(livro.getTitulo() + " - " + livro.getISSN(), 0) + 1);
                 }
 
                 /*for (Jornal jornal : emprestimo.getJornais()) {

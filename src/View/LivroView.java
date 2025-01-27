@@ -1,6 +1,7 @@
 package View;
 
 import Controller.LivroController;
+import Model.ItemEmprestavel;
 import Model.Livro;
 
 import java.util.ArrayList;
@@ -15,7 +16,14 @@ public class LivroView {
         this.scanner = scanner;
     }
 
-    public void exibirLivros(ArrayList<Livro> livros) {
+    public void exibirLivros(ArrayList<Livro> itensEmprestaveis) {
+        // Filtra apenas os itens do tipo Livro
+        ArrayList<Livro> livros = new ArrayList<>();
+        for (ItemEmprestavel item : itensEmprestaveis) {
+            if (item instanceof Livro) {
+                livros.add((Livro) item); // Adiciona o Livro à lista
+            }
+        }
         if (livros.isEmpty()) {
             System.out.println("Nenhum livro registrado.");
         } else {

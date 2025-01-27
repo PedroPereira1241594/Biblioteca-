@@ -1,16 +1,18 @@
 package Controller;
 
 import Model.Livro;
+import Model.ItemEmprestavel;
 import Model.Emprestimos;
 import Model.Reserva;
 import View.LivroView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class LivroController {
-    private final ArrayList<Livro> livros;
+    private final ArrayList<Livro> livros; // Agora é uma lista de ItemEmprestavel
     private LivroView livroView;
     private final EmprestimosController emprestimosController;
     private final List<Reserva> reservas; // Adicionada a lista de reservas
@@ -31,8 +33,8 @@ public class LivroController {
 
         System.out.print("Insira o ISBN: ");
         String isbn = scanner.nextLine();
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equals(isbn)) {
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
                 System.out.println("Já Existe um Livro com o Mesmo ISBN");
                 return;
             }
@@ -64,9 +66,9 @@ public class LivroController {
         String isbn = scanner.nextLine();
 
         Livro livro1 = null;
-        for (Livro Indice : livros) {
-            if (Indice.getIsbn().equals(isbn)) {
-                livro1 = Indice;
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                livro1 = (Livro) item;
                 break;
             }
         }
@@ -108,9 +110,9 @@ public class LivroController {
         String isbn = scanner.nextLine();
 
         Livro livro1 = null;
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equals(isbn)) {
-                livro1 = livro;
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                livro1 = (Livro) item;
                 break;
             }
         }
@@ -131,8 +133,8 @@ public class LivroController {
 
         // Verificar se o livro está associado a algum empréstimo ativo
         boolean livroEmprestado = false;
-        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
-            if (emprestimo.getLivros().contains(livro1)) {
+        for (Emprestimos emprestimo : emprestimosController.getEmprestimos()) {
+            if (emprestimo.getItens().contains(livro1) && emprestimo.getDataEfetivaDevolucao() == null) {
                 livroEmprestado = true;
                 break;
             }
@@ -149,9 +151,9 @@ public class LivroController {
     }
 
     public Livro buscarLivroPorIsbn(String isbn) {
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equalsIgnoreCase(isbn)) {
-                return livro; // Retorna o livro se o ISBN for encontrado
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
+                return (Livro) item; // Retorna o livro se o ISBN for encontrado
             }
         }
         return null; // Retorna null se o livro com o ISBN não for encontrado
@@ -159,24 +161,22 @@ public class LivroController {
 
     public boolean verificarLivroDisponivelParaEmprestimo(Livro livro) {
         // Recuperar todos os empréstimos ativos
-        List<Emprestimos> emprestimosAtivos = emprestimosController.listarEmprestimosAtivos();
+        LocalDate dataInicio = LocalDate.now();  // Defina a data de início desejada
+        LocalDate dataPrevistaDevolucao = dataInicio.plusDays(7);  // Exemplo de data prevista de devolução
 
-        for (Emprestimos emprestimo : emprestimosAtivos) {
-            // Verifica se o livro está na lista de livros do empréstimo e se não tem data efetiva de devolução
-            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
-                return false; // O livro está emprestado e ainda não foi devolvido
-            }
+        if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
+            return false; // O livro está emprestado e não pode ser emprestado novamente
         }
         return true; // O livro está disponível para empréstimo
     }
 
     public boolean verificarLivroEmprestado(Livro livro) {
-        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
-            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
-                return true; // Livro emprestado, sem data de devolução
-            }
-        }
+        LocalDate dataInicio = LocalDate.now();  // Defina a data de início desejada
+        LocalDate dataPrevistaDevolucao = dataInicio.plusDays(7);  // Exemplo de data prevista de devolução
 
-        return false; // Livro não está emprestado ou já devolvido
+        if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
+            return true; // O livro está emprestado no período
+        }
+        return false; // O livro não está emprestado ou já foi devolvido
     }
 }

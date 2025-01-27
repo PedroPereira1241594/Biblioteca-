@@ -49,7 +49,7 @@ public class Main {
 
         emprestimosController.setLivroController(livroController);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
-        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
@@ -99,7 +99,14 @@ public class Main {
                         livros.addAll(ImportarDados.carregarLivros(caminhoLivros));
                         utentes.addAll(ImportarDados.carregarUtentes(caminhoUtentes));
                         jornals.addAll(ImportarDados.carregarJornais(caminhoJornal));
-                        emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
+
+                        // Combina as listas de itens emprestáveis
+                        ArrayList<ItemEmprestavel> itens = new ArrayList<>();
+                        itens.addAll(livros);
+                        itens.addAll(jornals);
+
+                        // Carrega os empréstimos usando a lista combinada
+                        emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, itens));
                         reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
                         System.out.println("Dados carregados com sucesso!");
                     } else if (escolha == 2) {
@@ -131,4 +138,3 @@ public class Main {
         scanner.close();
     }
 }
-
