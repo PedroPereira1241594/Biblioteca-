@@ -158,13 +158,6 @@ public class EmprestimosController {
         return false;
     }
 
-
-
-
-
-
-
-
     // Verifica se o item já está emprestado no período entre dataInicio e dataPrevistaDevolucao
     public boolean itemPossuiEmprestimoAtivo(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
         for (Emprestimos emprestimo : emprestimos) {
