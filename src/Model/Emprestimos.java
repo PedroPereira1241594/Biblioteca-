@@ -2,6 +2,7 @@ package Model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Emprestimos {
     private int numero;
@@ -96,5 +97,18 @@ public class Emprestimos {
                 ", dataEfetivaDevolucao=" + dataEfetivaDevolucao + "]";
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // Verifica se é o mesmo objeto
+        if (o == null || getClass() != o.getClass()) return false; // Verifica classe e null
+        Emprestimos that = (Emprestimos) o;
+        return numero == that.numero; // Compara pelo número do empréstimo (assumindo que é único)
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numero); // Usa o número como base para o hash
     }
 }

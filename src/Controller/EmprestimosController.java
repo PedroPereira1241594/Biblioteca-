@@ -149,14 +149,31 @@ public class EmprestimosController {
     }
 
     // CRUD: Delete
-    public boolean removerEmprestimo(int numero) {
-        Emprestimos emprestimo = consultarEmprestimo(numero);
-        if (emprestimo != null) {
-            emprestimos.remove(emprestimo);
-            System.out.println("Empréstimo removido com sucesso.");
+    public boolean removerEmprestimo(int numeroEmprestimo) {
+        System.out.println("Lista de empréstimos antes da remoção: " + emprestimos);
+
+        Iterator<Emprestimos> iterator = emprestimos.iterator();
+
+        while (iterator.hasNext()) {
+            Emprestimos emprestimo = iterator.next();
+            if (emprestimo.getNumero() == numeroEmprestimo) {
+                iterator.remove();
+                System.out.println("Empréstimo removido: " + emprestimo);
+                System.out.println("Lista de empréstimos após a remoção: " + emprestimos);
+                return true;
+            }
         }
+
+        System.out.println("Nenhum empréstimo com o número " + numeroEmprestimo + " foi encontrado.");
         return false;
     }
+
+
+
+
+
+
+
 
     // Verifica se o item já está emprestado no período entre dataInicio e dataPrevistaDevolucao
     public boolean itemPossuiEmprestimoAtivo(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
@@ -181,9 +198,36 @@ public class EmprestimosController {
     }
 
     public List<Emprestimos> listarTodosEmprestimos() {
-        return new ArrayList<>(emprestimos); // Retorna uma cópia da lista de empréstimos
+        return emprestimos; // Retorna uma cópia da lista de empréstimos
     }
 
+    public void adicionarItemEmprestimo(int numero, ItemEmprestavel item) {
+        Emprestimos emprestimo = consultarEmprestimo(numero);
+        if (emprestimo != null) {
+            if (!emprestimo.getItens().contains(item)) {
+                emprestimo.getItens().add(item);
+                System.out.println("Item '" + item.getTitulo() + "' adicionado ao empréstimo com sucesso!");
+            } else {
+                System.out.println("O item '" + item.getTitulo() + "' já está neste empréstimo.");
+            }
+        } else {
+            System.out.println("Erro: Empréstimo não encontrado.");
+        }
+    }
+
+    public void removerItemEmprestimo(int numero, ItemEmprestavel item) {
+        Emprestimos emprestimo = consultarEmprestimo(numero);
+        if (emprestimo != null) {
+            if (emprestimo.getItens().contains(item)) {
+                emprestimo.getItens().remove(item);
+                System.out.println("Item '" + item.getTitulo() + "' removido do empréstimo com sucesso!");
+            } else {
+                System.out.println("O item '" + item.getTitulo() + "' não está neste empréstimo.");
+            }
+        } else {
+            System.out.println("Erro: Empréstimo não encontrado.");
+        }
+    }
 
 
 }

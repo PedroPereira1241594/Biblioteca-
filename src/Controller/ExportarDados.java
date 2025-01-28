@@ -62,31 +62,52 @@ public class ExportarDados {
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
-                String livrosEmprestados = "";
-                for (ItemEmprestavel livro : emprestimo.getItens()) {
-                    livrosEmprestados += livro.getISBN() + ", "; // Adiciona ISBN com vírgula e espaço
+                // Variáveis para armazenar os ISSNs e ISBNs
+                String issns = "";
+                String isbns = "";
+
+                // Iterar sobre os itens emprestados
+                for (ItemEmprestavel item : emprestimo.getItens()) {
+                    if (item instanceof Jornal) {
+                        // Adicionar ISSN (com vírgula se necessário)
+                        if (!issns.isEmpty()) {
+                            issns += ", ";
+                        }
+                        issns += ((Jornal) item).getIssn();
+                    } else if (item instanceof Livro) {
+                        // Adicionar ISBN (com vírgula se necessário)
+                        if (!isbns.isEmpty()) {
+                            isbns += ", ";
+                        }
+                        isbns += ((Livro) item).getIsbn();
+                    }
                 }
 
-                // Remover a última vírgula e espaço, se necessário
-                if (livrosEmprestados.endsWith(", ")) {
-                    livrosEmprestados = livrosEmprestados.substring(0, livrosEmprestados.length() - 2);
-                }
+                // Garantir que ISSN e ISBN apareçam sempre, mesmo que estejam vazios
+                String issnStr = "ISSN: " + (issns.isEmpty() ? "" : issns);
+                String isbnStr = "ISBN: " + (isbns.isEmpty() ? "" : isbns);
 
-                // Escrever no arquivo
-                writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
+                // Montar a linha de saída
+                String linha = String.format(
+                        "ID: %d; Nome: %s; %s; %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(),
-                        livrosEmprestados,
-                        emprestimo.getDataInicio().toString(),
-                        emprestimo.getDataPrevistaDevolucao().toString(),
-                        emprestimo.getDataEfetivaDevolucao() == null ? "null" : emprestimo.getDataEfetivaDevolucao().toString()));
+                        issnStr,
+                        isbnStr,
+                        emprestimo.getDataInicio(),
+                        emprestimo.getDataPrevistaDevolucao(),
+                        emprestimo.getDataEfetivaDevolucao() == null ? "null" : emprestimo.getDataEfetivaDevolucao()
+                );
+
+                // Escrever a linha no arquivo
+                writer.write(linha);
             }
+
             System.out.println("Empréstimos guardados com sucesso no ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
         }
     }
-
 
 
 

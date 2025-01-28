@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,8 +46,8 @@ public class EmprestimosView {
             switch (opcao) {
                 case 1 -> criarEmprestimo();
                 case 2 -> consultarEmprestimo();
-                //case 3 -> //atualizarEmprestimo();
-                //case 4 -> //removerEmprestimo();
+                case 3 -> atualizarEmprestimo();
+                case 4 -> removerEmprestimo();
                 case 5 -> listarEmprestimos();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
@@ -329,31 +330,48 @@ public class EmprestimosView {
         return scanner.nextInt();
     }
 
-
-    /*public void atualizarEmprestimo() {
+    public void atualizarEmprestimo() {
         System.out.println("\n=== Atualizar Empréstimo ===");
-        int numero = obterNumeroEmprestimo();
-        Emprestimos emprestimo = emprestimosController.buscarEmprestimoPorNumero(numero);
 
+        // Obter o número do empréstimo
+        System.out.print("Digite o número do empréstimo: ");
+        int numeroEmprestimo = scanner.nextInt();
+        scanner.nextLine(); // Limpar buffer
+
+        // Consultar o empréstimo pelo número
+        Emprestimos emprestimo = emprestimosController.consultarEmprestimo(numeroEmprestimo);
+
+        // Validar se o empréstimo foi encontrado
         if (emprestimo == null) {
             System.out.println("Erro: Empréstimo não encontrado.");
             return;
         }
 
+        // Exibir opções de atualização
         System.out.println("O que você deseja atualizar?");
         System.out.println("1. Atualizar as datas do empréstimo");
-        System.out.println("2. Alterar livros do empréstimo");
+        System.out.println("2. Alterar itens do empréstimo");
         System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
-        int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
 
+        // Capturar a opção do usuário
+        int opcao;
+        try {
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar buffer
+        } catch (InputMismatchException e) {
+            System.out.println("Erro: Opção inválida. Digite um número.");
+            scanner.nextLine(); // Limpar buffer
+            return;
+        }
+
+        // Processar a opção escolhida
         switch (opcao) {
             case 1:
-                atualizarDatasEmprestimo(emprestimo, numero);
+                atualizarDatasEmprestimo(emprestimo, numeroEmprestimo);
                 break;
             case 2:
-                modificarLivrosEmprestimo(emprestimo);
+                modificarItensEmprestimo(emprestimo);
                 break;
             case 0:
                 System.out.println("Operação cancelada.");
@@ -361,7 +379,7 @@ public class EmprestimosView {
             default:
                 System.out.println("Opção inválida.");
         }
-    }*/
+    }
 
 
     private void atualizarDatasEmprestimo(Emprestimos emprestimo, int numero) {
@@ -389,80 +407,158 @@ public class EmprestimosView {
         }
     }
 
-    /*private void modificarLivrosEmprestimo(Emprestimos emprestimo) {
-        System.out.println("O que você deseja fazer com os livros do empréstimo?");
+    private void modificarItensEmprestimo(Emprestimos emprestimo) {
+        System.out.println("\nO que você deseja fazer com os itens do empréstimo?");
         System.out.println("1. Adicionar livro");
         System.out.println("2. Remover livro");
+        System.out.println("3. Adicionar jornal");
+        System.out.println("4. Remover jornal");
         System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
         int opcao = scanner.nextInt();
         scanner.nextLine(); // Limpar buffer
 
         switch (opcao) {
-            case 1:
-                adicionarLivroNoEmprestimo(emprestimo);
-                break;
-            case 2:
-                removerLivroDoEmprestimo(emprestimo);
-                break;
-            case 0:
-                System.out.println("Operação cancelada.");
-                return;
-            default:
-                System.out.println("Opção inválida.");
+            case 1 -> adicionarLivroAoEmprestimo(emprestimo);
+            case 2 -> removerLivroDoEmprestimo(emprestimo);
+            case 3 -> adicionarJornalAoEmprestimo(emprestimo);
+            case 4 -> removerJornalDoEmprestimo(emprestimo);
+            case 0 -> System.out.println("Operação cancelada.");
+            default -> System.out.println("Opção inválida.");
         }
-    }*/
-
-    /*private void adicionarLivroNoEmprestimo(Emprestimos emprestimo) {
-        System.out.println("\n=== Adicionar Livro ao Empréstimo ===");
-        System.out.print("Informe o ISBN do livro: ");
-        String isbn = scanner.nextLine();
-
-        Livro livro = livroController.buscarLivroPorIsbn(isbn);
-        if (livro == null) {
-            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
-            return;
-        }
-
-        if (emprestimo.getItens().contains(livro)) {
-            System.out.println("Erro: O livro '" + livro.getNome() + "' já está neste empréstimo.");
-            return;
-        }
-
-        emprestimosController.adicionarLivroNoEmprestimo(emprestimo, livro);
-        System.out.println("Livro adicionado ao empréstimo com sucesso.");
-    }*/
-
-    /*private void removerLivroDoEmprestimo(Emprestimos emprestimo) {
-        System.out.println("\n=== Remover Livro do Empréstimo ===");
-        System.out.print("Informe o ISBN do livro a ser removido: ");
-        String isbn = scanner.nextLine();
-
-        Livro livro = livroController.buscarLivroPorIsbn(isbn);
-        if (livro == null) {
-            System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
-            return;
-        }
-
-        if (!emprestimo.getItens().contains(livro)) {
-            System.out.println("Erro: O livro '" + livro.getNome() + "' não está neste empréstimo.");
-            return;
-        }
-
-        emprestimosController.removerLivroDoEmprestimo(emprestimo, livro);
-        System.out.println("Livro removido do empréstimo com sucesso.");
     }
 
-    private void removerEmprestimo() {
-        System.out.println("\n=== Remover Empréstimo ===");
-        int numero = obterNumeroEmprestimo();
+    private void adicionarLivroAoEmprestimo(Emprestimos emprestimo) {
+        Livro livro = null;
+        while (livro == null) {
+            System.out.print("ISBN do livro a adicionar: ");
+            String isbn = scanner.nextLine();
+            livro = livroController.buscarLivroPorIsbn(isbn);
 
-        if (emprestimosController.removerEmprestimo(numero)) {
-            System.out.println("Empréstimo removido com sucesso.");
-        } else {
-            System.out.println("Erro: Empréstimo com o número " + numero + " não encontrado.");
+            if (livro == null) {
+                System.out.println("Erro: Livro não encontrado. Deseja:");
+                System.out.println("1. Adicionar novo livro");
+                System.out.println("2. Tentar novamente");
+                System.out.println("0. Cancelar");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1 -> {
+                        livroController.adicionarLivro();
+                        livro = livroController.buscarLivroPorIsbn(isbn);
+                    }
+                    case 2 -> System.out.println("Tente novamente...");
+                    case 0 -> {
+                        System.out.println("Operação cancelada.");
+                        return;
+                    }
+                    default -> System.out.println("Opção inválida!");
+                }
+            } else if (emprestimo.getItens().contains(livro)) {
+                System.out.println("Erro: O livro '" + livro.getNome() + "' já está no empréstimo.");
+                livro = null;
+            }
         }
-    }*/
+
+        emprestimosController.adicionarItemEmprestimo(emprestimo.getNumero(), livro);
+        System.out.println("Livro adicionado com sucesso.");
+    }
+
+    private void removerLivroDoEmprestimo(Emprestimos emprestimo) {
+        System.out.print("ISBN do livro a remover: ");
+        String isbn = scanner.nextLine();
+        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+
+        if (livro != null && emprestimo.getItens().contains(livro)) {
+            emprestimosController.removerItemEmprestimo(emprestimo.getNumero(), livro);
+            System.out.println("Livro removido com sucesso.");
+        } else {
+            System.out.println("Erro: Livro não encontrado no empréstimo.");
+        }
+    }
+
+    private void adicionarJornalAoEmprestimo(Emprestimos emprestimo) {
+        Jornal jornal = null;
+        while (jornal == null) {
+            System.out.print("ISSN do jornal a adicionar: ");
+            String issn = scanner.nextLine();
+            jornal = jornalController.procurarPorIssn(issn);
+
+            if (jornal == null) {
+                System.out.println("Erro: Jornal não encontrado. Deseja:");
+                System.out.println("1. Adicionar novo jornal");
+                System.out.println("2. Tentar novamente");
+                System.out.println("0. Cancelar");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (opcao) {
+                    case 1 -> {
+                        System.out.print("Informe o título: ");
+                        String titulo = scanner.nextLine();
+                        System.out.print("Informe a categoria: ");
+                        String categoria = scanner.nextLine();
+                        System.out.print("Informe a editora: ");
+                        String editora = scanner.nextLine();
+                        System.out.print("Informe a data de publicação (dd/MM/yyyy): ");
+                        String dataTexto = scanner.nextLine();
+                        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        LocalDate data = LocalDate.parse(dataTexto, formato);
+                        jornalController.criarJornal(issn, titulo, categoria, editora, data);
+                        jornal = jornalController.procurarPorIssn(issn);
+                    }
+                    case 2 -> System.out.println("Tente novamente...");
+                    case 0 -> {
+                        System.out.println("Operação cancelada.");
+                        return;
+                    }
+                    default -> System.out.println("Opção inválida!");
+                }
+            } else if (emprestimo.getItens().contains(jornal)) {
+                System.out.println("Erro: O jornal '" + jornal.getTitulo() + "' já está no empréstimo.");
+                jornal = null;
+            }
+        }
+
+        emprestimosController.adicionarItemEmprestimo(emprestimo.getNumero(), jornal);
+        System.out.println("Jornal adicionado com sucesso.");
+    }
+
+    private void removerJornalDoEmprestimo(Emprestimos emprestimo) {
+        System.out.print("ISSN do jornal a remover: ");
+        String issn = scanner.nextLine();
+        Jornal jornal = jornalController.procurarPorIssn(issn);
+
+        if (jornal != null && emprestimo.getItens().contains(jornal)) {
+            emprestimosController.removerItemEmprestimo(emprestimo.getNumero(), jornal);
+            System.out.println("Jornal removido com sucesso.");
+        } else {
+            System.out.println("Erro: Jornal não encontrado no empréstimo.");
+        }
+    }
+
+    public void removerEmprestimo() {
+        System.out.print("Digite o número do empréstimo que deseja remover: ");
+        int numeroEmprestimo = scanner.nextInt();
+
+        boolean sucesso = emprestimosController.removerEmprestimo(numeroEmprestimo);
+
+        if (sucesso) {
+            System.out.println("Empréstimo removido com sucesso!");
+        } else {
+            System.out.println("Nenhum empréstimo encontrado com o número informado.");
+        }
+
+        // Imprimir a lista atualizada para garantir que o empréstimo foi removido
+        emprestimosController.listarTodosEmprestimos().forEach(System.out::println);
+    }
+
+
+
+
 
     public void listarEmprestimos() {
         // Obtém a lista de empréstimos ativos do controlador
@@ -474,35 +570,58 @@ public class EmprestimosView {
             return;
         }
 
+        // Remover duplicados manualmente
+        List<Emprestimos> emprestimosSemDuplicados = new ArrayList<>();
+        for (Emprestimos emprestimo : emprestimosAtivos) {
+            boolean jaExiste = false;
+            for (Emprestimos e : emprestimosSemDuplicados) {
+                if (e.getNumero() == emprestimo.getNumero()) {
+                    jaExiste = true;
+                    break;
+                }
+            }
+            if (!jaExiste) {
+                emprestimosSemDuplicados.add(emprestimo);
+            }
+        }
+
+        // Ordenar a lista manualmente usando Bubble Sort
+        for (int i = 0; i < emprestimosSemDuplicados.size() - 1; i++) {
+            for (int j = 0; j < emprestimosSemDuplicados.size() - i - 1; j++) {
+                if (emprestimosSemDuplicados.get(j).getNumero() > emprestimosSemDuplicados.get(j + 1).getNumero()) {
+                    Emprestimos temp = emprestimosSemDuplicados.get(j);
+                    emprestimosSemDuplicados.set(j, emprestimosSemDuplicados.get(j + 1));
+                    emprestimosSemDuplicados.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Exibir os empréstimos
         System.out.println("\n=== Lista de Empréstimos ===");
         System.out.printf("%-10s %-35s %-20s %-25s %-20s\n",
                 "Número", "Utente", "Itens Emprestados", "Data Início", "Data Efetiva");
 
-        // Itera sobre cada empréstimo
-        for (Emprestimos emprestimo : emprestimosAtivos) {
-            // Validação do utente
+        for (Emprestimos emprestimo : emprestimosSemDuplicados) {
+            // Validação do nome do utente
             String utenteNome = (emprestimo.getUtente() != null && emprestimo.getUtente().getNome() != null)
                     ? emprestimo.getUtente().getNome()
                     : "Desconhecido";
 
             // Validação e construção da string de itens
-            String itens = "";
-            if (emprestimo.getItens() == null || emprestimo.getItens().isEmpty()) {
-                itens = "Sem itens"; // Caso não existam itens no empréstimo
-            } else {
+            String itens = "Sem itens"; // Valor padrão
+            if (emprestimo.getItens() != null && !emprestimo.getItens().isEmpty()) {
                 List<ItemEmprestavel> itensEmprestados = emprestimo.getItens();
+                itens = ""; // Inicializa vazio
                 for (int i = 0; i < itensEmprestados.size(); i++) {
                     ItemEmprestavel item = itensEmprestados.get(i);
                     if (item != null) {
-                        String id = "";
-
-                        // Verifica se é um livro ou jornal e obtém o identificador correspondente
                         if (item instanceof Livro) {
-                            id = "ISBN: " + ((Livro) item).getIsbn();
+                            itens += "ISBN: " + ((Livro) item).getIsbn();
                         } else if (item instanceof Jornal) {
-                            id = "ISSN: " + ((Jornal) item).getIssn();
+                            itens += "ISSN: " + ((Jornal) item).getIssn();
+                        } else {
+                            itens += "Item desconhecido";
                         }
-                        itens +=  id;
                     } else {
                         itens += "Item desconhecido";
                     }
@@ -528,6 +647,8 @@ public class EmprestimosView {
                     emprestimo.getNumero(), utenteNome, itens, dataInicio, dataEfetiva);
         }
     }
+
+
 
 
 

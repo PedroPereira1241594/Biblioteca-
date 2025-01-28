@@ -117,7 +117,7 @@ public class ImportarDados {
                 String[] dados = linha.split(";");
 
                 // Verifica se a linha possui todos os campos necessários
-                if (dados.length < 6) {
+                if (dados.length < 7) { // Ajustado para 7 colunas no mínimo
                     System.out.println("Linha " + linhaNumero + " mal formatada. Ignorada.");
                     continue;
                 }
@@ -126,7 +126,39 @@ public class ImportarDados {
                     // Extrai os dados da linha
                     int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim());
                     String nomeUtente = dados[1].replace("Nome: ", "").trim();
-                    String itensEmprestadosStr = dados[2].replace("ISBN: ", "").trim();
+                    String issnStr = dados[2].replace("ISSN: ", "").trim();
+                    String isbnStr = dados[3].replace("ISBN: ", "").trim();
+
+                    // Processa ISSNs e ISBNs em listas
+                    List<ItemEmprestavel> itensEmprestados = new ArrayList<>();
+
+                    // Processa ISSNs
+                    if (!issnStr.isEmpty()) {
+                        String[] issns = issnStr.split(",");
+                        for (String issn : issns) {
+                            issn = issn.trim();
+                            for (ItemEmprestavel item : itens) {
+                                if (item instanceof Jornal && ((Jornal) item).getIssn().equalsIgnoreCase(issn)) {
+                                    itensEmprestados.add(item);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Processa ISBNs
+                    if (!isbnStr.isEmpty()) {
+                        String[] isbns = isbnStr.split(",");
+                        for (String isbn : isbns) {
+                            isbn = isbn.trim();
+                            for (ItemEmprestavel item : itens) {
+                                if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
+                                    itensEmprestados.add(item);
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
                     // Procura o utente pelo nome
                     Utentes utente = null;
@@ -142,38 +174,12 @@ public class ImportarDados {
                         continue;
                     }
 
-                    // Processa os itens emprestados
-                    List<ItemEmprestavel> itensEmprestados = new ArrayList<>();
-                    String[] idsItens = itensEmprestadosStr.split(",");
-
-                    for (String idItem : idsItens) {
-                        idItem = idItem.trim();
-                        ItemEmprestavel itemEncontrado = null;
-
-                        // Procura o item pelo ISBN ou ISSN
-                        for (ItemEmprestavel item : itens) {
-                            if (item instanceof Livro && ((Livro) item).getIsbn().equals(idItem)) { // Corrigido para getIsbn()
-                                itemEncontrado = item;
-                                break;
-                            } else if (item instanceof Jornal && ((Jornal) item).getISSN().equals(idItem)) {
-                                itemEncontrado = item;
-                                break;
-                            }
-                        }
-
-                        if (itemEncontrado != null) {
-                            itensEmprestados.add(itemEncontrado);
-                        } else {
-                            System.out.println("Item com ID " + idItem + " não encontrado. Ignorado.");
-                        }
-                    }
-
                     // Processa datas
-                    LocalDate dataInicio = LocalDate.parse(dados[3].replace("DataInicio: ", "").trim());
-                    LocalDate dataPrevistaDevolucao = LocalDate.parse(dados[4].replace("DataPrevistaDevolução: ", "").trim());
+                    LocalDate dataInicio = LocalDate.parse(dados[4].replace("DataInicio: ", "").trim());
+                    LocalDate dataPrevistaDevolucao = LocalDate.parse(dados[5].replace("DataPrevistaDevolução: ", "").trim());
                     LocalDate dataEfetivaDevolucao = null;
 
-                    String dataEfetivaStr = dados[5].replace("DataEfetivaDevolução: ", "").trim();
+                    String dataEfetivaStr = dados[6].replace("DataEfetivaDevolução: ", "").trim();
                     if (!dataEfetivaStr.equalsIgnoreCase("null") && !dataEfetivaStr.isEmpty()) {
                         dataEfetivaDevolucao = LocalDate.parse(dataEfetivaStr);
                     }
@@ -192,7 +198,6 @@ public class ImportarDados {
 
         return emprestimos;
     }
-
 
 
     public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
