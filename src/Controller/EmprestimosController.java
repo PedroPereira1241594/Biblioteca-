@@ -34,7 +34,7 @@ public class EmprestimosController {
         this.livroController = livroController;
     }
 
-    public List<Emprestimos> getEmprestimos(){
+    public List<Emprestimos> getEmprestimos() {
         return emprestimos;
     }
 
@@ -150,16 +150,16 @@ public class EmprestimosController {
 
     // CRUD: Delete
     public boolean removerEmprestimo(int numeroEmprestimo) {
-        System.out.println("Lista de empréstimos antes da remoção: " + emprestimos);
+        //System.out.println("Lista de empréstimos antes da remoção: " + emprestimos);
 
         Iterator<Emprestimos> iterator = emprestimos.iterator();
 
         while (iterator.hasNext()) {
             Emprestimos emprestimo = iterator.next();
             if (emprestimo.getNumero() == numeroEmprestimo) {
-                iterator.remove();
+                iterator.remove(); // Remove o empréstimo da lista
                 System.out.println("Empréstimo removido: " + emprestimo);
-                System.out.println("Lista de empréstimos após a remoção: " + emprestimos);
+                //System.out.println("Lista de empréstimos após a remoção: " + emprestimos);
                 return true;
             }
         }
@@ -167,11 +167,6 @@ public class EmprestimosController {
         System.out.println("Nenhum empréstimo com o número " + numeroEmprestimo + " foi encontrado.");
         return false;
     }
-
-
-
-
-
 
 
 
@@ -198,8 +193,9 @@ public class EmprestimosController {
     }
 
     public List<Emprestimos> listarTodosEmprestimos() {
-        return emprestimos; // Retorna uma cópia da lista de empréstimos
+        return this.emprestimos; // Retorna a lista original armazenada
     }
+
 
     public void adicionarItemEmprestimo(int numero, ItemEmprestavel item) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
