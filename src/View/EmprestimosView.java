@@ -541,24 +541,33 @@ public class EmprestimosView {
     }
 
     public void removerEmprestimo() {
-        System.out.print("Digite o número do empréstimo que deseja remover: ");
-        int numeroEmprestimo = scanner.nextInt();
+        try {
+            System.out.print("Insira o número do empréstimo que deseja remover: ");
+            int numeroEmprestimo = scanner.nextInt();
 
-        boolean sucesso = emprestimosController.removerEmprestimo(numeroEmprestimo);
+            // Consultar o empréstimo
+            Emprestimos emprestimo = emprestimosController.consultarEmprestimo(numeroEmprestimo);
 
-        if (sucesso) {
-            System.out.println("Empréstimo removido com sucesso!");
-        } else {
-            System.out.println("Nenhum empréstimo encontrado com o número informado.");
+            if (emprestimo == null) {
+                System.out.println("Nenhum empréstimo encontrado com o número informado.");
+                return; // Encerra o método se o empréstimo não for encontrado
+            }
+
+            // Exibir detalhes do empréstimo antes de remover
+            emprestimosController.exibirDetalhesEmprestimo(emprestimo);
+
+            // Remover o empréstimo
+            boolean sucesso = emprestimosController.removerEmprestimo(numeroEmprestimo);
+
+            if (sucesso) {
+                System.out.println("Empréstimo removido com sucesso!");
+            } else {
+                System.out.println("Erro ao tentar remover o empréstimo.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-
-        // Imprimir a lista atualizada para garantir que o empréstimo foi removido
-        emprestimosController.listarTodosEmprestimos().forEach(System.out::println);
     }
-
-
-
-
 
     public void listarEmprestimos() {
         // Obtém a lista de empréstimos ativos do controlador

@@ -149,22 +149,12 @@ public class EmprestimosController {
     }
 
     // CRUD: Delete
-    public boolean removerEmprestimo(int numeroEmprestimo) {
-        System.out.println("Lista de empréstimos antes da remoção: " + emprestimos);
-
-        Iterator<Emprestimos> iterator = emprestimos.iterator();
-
-        while (iterator.hasNext()) {
-            Emprestimos emprestimo = iterator.next();
-            if (emprestimo.getNumero() == numeroEmprestimo) {
-                iterator.remove();
-                System.out.println("Empréstimo removido: " + emprestimo);
-                System.out.println("Lista de empréstimos após a remoção: " + emprestimos);
-                return true;
-            }
+    public boolean removerEmprestimo(int numero) {
+        Emprestimos emprestimo = consultarEmprestimo(numero);
+        if (emprestimo != null) {
+            emprestimos.remove(emprestimo);
+            return true;
         }
-
-        System.out.println("Nenhum empréstimo com o número " + numeroEmprestimo + " foi encontrado.");
         return false;
     }
 
