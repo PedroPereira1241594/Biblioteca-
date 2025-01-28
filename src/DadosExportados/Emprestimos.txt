@@ -16,3 +16,21 @@ ID: 17; Nome: Kévim Lopes; ISSN: ; ISBN: 3216549874567; DataInicio: 2025-02-01;
 ID: 18; Nome: Salvador Almeida; ISSN: ; ISBN: 1236547894561; DataInicio: 2025-03-01; DataPrevistaDevolução: 2025-03-10; DataEfetivaDevolução: 2025-03-08
 ID: 19; Nome: Francisco Cardoso; ISSN: ; ISBN: 8529637418529; DataInicio: 2025-04-01; DataPrevistaDevolução: 2025-04-10; DataEfetivaDevolução: 2025-04-07
 ID: 20; Nome: 1; ISSN: ; ISBN: 7539514568523; DataInicio: 2025-05-05; DataPrevistaDevolução: 2025-05-15; DataEfetivaDevolução: 2025-05-13
+ID: 2; Nome: Maria Santos; ISSN: ; ISBN: 4567891230123; DataInicio: 2024-01-10; DataPrevistaDevolução: 2024-01-24; DataEfetivaDevolução: 2024-01-23
+ID: 4; Nome: Ana Costa; ISSN: ; ISBN: 9781234567897; DataInicio: 2024-03-01; DataPrevistaDevolução: 2024-03-15; DataEfetivaDevolução: 2024-03-12
+ID: 5; Nome: Rui Pereira; ISSN: ; ISBN: 9876543210123; DataInicio: 2024-04-05; DataPrevistaDevolução: 2024-04-20; DataEfetivaDevolução: 2024-04-18
+ID: 6; Nome: Sofia Almeida; ISSN: ; ISBN: 5556667778889; DataInicio: 2024-05-10; DataPrevistaDevolução: 2024-05-20; DataEfetivaDevolução: 2024-05-18
+ID: 7; Nome: Laura Barbosa; ISSN: ; ISBN: 4445556667771; DataInicio: 2024-06-01; DataPrevistaDevolução: 2024-06-15; DataEfetivaDevolução: 2024-06-12
+ID: 8; Nome: Tiago Nogueira; ISSN: ; ISBN: 3334445556662; DataInicio: 2024-07-10; DataPrevistaDevolução: 2024-07-20; DataEfetivaDevolução: 2024-07-18
+ID: 9; Nome: Inês Ferreira; ISSN: ; ISBN: 2223334445553; DataInicio: 2024-08-01; DataPrevistaDevolução: 2024-08-15; DataEfetivaDevolução: 2024-08-13
+ID: 10; Nome: Miguel Rocha; ISSN: ; ISBN: 1112223334444; DataInicio: 2024-09-05; DataPrevistaDevolução: 2024-09-15; DataEfetivaDevolução: 2024-09-14
+ID: 11; Nome: Núria Abreu; ISSN: ; ISBN: 1239874563210; DataInicio: 2024-10-01; DataPrevistaDevolução: 2024-10-10; DataEfetivaDevolução: 2024-10-08
+ID: 12; Nome: Ângelo Vieira; ISSN: ; ISBN: 7894561230987; DataInicio: 2024-11-05; DataPrevistaDevolução: 2024-11-15; DataEfetivaDevolução: 2024-11-14
+ID: 13; Nome: António Matias; ISSN: ; ISBN: 6543219876543; DataInicio: 2024-12-01; DataPrevistaDevolução: 2024-12-10; DataEfetivaDevolução: 2024-12-08
+ID: 14; Nome: Núria-Patrícia Nascimento; ISSN: ; ISBN: 1472583690123; DataInicio: 2024-12-15; DataPrevistaDevolução: 2024-12-25; DataEfetivaDevolução: 2024-12-23
+ID: 15; Nome: Pilar Alves-Borges; ISSN: ; ISBN: 9517538524569; DataInicio: 2024-12-20; DataPrevistaDevolução: 2024-12-30; DataEfetivaDevolução: 2024-12-28
+ID: 16; Nome: Amélia Pereira; ISSN: ; ISBN: 7890123456789; DataInicio: 2025-01-05; DataPrevistaDevolução: 2025-01-15; DataEfetivaDevolução: 2025-01-12
+ID: 17; Nome: Kévim Lopes; ISSN: ; ISBN: 3216549874567; DataInicio: 2025-02-01; DataPrevistaDevolução: 2025-02-10; DataEfetivaDevolução: 2025-02-09
+ID: 18; Nome: Salvador Almeida; ISSN: ; ISBN: 1236547894561; DataInicio: 2025-03-01; DataPrevistaDevolução: 2025-03-10; DataEfetivaDevolução: 2025-03-08
+ID: 19; Nome: Francisco Cardoso; ISSN: ; ISBN: 8529637418529; DataInicio: 2025-04-01; DataPrevistaDevolução: 2025-04-10; DataEfetivaDevolução: 2025-04-07
+ID: 20; Nome: 1; ISSN: ; ISBN: 7539514568523; DataInicio: 2025-05-05; DataPrevistaDevolução: 2025-05-15; DataEfetivaDevolução: 2025-05-13
