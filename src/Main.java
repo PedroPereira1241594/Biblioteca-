@@ -112,6 +112,7 @@ public class Main {
                                 emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, itens));
                                 reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
                                 System.out.println("Dados carregados com sucesso!");
+                                break;
                             case 2:
                                 System.out.println("\nGuardando dados...");
                                 exportarLivros(caminhoLivros, livros);
@@ -119,6 +120,7 @@ public class Main {
                                 exportarJornal(caminhoJornal, jornals);
                                 exportarEmprestimos(caminhoEmprestimo, emprestimos);
                                 exportarReservas(caminhoReserva, reservas);
+                                break;
                             case 0:
                                 System.out.println("Saindo...");
                                 break;
