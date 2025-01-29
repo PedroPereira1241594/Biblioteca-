@@ -48,7 +48,7 @@ public class Main {
         livroController.setLivroView(livroView); // Configura o livroView no livroController
 
         emprestimosController.setLivroController(livroController);
-        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController,jornalController, emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);

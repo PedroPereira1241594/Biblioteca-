@@ -16,11 +16,11 @@ public class ReservaView {
     private UtenteController utenteController;
     private LivroController livroController;
     private JornalController jornalController;
-        private EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
+    private EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
     private Scanner scanner;
 
 
-    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, EmprestimosController emprestimosController) {
+    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController,JornalController jornalController, EmprestimosController emprestimosController) {
         this.reservaController = reservaController;
         this.utenteController = utenteController;
         this.livroController = livroController;
@@ -659,7 +659,7 @@ public class ReservaView {
             while (jornal == null) {
                 System.out.print("ISSN do Jornal " + (i + 1) + ": ");
                 String nome = scanner.nextLine();
-                jornal = jornalController.procurarPorIssn(jornal.getIssn());
+                jornal = jornalController.procurarPorIssn(nome);
 
                 if (jornal == null) {
                     System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
