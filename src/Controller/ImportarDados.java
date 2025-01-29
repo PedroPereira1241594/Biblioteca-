@@ -233,6 +233,7 @@ public class ImportarDados {
                 try {
                     // Extrai os dados da linha
                     int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim());
+
                     String nomeUtente = dados[1].replace("Nome: ", "").trim();
                     String issnStr = dados[2].replace("ISSN: ", "").trim();
                     String isbnStr = dados[3].replace("ISBN: ", "").trim();

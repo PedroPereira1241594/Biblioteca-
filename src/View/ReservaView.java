@@ -16,15 +16,17 @@ public class ReservaView {
     private UtenteController utenteController;
     private LivroController livroController;
     private JornalController jornalController;
+    private JornalView jornalView;
     private EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
     private Scanner scanner;
 
 
-    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, JornalController jornalController, EmprestimosController emprestimosController) {
+    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, JornalController jornalController, JornalView jornalView, EmprestimosController emprestimosController) {
         this.reservaController = reservaController;
         this.utenteController = utenteController;
         this.livroController = livroController;
         this.jornalController = jornalController;
+        this.jornalView = jornalView;
         this.emprestimosController = emprestimosController; // Agora está corretamente inicializado
         this.scanner = new Scanner(System.in);
     }
@@ -657,12 +659,12 @@ public class ReservaView {
             Jornal jornal = null;
             while (jornal == null) {
                 System.out.print("ISSN do Jornal " + (i + 1) + ": ");
-                String nome = scanner.nextLine();
-                jornal = jornalController.procurarPorIssn(nome);
+                String issn = scanner.nextLine();
+                jornal = jornalController.procurarPorIssn(issn);
 
                 if (jornal == null) {
                     System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
-                    do {
+
                         System.out.println("1. Adicionar Jornal");
                         System.out.println("2. Tentar novamente");
                         System.out.println("0. Cancelar");
@@ -672,8 +674,8 @@ public class ReservaView {
 
                         switch (opcao) {
                             case 1:
-                                jornalController.criarJornal(jornal.getIssn(), jornal.getTitulo(), jornal.getCategoria(), jornal.getEditora(), jornal.getDataPublicacao());
-                                jornal = jornalController.procurarPorIssn(jornal.getIssn());
+                                jornalView.criarJornal();
+                                jornal = jornalController.procurarPorIssn(issn);
                                 break;
                             case 2:
                                 System.out.println("Tente novamente...");
@@ -683,7 +685,6 @@ public class ReservaView {
                             default:
                                 System.out.println("Opção inválida! Tente novamente.");
                         }
-                    } while (opcao != 0);
                 } else if (jornais.contains(jornal)) {
                     System.out.println("Erro: O jornal já foi adicionado a esta reserva.");
                     jornal = null;

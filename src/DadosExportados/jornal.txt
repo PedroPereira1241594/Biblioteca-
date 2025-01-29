@@ -18,3 +18,4 @@ ISSN: 333444555; Titulo: O Melhor do Esporte; Categoria: Esportes; Editora: Espo
 ISSN: 666777888; Titulo: Cultura e Sociedade; Categoria: Artes; Editora: Expressão Cultural; Data Publicação: 2024-06-30
 ISSN: 999000111; Titulo: Turismo no Mundo; Categoria: Turismo; Editora: Viagem Livre; Data Publicação: 2024-07-05
 ISSN: 111222333; Titulo: Ecologia em Foco; Categoria: Meio Ambiente; Editora: Natureza Pura; Data Publicação: 2024-08-10
+ISSN: 12; Titulo: 12; Categoria: 12; Editora: 12; Data Publicação: 2025-01-20

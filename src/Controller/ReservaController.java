@@ -19,16 +19,17 @@ public class ReservaController {
     public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas) {
         this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
         this.reservas = reservas; // Atribui a lista de reservas
-
-        // Inicializa o maiorId com o maior ID das reservas existentes
-        this.maiorId = 0;
+        this.maiorId = calcularMaiorId(reservas);
+        this.scanner = new Scanner(System.in);
+    }
+    private int calcularMaiorId(List<Reserva> reservas) {
+        int maior = 0;
         for (Reserva reserva : reservas) {
-            if (reserva.getNumero() > maiorId) {
-                maiorId = reserva.getNumero(); // Atualiza maiorId com o maior ID encontrado
+            if (reserva.getNumero() > maior) {
+                maior = reserva.getNumero();
             }
         }
-
-        this.scanner = new Scanner(System.in);
+        return maior;
     }
 
     public void setEmprestimosController(EmprestimosController emprestimosController) {
@@ -46,13 +47,6 @@ public class ReservaController {
             return;
         }
 
-        // Verifica se há itens duplicados na reserva
-        Set<ItemEmprestavel> itensUnicos = new HashSet<>(itensParaReserva);
-        if (itensUnicos.size() < itensParaReserva.size()) {
-            System.out.println("Erro: Não é permitido incluir itens repetidos na mesma reserva.");
-            return;
-        }
-
         // Valida data de fim da reserva
         if (dataFim.isBefore(dataInicio)) {
             System.out.println("Erro: A data de fim da reserva não pode ser anterior à data de início.");
@@ -62,31 +56,16 @@ public class ReservaController {
         // Verifica se os itens possuem empréstimos ativos
         for (ItemEmprestavel item : itensParaReserva) {
             if (emprestimosController.itemPossuiEmprestimoAtivo(item, dataInicio, dataFim)) {
-                String tipoItem = (item instanceof Livro) ? "livro" : "jornal";
-                System.out.println("Erro: O " + tipoItem + " '" + item.getIdentificador() + "' está emprestado no período solicitado.");
+                System.out.println("Erro: O item '" + item.getIdentificador() + "' está emprestado no período solicitado.");
                 return;
             }
         }
 
-        // Verifica se os itens já estão reservados
-        for (ItemEmprestavel item : itensParaReserva) {
-            for (Reserva reserva : reservas) {
-                if (reserva.getItens().contains(item)) {
-                    LocalDate reservaInicio = reserva.getDataInicio();
-                    LocalDate reservaFim = reserva.getDataFim();
+        // Atualiza o maiorId com base no array de reservas antes de criar a nova
+        this.maiorId = calcularMaiorId(reservas);
 
-                    if (!(dataFim.isBefore(reservaInicio) || dataInicio.isAfter(reservaFim))) {
-                        String tipoItem = (item instanceof Livro) ? "livro" : "jornal";
-                        System.out.println("Erro: O " + tipoItem + " '" + item.getIdentificador() + "' já está reservado no intervalo de datas fornecido.");
-                        return;
-                    }
-                }
-            }
-        }
-
-        // Atualiza o número da reserva com o maior ID encontrado + 1
+        // Gera o próximo número da reserva
         int numeroReserva = maiorId + 1;
-        maiorId = numeroReserva;  // Atualiza o maiorId para o próximo valor
 
         // Criação da reserva
         Reserva novaReserva = new Reserva(numeroReserva, utente, new ArrayList<>(itensParaReserva), dataRegisto, dataInicio, dataFim);
@@ -148,7 +127,7 @@ public class ReservaController {
             if (item instanceof Livro) {
                 System.out.println(" - Livro: " + item.getIdentificador() + " (ISBN: " + ((Livro) item).getIsbn() + ")");
             } else if (item instanceof Jornal) {
-                System.out.println(" - Jornal: " + item.getIdentificador() + " (Data de Publicação: " + ((Jornal) item).getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")");
+                System.out.println(" - Jornal: " + item.getIdentificador() + " (ISSN: " + ((Jornal) item).getIssn() + ")");
             }
         }
         System.out.println("=".repeat(42));
