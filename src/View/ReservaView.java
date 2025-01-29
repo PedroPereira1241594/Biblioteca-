@@ -518,7 +518,7 @@ public class ReservaView {
         // Exibir as reservas
         System.out.println("\n=== Lista de Reservas ===");
         System.out.printf("%-10s %-35s %-100s %-25s %-20s %-20s\n",
-                "Número", "Utente", "Itens Reservados", "Data Registro", "Data Início", "Data Fim");
+                "Número", "Utente", "Itens Reservados", "Data Registo", "Data Início", "Data Fim");
 
         for (Reserva reserva : reservasSemDuplicados) {
             // Validação do nome do utente
