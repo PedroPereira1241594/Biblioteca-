@@ -64,13 +64,13 @@ public class EmprestimosController {
         // Verifica conflitos com reservas e disponibilidade de itens
         for (ItemEmprestavel item : itensParaEmprestimo) {
             if (item instanceof Livro) {
-                if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataPrevistaDevolucao)) {
+                if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataPrevistaDevolucao) && verificarItemEmprestado(item, dataInicio, dataPrevistaDevolucao)) {
                     System.out.println("Erro: O livro '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataPrevistaDevolucao + " e não pode ser emprestado.");
                     return;
                 }
             } else if (item instanceof Jornal) {
                 // Para jornais, verifique se já está emprestado ou reservado
-                if (itemPossuiEmprestimoAtivo(item, dataInicio, dataPrevistaDevolucao)) {
+                if (itemPossuiEmprestimoAtivo(item, dataInicio, dataPrevistaDevolucao) && verificarItemEmprestado(item, dataInicio, dataPrevistaDevolucao)) {
                     System.out.println("Erro: O jornal '" + item.getIdentificador() + "' já está emprestado no período solicitado.");
                     return;
                 }

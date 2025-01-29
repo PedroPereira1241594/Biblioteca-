@@ -117,9 +117,17 @@ public class ReservaView {
 
             // Verificar se algum item está emprestado e não pode ser reservado
             for (ItemEmprestavel item : itensParaReserva) {
-                if (verificarItemEmprestado(item, dataInicio, dataFim)) {
-                    System.out.println("Erro: O item '" + item.getTitulo() + "' está emprestado e não pode ser reservado.");
-                    return;
+                if (item instanceof Livro) {
+                    if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim) && emprestimosController.verificarItemEmprestado(item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataFim);
+                        return;
+                    }
+                } else if (item instanceof Jornal) {
+                    // Para jornais, verifique se já está emprestado ou reservado
+                    if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim) && emprestimosController.verificarItemEmprestado(item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataFim);
+                        return;
+                    }
                 }
             }
 
