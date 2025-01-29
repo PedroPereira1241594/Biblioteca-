@@ -516,8 +516,8 @@ public class ReservaView {
 
         // Exibir as reservas
         System.out.println("\n=== Lista de Reservas ===");
-        System.out.printf("%-10s %-35s %-20s %-25s %-20s\n",
-                "Número", "Utente", "Itens Reservados", "Data Registro", "Data Início");
+        System.out.printf("%-10s %-35s %-45s %-25s %-20s %-20s\n",
+                "Número", "Utente", "Itens Reservados", "Data Registro", "Data Início", "Data Fim");
 
         for (Reserva reserva : reservasSemDuplicados) {
             // Validação do nome do utente
@@ -560,9 +560,13 @@ public class ReservaView {
                     ? reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     : "Pendente";
 
+            String dataFim = (reserva.getDataFim() != null)
+                    ? reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                    : "Pendente";
+
             // Exibe as informações da reserva
-            System.out.printf("%-10d %-35s %-20s %-25s %-20s\n",
-                    reserva.getNumero(), utenteNome, itens, dataRegistro, dataInicio);
+            System.out.printf("%-10d %-35s %-45s %-25s %-20s %-20s\n",
+                    reserva.getNumero(), utenteNome, itens, dataRegistro, dataInicio, dataFim);
         }
     }
 
