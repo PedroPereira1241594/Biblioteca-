@@ -136,14 +136,13 @@ public class JornalView {
 
         var jornal = jornalController.procurarPorIssn(issn);
         if (jornal != null) {
-            System.out.println("Jornal/Revista encontrado:");
-            System.out.println("=".repeat(40));
+            System.out.println("\n======= Detalhes do Jornal/Revista ========");
             System.out.println("Título: " + jornal.getTitulo());
             System.out.println("Editora: " + jornal.getEditora());
             System.out.println("Categoria: " + jornal.getCategoria());
             System.out.println("ISSN: " + jornal.getIssn());
             System.out.println("Data de Publicação: " + jornal.getDataPublicacao());
-            System.out.println("=".repeat(40));
+            System.out.println("=".repeat(43));
         } else {
             System.out.println("\nJornal não encontrado.");
             System.out.println("Certifique-se de que o ISSN introduzido está correto.");

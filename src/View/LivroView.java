@@ -109,14 +109,14 @@ public class LivroView {
     }
 
     public void exibirLivroDetalhado(Livro livro) {
-        System.out.println("=".repeat(24));
-        System.out.println("Detalhes do Livro:");
+
+        System.out.println("\n========== Detalhes do Livro ===========");
         System.out.println("ISBN: " + livro.getIsbn());
         System.out.println("Título: " + livro.getNome());
         System.out.println("Autor: " + livro.getAutor());
         System.out.println("Editora: " + livro.getEditora());
         System.out.println("Categoria: " + livro.getCategoria());
         System.out.println("Ano: " + livro.getAno());
-        System.out.println("=".repeat(24));
+        System.out.println("=".repeat(40));
     }
 }

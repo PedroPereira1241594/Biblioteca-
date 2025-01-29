@@ -136,7 +136,7 @@ public class ReservaController {
     }
 
     public void exibirDetalhesReserva(Reserva reserva) {
-        System.out.println("\n======= Detalhes da Reserva =======");
+        System.out.println("\n========== Detalhes da Reserva ===========");
         System.out.println("Número da Reserva: " + reserva.getNumero());
         System.out.println("Utente: " + reserva.getUtente().getNome() + " (NIF: " + reserva.getUtente().getNif() + ")");
         System.out.println("Data de Registo: " + reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -151,7 +151,7 @@ public class ReservaController {
                 System.out.println(" - Jornal: " + item.getIdentificador() + " (Data de Publicação: " + ((Jornal) item).getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")");
             }
         }
-        System.out.println("=".repeat(35));
+        System.out.println("=".repeat(42));
     }
 
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {

@@ -70,13 +70,12 @@ public class UtenteView {
     }
 
     public void exibirUtenteDetalhado(Utentes utente) {
-        System.out.println("=".repeat(24));
-        System.out.println("Detalhes do Utente:");
+        System.out.println("\n========== Detalhes do Utente ===========");
         System.out.println("Nome: " + utente.getNome());
         System.out.println("NIF: " + utente.getNif());
         System.out.println("Género: " + (utente.getGenero() ? "Masculino" : "Feminino"));
         System.out.println("Contacto: " + utente.getContacto());
-        System.out.println("=".repeat(24));
+        System.out.println("=".repeat(41));
     }
 
     private void consultarUtente() {
