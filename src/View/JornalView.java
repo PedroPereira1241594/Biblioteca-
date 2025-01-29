@@ -131,19 +131,19 @@ public class JornalView {
 
     // Método para procurar um jornal por ISSN
     public void procurarJornalPorIssn() {
-        System.out.print("Introduza o ISSN do jornal/revista que pretende procurar: ");
+        System.out.print("\nIntroduza o ISSN do jornal/revista que pretende procurar: ");
         String issn = scanner.nextLine();
 
         var jornal = jornalController.procurarPorIssn(issn);
         if (jornal != null) {
-            System.out.println("\nJornal/Revista encontrado:");
-            System.out.println("=".repeat(24));
+            System.out.println("Jornal/Revista encontrado:");
+            System.out.println("=".repeat(40));
             System.out.println("Título: " + jornal.getTitulo());
             System.out.println("Editora: " + jornal.getEditora());
             System.out.println("Categoria: " + jornal.getCategoria());
             System.out.println("ISSN: " + jornal.getIssn());
             System.out.println("Data de Publicação: " + jornal.getDataPublicacao());
-            System.out.println("=".repeat(24));
+            System.out.println("=".repeat(40));
         } else {
             System.out.println("\nJornal não encontrado.");
             System.out.println("Certifique-se de que o ISSN introduzido está correto.");

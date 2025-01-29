@@ -643,6 +643,7 @@ public class ReservaView {
 
     private List<Jornal> obterJornais() {
         List<Jornal> jornais = new ArrayList<>();
+        int opcao;
         System.out.print("Quantos jornais deseja reservar? ");
         int qtdJornais = scanner.nextInt();
         scanner.nextLine();
@@ -655,13 +656,14 @@ public class ReservaView {
                 jornal = jornalController.procurarPorIssn(nome);
 
                 if (jornal == null) {
-                    System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
-                    System.out.println("1. Adicionar Jornal");
-                    System.out.println("2. Tentar novamente");
-                    System.out.println("0. Cancelar");
-                    System.out.print("Escolha uma opção: ");
-                    int opcao = scanner.nextInt();
-                    scanner.nextLine();
+                        System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
+                    do {
+                        System.out.println("1. Adicionar Jornal");
+                        System.out.println("2. Tentar novamente");
+                        System.out.println("0. Cancelar");
+                        System.out.print("Escolha uma opção: ");
+                        opcao = scanner.nextInt();
+                        scanner.nextLine();
 
                     switch (opcao) {
                         case 1:
@@ -676,6 +678,7 @@ public class ReservaView {
                         default:
                             System.out.println("Opção inválida! Tente novamente.");
                     }
+                    } while (opcao != 0);
                 } else if (jornais.contains(jornal)) {
                     System.out.println("Erro: O jornal já foi adicionado a esta reserva.");
                     jornal = null;

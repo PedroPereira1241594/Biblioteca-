@@ -140,7 +140,6 @@ public class JornalController {
                 return jornal;
             }
         }
-        System.out.println("Nenhum jornal encontrado com o ISSN fornecido.");
         return null;
     }
 

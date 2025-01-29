@@ -112,6 +112,7 @@ public class Main {
                                 emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, itens));
                                 reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, itens));
                                 System.out.println("\nDados carregados com sucesso!");
+                                escolha = 0;
                                 break;
                             case 2:
                                 System.out.println("\nGuardando dados...");
