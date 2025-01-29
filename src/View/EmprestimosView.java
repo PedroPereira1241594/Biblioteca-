@@ -607,8 +607,8 @@ public class EmprestimosView {
 
         // Exibir os empréstimos
         System.out.println("\n=== Lista de Empréstimos ===");
-        System.out.printf("%-10s %-35s %-20s %-25s %-20s\n",
-                "Número", "Utente", "Itens Emprestados", "Data Início", "Data Efetiva");
+        System.out.printf("%-10s %-50s %-80s %-20s %-25s %-25s\n",
+                "Número", "Utente", "Itens Emprestados", "Data Início", "Data Prev. Devolução","Data Ef. Devolução");
 
         for (Emprestimos emprestimo : emprestimosSemDuplicados) {
             // Validação do nome do utente
@@ -647,13 +647,17 @@ public class EmprestimosView {
                     ? emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     : "Data desconhecida";
 
+            String dataPrevista = (emprestimo.getDataPrevistaDevolucao() != null)
+                    ? emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                    : "Data desconhecida";
+
             String dataEfetiva = (emprestimo.getDataEfetivaDevolucao() != null)
                     ? emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     : "Pendente";
 
             // Exibe as informações do empréstimo
-            System.out.printf("%-10d %-35s %-20s %-25s %-20s\n",
-                    emprestimo.getNumero(), utenteNome, itens, dataInicio, dataEfetiva);
+            System.out.printf("%-10d %-50s %-80s %-20s %-25s %-25s\n",
+                    emprestimo.getNumero(), utenteNome, itens, dataInicio, dataPrevista, dataEfetiva);
         }
     }
 
