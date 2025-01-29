@@ -21,13 +21,19 @@ public class EmprestimosController {
         this.scanner = new Scanner(System.in);
 
         // Inicializa maiorId com o maior ID dos empréstimos já existentes
-        this.maiorId = 0;
-        for (Emprestimos emprestimo : emprestimos) {
-            if (emprestimo.getNumero() > maiorId) {
-                maiorId = emprestimo.getNumero(); // Atualiza maiorId com o maior ID encontrado
+        this.maiorId = calcularMaiorId(emprestimos);
+    }
+
+    private int calcularMaiorId(List<Emprestimos> emprestimos) {
+        int maior = 0;
+        for (Emprestimos emprestimos1 : emprestimos) {
+            if (emprestimos1.getNumero() > maior) {
+                maior = emprestimos1.getNumero();
             }
         }
+        return maior;
     }
+
 
     // Setter para LivroController (evita dependências circulares)
     public void setLivroController(LivroController livroController) {
@@ -71,9 +77,10 @@ public class EmprestimosController {
             }
         }
 
+        this.maiorId = calcularMaiorId(emprestimos);
+
         // Atualiza o número do empréstimo com o maior ID encontrado + 1
         int numeroEmprestimo = maiorId + 1;
-        maiorId = numeroEmprestimo;  // Atualiza o maiorId para o próximo valor
 
         // Criação do empréstimo
         Emprestimos novoEmprestimo = new Emprestimos(numeroEmprestimo, utente, itensParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
