@@ -122,14 +122,14 @@ public class LivroController {
             return;
         }
 
-        // Verificar se o livro está associado a alguma reserva
+       /* // Verificar se o livro está associado a alguma reserva
         boolean livroReservado = false;
         for (Reserva reserva : reservas) {
             if (reserva.getLivros().contains(livro1)) {
                 livroReservado = true;
                 break;
             }
-        }
+        }*/
 
         // Verificar se o livro está associado a algum empréstimo ativo
         boolean livroEmprestado = false;
@@ -140,14 +140,14 @@ public class LivroController {
             }
         }
 
-        if (livroReservado) {
+        /*if (livroReservado) {
             System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
         } else if (livroEmprestado) {
             System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo ativo e não pode ser removido.");
         } else {
             livros.remove(livro1);
             System.out.println("Livro removido com sucesso!");
-        }
+        }*/
     }
 
     public Livro buscarLivroPorIsbn(String isbn) {

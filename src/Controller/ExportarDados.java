@@ -59,6 +59,7 @@ public class ExportarDados {
         }
 
     }
+
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
@@ -110,29 +111,53 @@ public class ExportarDados {
     }
 
 
-
     public static void exportarReservas(String caminhoArquivo, ArrayList<Reserva> reservas) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Reserva reserva : reservas) {
-                StringBuilder livrosReservados = new StringBuilder();
-                for (Livro livro : reserva.getLivros()) {
-                    if (livrosReservados.length() > 0) {
-                        livrosReservados.append(", "); // Adiciona uma vírgula entre os ISBNs
+                // Variáveis para armazenar os ISSNs e ISBNs
+                String issns = "";
+                String isbns = "";
+
+                // Iterar sobre os itens reservados
+                for (ItemEmprestavel item : reserva.getItens()) {
+                    if (item instanceof Jornal) {
+                        // Adicionar ISSN (com vírgula se necessário)
+                        if (!issns.isEmpty()) {
+                            issns += ", ";
+                        }
+                        issns += ((Jornal) item).getIssn();
+                    } else if (item instanceof Livro) {
+                        // Adicionar ISBN (com vírgula se necessário)
+                        if (!isbns.isEmpty()) {
+                            isbns += ", ";
+                        }
+                        isbns += ((Livro) item).getIsbn();
                     }
-                    livrosReservados.append(livro.getIsbn());
                 }
 
-                writer.write(String.format("ID: %d; Nome: %s; ISBN: %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
+                // Garantir que ISSN e ISBN apareçam sempre, mesmo que estejam vazios
+                String issnStr = "ISSN: " + (issns.isEmpty() ? "" : issns);
+                String isbnStr = "ISBN: " + (isbns.isEmpty() ? "" : isbns);
+
+                // Montar a linha de saída
+                String linha = String.format(
+                        "ID: %d; Nome: %s; %s; %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
                         reserva.getNumero(),
                         reserva.getUtente().getNome(),
-                        livrosReservados.toString(),
+                        issnStr,
+                        isbnStr,
                         reserva.getDataRegisto(),
                         reserva.getDataInicio(),
-                        reserva.getDataFim()));
+                        reserva.getDataFim()
+                );
+
+                // Escrever a linha no arquivo
+                writer.write(linha);
             }
+
             System.out.println("Reservas guardadas com sucesso no ficheiro!");
         } catch (IOException e) {
-            System.out.println("Erro a Guardar as Reservas: " + e.getMessage());
+            System.out.println("Erro ao salvar as Reservas: " + e.getMessage());
         }
     }
 

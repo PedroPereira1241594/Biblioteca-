@@ -194,32 +194,41 @@ public class PesquisaEstatisticasView {
             System.out.println("Nenhuma reserva encontrada no intervalo de datas fornecido.");
         } else {
             System.out.println("\n=== Lista de Reservas ===");
+
             // Cabeçalhos das colunas
-            System.out.printf("%-10s %-20s %-20s %-20s %-25s %-25s\n",
-                    "Número", "Utente", "Data Registo", "Data Início", "Data Fim", "Livros Reservados");
+            System.out.printf("%-10s %-20s %-15s %-15s %-15s %-40s\n",
+                    "Número", "Utente", "Data Registo", "Data Início", "Data Fim", "Itens Reservados");
 
             // Exibindo as reservas
             for (Reserva reserva : reservas) {
-                String livrosReservados = "";
-                for (Livro livro : reserva.getLivros()) {
-                    livrosReservados += livro.getNome() + " (ISBN: " + livro.getIsbn() + "), ";
-                }
-                // Remover última vírgula e espaço
-                if (!livrosReservados.isEmpty()) {
-                    livrosReservados = livrosReservados.substring(0, livrosReservados.length() - 2);
+                String itensReservados = "";
+
+                for (ItemEmprestavel item : reserva.getItens()) {
+                    if (item instanceof Livro) {
+                        if (!itensReservados.isEmpty()) {
+                            itensReservados += ", ";
+                        }
+                        itensReservados += item.getTitulo() + " (ISBN: " + ((Livro) item).getIsbn() + ")";
+                    } else if (item instanceof Jornal) {
+                        if (!itensReservados.isEmpty()) {
+                            itensReservados += ", ";
+                        }
+                        itensReservados += item.getTitulo() + " (ISSN: " + ((Jornal) item).getIssn() + ")";
+                    }
                 }
 
                 // Exibe a linha da reserva
-                System.out.printf("%-10d %-20s %-20s %-20s %-25s %-25s\n",
+                System.out.printf("%-10d %-20s %-15s %-15s %-15s %-40s\n",
                         reserva.getNumero(),
                         reserva.getUtente().getNome(),
                         reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        livrosReservados);
+                        itensReservados);
             }
         }
     }
+
 
     // Método para ler a data no formato correto
     private LocalDate lerData(DateTimeFormatter formato) {

@@ -58,7 +58,7 @@ public class EmprestimosController {
         // Verifica conflitos com reservas e disponibilidade de itens
         for (ItemEmprestavel item : itensParaEmprestimo) {
             if (item instanceof Livro) {
-                if (reservaController.verificarLivroReservado((Livro) item, dataInicio, dataPrevistaDevolucao)) {
+                if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataPrevistaDevolucao)) {
                     System.out.println("Erro: O livro '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataPrevistaDevolucao + " e não pode ser emprestado.");
                     return;
                 }

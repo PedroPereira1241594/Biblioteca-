@@ -200,42 +200,69 @@ public class ImportarDados {
     }
 
 
-    public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<Livro> livrosDisponiveis) {
+    public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<ItemEmprestavel> itensDisponiveis) {
         List<Reserva> reservas = new ArrayList<>();
-        int maiorId = 0;  // Inicializa com 0, assumindo que todos os IDs serão positivos
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoReserva))) {
             String linha;
             int linhaNumero = 0;
+
             while ((linha = br.readLine()) != null) {
                 linhaNumero++;
                 linha = linha.trim();
 
-                if (linha.isEmpty()) {
-                    continue;
-                }
+                if (linha.isEmpty()) continue; // Ignora linhas vazias
 
                 String[] dados = linha.split(";");
+
+                // Verifica se a linha possui todos os campos necessários
                 if (dados.length < 6) {
                     System.out.println("Linha " + linhaNumero + " mal formatada. Ignorada.");
                     continue;
                 }
 
                 try {
-                    int numeroReserva = Integer.parseInt(dados[0].replace("ID: ", "").trim()); // Remover "ID: " e converter para inteiro
+                    // Extrai os dados da linha
+                    int numero = Integer.parseInt(dados[0].replace("ID: ", "").trim());
+                    String nomeUtente = dados[1].replace("Nome: ", "").trim();
+                    String issnStr = dados[2].replace("ISSN: ", "").trim();
+                    String isbnStr = dados[3].replace("ISBN: ", "").trim();
 
-                    // Atualiza o maior ID encontrado
-                    if (numeroReserva > maiorId) {
-                        maiorId = numeroReserva;
+                    // Processa ISSNs e ISBNs em listas
+                    List<ItemEmprestavel> itensReservados = new ArrayList<>();
+
+                    // Processa ISSNs (Jornais)
+                    if (!issnStr.isEmpty()) {
+                        String[] issns = issnStr.split(",");
+                        for (String issn : issns) {
+                            issn = issn.trim();
+                            for (ItemEmprestavel item : itensDisponiveis) {
+                                if (item instanceof Jornal && ((Jornal) item).getIssn().equalsIgnoreCase(issn)) {
+                                    itensReservados.add(item);
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    String nomeUtente = dados[1].replace("Nome: ", "").trim(); // Remover "Nome: " e pegar o nome do utente
-                    String livrosReservadosStr = dados[2].replace("ISBN: ", "").trim(); // Livros reservados no formato de ISBN
-                    String[] isbnLivros = livrosReservadosStr.split(","); // Separa os ISBNs por vírgula
+                    // Processa ISBNs (Livros)
+                    if (!isbnStr.isEmpty()) {
+                        String[] isbns = isbnStr.split(",");
+                        for (String isbn : isbns) {
+                            isbn = isbn.trim();
+                            for (ItemEmprestavel item : itensDisponiveis) {
+                                if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
+                                    itensReservados.add(item);
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
+                    // Procura o utente pelo nome
                     Utentes utente = null;
                     for (Utentes u : utentes) {
-                        if (u.getNome().trim().equalsIgnoreCase(nomeUtente.trim())) {
+                        if (u.getNome().trim().equalsIgnoreCase(nomeUtente)) {
                             utente = u;
                             break;
                         }
@@ -246,29 +273,13 @@ public class ImportarDados {
                         continue;
                     }
 
-                    List<Livro> livrosReservados = new ArrayList<>();
-                    for (String isbn : isbnLivros) {
+                    // Processa datas
+                    LocalDate dataRegisto = LocalDate.parse(dados[4].replace("DataRegisto: ", "").trim());
+                    LocalDate dataInicio = LocalDate.parse(dados[5].replace("DataInicioReserva: ", "").trim());
+                    LocalDate dataFim = LocalDate.parse(dados[6].replace("DataFimReserva: ", "").trim());
 
-                        Livro livro = null;
-                        for (Livro l : livrosDisponiveis) {
-                            if (l.getIsbn().equals(isbn.trim())) {
-                                livro = l;
-                                break;
-                            }
-                        }
-
-                        if (livro != null) {
-                            livrosReservados.add(livro);
-                        } else {
-                            System.out.println("Livro com ISBN " + isbn.trim() + " não encontrado. Ignorado.");
-                        }
-                    }
-
-                    LocalDate dataRegisto = LocalDate.parse(dados[3].replace("DataRegisto: ", "").trim());
-                    LocalDate dataInicio = LocalDate.parse(dados[4].replace("DataInicioReserva: ", "").trim());
-                    LocalDate dataFim = LocalDate.parse(dados[5].replace("DataFimReserva: ", "").trim());
-
-                    Reserva reserva = new Reserva(numeroReserva, utente, livrosReservados, dataRegisto, dataInicio, dataFim);
+                    // Cria a reserva e adiciona à lista
+                    Reserva reserva = new Reserva(numero, utente, itensReservados, dataRegisto, dataInicio, dataFim);
                     reservas.add(reserva);
 
                 } catch (Exception e) {
@@ -276,12 +287,10 @@ public class ImportarDados {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro ao carregar reservas do ficheiro: " + e.getMessage());
+            System.out.println("Erro ao carregar reservas do arquivo: " + e.getMessage());
         }
-
-        // Aqui você pode usar o maiorId conforme necessário
-        System.out.println("Maior ID encontrado: " + maiorId);
 
         return reservas;
     }
+
 }

@@ -101,53 +101,73 @@ public class PesquisaEstatisticasController {
         return count > 0 ? (double) totalDias / count : 0;
     }
 
-    // Método para buscar o item mais requisitado (empréstimos e reservas) durante um intervalo de datas
     public List<String> pesquisarItensMaisRequisitados(LocalDate dataInicio, LocalDate dataFim) {
-        Map<String, Integer> itemRequisitado = new HashMap<>();
+        List<String> itensRegistrados = new ArrayList<>();
+        List<Integer> contagens = new ArrayList<>();
 
+        // Processa os empréstimos
         for (Emprestimos emprestimo : emprestimos) {
-            if (!emprestimo.getDataInicio().isBefore(dataInicio) && !emprestimo.getDataInicio().isAfter(dataFim) &&
-                    !emprestimo.getDataEfetivaDevolucao().isBefore(dataInicio) && !emprestimo.getDataEfetivaDevolucao().isAfter(dataFim)) {
+            LocalDate dataEmprestimo = emprestimo.getDataInicio();
+            LocalDate dataDevolucao = (emprestimo.getDataEfetivaDevolucao() != null) ? emprestimo.getDataEfetivaDevolucao() : emprestimo.getDataPrevistaDevolucao();
 
-                for (ItemEmprestavel livro : emprestimo.getItens()) {
-                    itemRequisitado.put(livro.getISBN() + " - " + livro.getISBN(),
-                            itemRequisitado.getOrDefault(livro.getTitulo() + " - " + livro.getISSN(), 0) + 1);
+            if (!dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim) &&
+                    !dataDevolucao.isBefore(dataInicio) && !dataDevolucao.isAfter(dataFim)) {
+
+                for (ItemEmprestavel item : emprestimo.getItens()) {
+                    String identificador = (item instanceof Livro) ? ((Livro) item).getIsbn() : ((Jornal) item).getIssn();
+                    String chave = item.getTitulo() + " - " + identificador;
+
+                    adicionarOuIncrementar(itensRegistrados, contagens, chave);
                 }
-
-                /*for (Jornal jornal : emprestimo.getJornais()) {
-                    itemRequisitado.put(jornal.getTitulo() + " - " + jornal.getIssn(),
-                            itemRequisitado.getOrDefault(jornal.getTitulo() + " - " + jornal.getIssn(), 0) + 1);
-                }*/
             }
         }
 
+        // Processa as reservas
         for (Reserva reserva : reservas) {
             if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim) &&
                     !reserva.getDataFim().isBefore(dataInicio) && !reserva.getDataFim().isAfter(dataFim)) {
 
-                for (Livro livro : reserva.getLivros()) {
-                    itemRequisitado.put(livro.getNome() + " - " + livro.getIsbn(),
-                            itemRequisitado.getOrDefault(livro.getNome() + " - " + livro.getIsbn(), 0) + 1);
-                }
+                for (ItemEmprestavel item : reserva.getItens()) {
+                    String identificador = (item instanceof Livro) ? ((Livro) item).getIsbn() : ((Jornal) item).getIssn();
+                    String chave = item.getTitulo() + " - " + identificador;
 
-                /*for (Jornal jornal : reserva.getJornais()) {
-                    itemRequisitado.put(jornal.getTitulo() + " - " + jornal.getIssn(),
-                            itemRequisitado.getOrDefault(jornal.getTitulo() + " - " + jornal.getIssn(), 0) + 1);
-                }*/
+                    adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                }
             }
         }
 
-        int maxRequisicoes = itemRequisitado.values().stream().max(Integer::compare).orElse(0);
+        // Descobrir a maior contagem
+        int maxRequisicoes = 0;
+        for (int contagem : contagens) {
+            if (contagem > maxRequisicoes) {
+                maxRequisicoes = contagem;
+            }
+        }
 
+        // Criar lista dos itens mais requisitados
         List<String> itensMaisRequisitados = new ArrayList<>();
-        for (Map.Entry<String, Integer> entry : itemRequisitado.entrySet()) {
-            if (entry.getValue() == maxRequisicoes) {
-                itensMaisRequisitados.add(entry.getKey()); // "Título - ISBN"
+        for (int i = 0; i < itensRegistrados.size(); i++) {
+            if (contagens.get(i) == maxRequisicoes) {
+                itensMaisRequisitados.add(itensRegistrados.get(i));
             }
         }
 
         return itensMaisRequisitados;
     }
+
+    // Método auxiliar para adicionar ou incrementar a contagem de um item
+    private void adicionarOuIncrementar(List<String> itensRegistrados, List<Integer> contagens, String chave) {
+        for (int i = 0; i < itensRegistrados.size(); i++) {
+            if (itensRegistrados.get(i).equals(chave)) {
+                contagens.set(i, contagens.get(i) + 1);
+                return;
+            }
+        }
+        // Se não encontrou, adiciona um novo
+        itensRegistrados.add(chave);
+        contagens.add(1);
+    }
+
 
     // Método para buscar os empréstimos com N dias de atraso
     public List<Emprestimos> buscarEmprestimosComAtraso(int diasAtraso) {
