@@ -73,15 +73,14 @@ public class UtenteController {
             System.out.println("Não há utentes com reservas ou empréstimos.");
         } else {
             System.out.println("\n=== Lista de Utentes com Reservas ou Empréstimos ===");
-            System.out.printf("%-30s %-15s %-15s %-10s\n", "Nome", "NIF", "Contacto", "Género");
-            System.out.println("--------------------------------------------------------------------------");
-
+            System.out.printf("%-60s %-30s %-30s %-30s\n", "Nome", "NIF", "Contacto", "Género");
+            System.out.println("-".repeat(133));
             for (Utentes utente : utentesComReservasOuEmprestimos) {
                 String genero = (utente.getGenero() == null)
                         ? "Indefinido"
                         : (utente.getGenero() ? "Masculino" : "Feminino");
 
-                System.out.printf("%-30s %-15s %-15s %-10s\n",
+                System.out.printf("%-60s %-30s %-30s %-30s\n",
                         utente.getNome(),
                         utente.getNif(),
                         utente.getContacto(),
