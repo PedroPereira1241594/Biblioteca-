@@ -1,4 +1,3 @@
-ID: 1; Nome: João Morcao; ISSN: ; ISBN: 123456789; DataRegisto: 2024-01-15; DataInicioReserva: 2024-03-01; DataFimReserva: 2024-03-15
 ID: 2; Nome: Maria Santos; ISSN: ; ISBN: 9876543210; DataRegisto: 2024-02-10; DataInicioReserva: 2024-03-20; DataFimReserva: 2024-04-05
 ID: 3; Nome: Pedro Oliveira; ISSN: ; ISBN: 8529637418529; DataRegisto: 2024-03-05; DataInicioReserva: 2024-04-10; DataFimReserva: 2024-04-25
 ID: 4; Nome: Ana Costa; ISSN: ; ISBN: 7539514568523; DataRegisto: 2024-04-15; DataInicioReserva: 2024-05-01; DataFimReserva: 2024-05-15

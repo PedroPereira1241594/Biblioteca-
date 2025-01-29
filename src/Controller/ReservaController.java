@@ -130,7 +130,7 @@ public class ReservaController {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
             reservas.remove(reserva);
-            System.out.println("Reserva eliminada com sucesso!");
+            return true;
         }
         return false;
     }
