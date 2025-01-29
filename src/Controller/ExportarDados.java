@@ -20,7 +20,7 @@ public class ExportarDados {
                         livro.getAno(),
                         livro.getAutor()));
             }
-            System.out.println("\nLivros guardados com sucesso no ficheiro!");
+            System.out.println("\nLivros exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os livros: " + e.getMessage());
         }
@@ -36,7 +36,7 @@ public class ExportarDados {
                         utente.getGenero() ? "M" : "F",
                         utente.getContacto()));
             }
-            System.out.println("Utentes guardados com sucesso no ficheiro!");
+            System.out.println("Utentes exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Utentes: " + e.getMessage());
         }
@@ -52,7 +52,7 @@ public class ExportarDados {
                         jornal.getEditora(),
                         jornal.getDataPublicacao()));
             }
-            System.out.println("Jornais/Revistas guardados com sucesso no ficheiro!");
+            System.out.println("Jornais/Revistas exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Jornais/Revistas: " + e.getMessage());
 
@@ -104,7 +104,7 @@ public class ExportarDados {
                 writer.write(linha);
             }
 
-            System.out.println("Empréstimos guardados com sucesso no ficheiro!");
+            System.out.println("Empréstimos exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
         }
@@ -155,7 +155,7 @@ public class ExportarDados {
                 writer.write(linha);
             }
 
-            System.out.println("Reservas guardadas com sucesso no ficheiro!");
+            System.out.println("Reservas exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar as Reservas: " + e.getMessage());
         }

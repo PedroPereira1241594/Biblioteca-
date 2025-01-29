@@ -13,6 +13,7 @@ public class ImportarDados {
 
     public static List<Livro> carregarLivros(String caminhoLivros) {
         List<Livro> livros = new ArrayList<>();
+        int countLinhas = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoLivros))) {
             String linha;
@@ -33,17 +34,19 @@ public class ImportarDados {
 
                 Livro livro = new Livro(nome, editora, categoria, ano, autor, isbn); // Certifique-se de passar o ISBN aqui
                 livros.add(livro);
+                countLinhas++;
             }
         } catch (IOException e) {
             System.out.println("Erro ao carregar livros: " + e.getMessage());
         }
-
+        System.out.println("Total de livros lidos: " + countLinhas);
         return livros;
     }
 
 
     public static List<Utentes> carregarUtentes(String caminhoUtentes) {
         List<Utentes> utentes = new ArrayList<>();
+        int countLinhas = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoUtentes))) {
             String linha;
@@ -59,6 +62,7 @@ public class ImportarDados {
 
                         Utentes utente = new Utentes(nome, nif, genero, contacto);
                         utentes.add(utente);
+                        countLinhas++;
                     } else {
                         System.out.println("Linha mal formatada no arquivo de utentes. Ignorada.");
                     }
@@ -67,12 +71,13 @@ public class ImportarDados {
         } catch (IOException e) {
             System.out.println("Erro ao carregar utentes do arquivo: " + e.getMessage());
         }
-
+        System.out.println("Total de utentes lidos: " + countLinhas);
         return utentes;
     }
 
     public static List<Jornal> carregarJornais(String caminhoJornal) {
         List<Jornal> jornais = new ArrayList<>();
+        int countLinhas = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoJornal))) {
             String linha;
@@ -89,6 +94,7 @@ public class ImportarDados {
 
                         Jornal jornal = new Jornal(issn, titulo, categoria, editora, dataPublicacao);
                         jornais.add(jornal);
+                        countLinhas++;
                     } else {
                         System.out.println("Linha mal formatada no arquivo de jornais. Ignorada.");
                     }
@@ -97,12 +103,13 @@ public class ImportarDados {
         } catch (IOException e) {
             System.out.println("Erro ao carregar jornais do arquivo: " + e.getMessage());
         }
-
+        System.out.println("Total de jornais/revistas lidos: " + countLinhas);
         return jornais;
     }
 
     public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<ItemEmprestavel> itens) {
         List<Emprestimos> emprestimos = new ArrayList<>();
+        int countLinhas = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoEmprestimo))) {
             String linha;
@@ -187,6 +194,7 @@ public class ImportarDados {
                     // Cria o empréstimo
                     Emprestimos emprestimo = new Emprestimos(numero, utente, itensEmprestados, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
                     emprestimos.add(emprestimo);
+                    countLinhas++;
 
                 } catch (Exception e) {
                     System.out.println("Erro ao processar linha " + linhaNumero + ": " + e.getMessage());
@@ -195,13 +203,14 @@ public class ImportarDados {
         } catch (IOException e) {
             System.out.println("Erro ao carregar empréstimos do arquivo: " + e.getMessage());
         }
-
+        System.out.println("Total de empréstimos lidos: " + countLinhas);
         return emprestimos;
     }
 
 
     public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<ItemEmprestavel> itensDisponiveis) {
         List<Reserva> reservas = new ArrayList<>();
+        int countLinhas = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoReserva))) {
             String linha;
@@ -281,7 +290,7 @@ public class ImportarDados {
                     // Cria a reserva e adiciona à lista
                     Reserva reserva = new Reserva(numero, utente, itensReservados, dataRegisto, dataInicio, dataFim);
                     reservas.add(reserva);
-
+                    countLinhas++;
                 } catch (Exception e) {
                     System.out.println("Erro ao processar linha " + linhaNumero + ": " + e.getMessage());
                 }
@@ -289,7 +298,7 @@ public class ImportarDados {
         } catch (IOException e) {
             System.out.println("Erro ao carregar reservas do arquivo: " + e.getMessage());
         }
-
+        System.out.println("Total de reservas lidas: " + countLinhas);
         return reservas;
     }
 

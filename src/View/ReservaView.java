@@ -74,7 +74,7 @@ public class ReservaView {
                 System.out.println("\nMenu:");
                 System.out.println("1. Adicionar Livro à reserva");
                 System.out.println("2. Adicionar Jornal/Revista à reserva");
-                System.out.println("0. Finalizar seleção de itens");
+                System.out.println("0. Finalizar seleção de itens...");
                 System.out.print("Escolha uma opção: ");
                 int opcaoItem = scanner.nextInt();
                 scanner.nextLine(); // Limpar buffer

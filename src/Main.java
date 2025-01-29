@@ -111,7 +111,7 @@ public class Main {
                                 // Carrega os empréstimos usando a lista combinada
                                 emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, itens));
                                 reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, itens));
-                                System.out.println("Dados carregados com sucesso!");
+                                System.out.println("\nDados carregados com sucesso!");
                                 break;
                             case 2:
                                 System.out.println("\nGuardando dados...");
