@@ -65,7 +65,7 @@ public class PesquisaEstatisticasView {
             System.out.println("\nPretende pesquisar Livros ou Jornais/Revistas?");
             System.out.println("1. Livros");
             System.out.println("2. Jornais/Revistas");
-            System.out.println("0. Voltar");
+            System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
             scanner.nextLine(); // Limpar buffer
@@ -77,13 +77,14 @@ public class PesquisaEstatisticasView {
                     Livro livroEncontrado = pesquisaEstatisticasController.pesquisaISBN(ISBN); // Busca pelo ISBN
 
                     if (livroEncontrado != null) {
-                        System.out.println("Livro encontrado:");
+                        System.out.println("\n======== Livro Encontrado ========");
                         System.out.println("Título: " + livroEncontrado.getNome());
                         System.out.println("Editora: " + livroEncontrado.getEditora());
                         System.out.println("Categoria: " + livroEncontrado.getCategoria());
                         System.out.println("Ano: " + livroEncontrado.getAno());
                         System.out.println("Autor: " + livroEncontrado.getAutor());
                         System.out.println("ISBN: " + livroEncontrado.getIsbn());
+                        System.out.println("=".repeat(34));
                     } else {
                         System.out.println("Nenhum livro encontrado com o ISBN fornecido.");
                     }
@@ -93,12 +94,13 @@ public class PesquisaEstatisticasView {
                     String ISSN = scanner.nextLine();
                     Jornal jornalEncontrado = pesquisaEstatisticasController.pesquisaISSN(ISSN); // Busca pelo ISSN
                     if (jornalEncontrado != null) {
-                        System.out.println("Jornal ou Revista encontrada:");
+                        System.out.println("\n======= Jornal/Revista Encontrado =======");
                         System.out.println("Título: " + jornalEncontrado.getTitulo());
                         System.out.println("Editora: " + jornalEncontrado.getEditora());
                         System.out.println("Categoria: " + jornalEncontrado.getCategoria());
                         System.out.println("Data de Publicação: " + jornalEncontrado.getDataPublicacao());
                         System.out.println("ISSN: " + jornalEncontrado.getIssn());
+                        System.out.println("=".repeat(41));
                     } else {
                         System.out.println("Nenhum jornal ou revista encontrada com o ISSN fornecido.");
                     }
