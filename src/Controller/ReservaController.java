@@ -177,7 +177,7 @@ public class ReservaController {
     }
 
 
-    public boolean verificarItemReservado(ItemEmprestavel item, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
+    public boolean verificarItemReservado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
         for (Reserva reserva : reservas) {
             for (ItemEmprestavel i : reserva.getItens()) {
                 if (i.getIdentificador().equals(item.getIdentificador())) {
@@ -185,7 +185,7 @@ public class ReservaController {
                     LocalDate dataFimReserva = reserva.getDataFim();
 
                     // Verifica se há sobreposição de datas entre reserva e empréstimo
-                    if (!(dataFimEmprestimo.isBefore(dataInicioReserva) || dataInicioEmprestimo.isAfter(dataFimReserva))) {
+                    if (!(dataFim.isBefore(dataInicioReserva) || dataInicio.isAfter(dataFimReserva))) {
                         return true; // O item está reservado no período solicitado
                     }
                 }

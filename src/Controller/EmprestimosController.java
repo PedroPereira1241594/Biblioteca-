@@ -167,11 +167,18 @@ public class EmprestimosController {
 
     // Verifica se o item já está emprestado no período entre dataInicio e dataPrevistaDevolucao
     public boolean itemPossuiEmprestimoAtivo(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
+        System.out.println("Verificando se o item está emprestado: " + item.getTitulo() + " (" + item.getISBN() + ")");
+
         for (Emprestimos emprestimo : emprestimos) {
             for (ItemEmprestavel itemEmprestado : emprestimo.getItens()) {
                 if (item.equals(itemEmprestado)) {
+                    System.out.println("Encontrado empréstimo para o item: " + item.getTitulo() + " (" + item.getISBN() + ")");
+                    System.out.println("Data de Início do Empréstimo: " + emprestimo.getDataInicio());
+                    System.out.println("Data Prevista de Devolução: " + emprestimo.getDataPrevistaDevolucao());
+
                     if ((dataInicio.isBefore(emprestimo.getDataPrevistaDevolucao()) && dataPrevistaDevolucao.isAfter(emprestimo.getDataInicio())) ||
                             (dataInicio.isBefore(emprestimo.getDataEfetivaDevolucao()) && dataPrevistaDevolucao.isAfter(emprestimo.getDataInicio()))) {
+                        System.out.println("O item está emprestado no período solicitado.");
                         return true; // O item já está emprestado no período solicitado
                     }
                 }
@@ -179,6 +186,7 @@ public class EmprestimosController {
         }
         return false; // O item não está emprestado no período solicitado
     }
+
 
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataDevolucao) {
         if (dataDevolucao == null) {
@@ -217,6 +225,29 @@ public class EmprestimosController {
         } else {
             System.out.println("Erro: Empréstimo não encontrado.");
         }
+    }
+
+    public boolean verificarItemEmprestado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
+        for (Emprestimos emprestimos1 : emprestimos) {
+            for (ItemEmprestavel i : emprestimos1.getItens()) {
+                if (i.getIdentificador().equals(item.getIdentificador())) {
+                    LocalDate dataInicioEmprestimo = emprestimos1.getDataInicio();
+                    LocalDate dataFimEmprestimo;
+
+                    if(emprestimos1.getDataEfetivaDevolucao() == null){
+                        dataFimEmprestimo = emprestimos1.getDataPrevistaDevolucao();
+                    } else {
+                        dataFimEmprestimo = emprestimos1.getDataEfetivaDevolucao();
+                    }
+
+                    // Verifica se há sobreposição de datas entre reserva e empréstimo
+                    if (!(dataFim.isBefore(dataInicioEmprestimo) || dataInicio.isAfter(dataFimEmprestimo))) {
+                        return true; // O item está reservado no período solicitado
+                    }
+                }
+            }
+        }
+        return false; // O item não está reservado no período informado
     }
 
 
