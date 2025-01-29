@@ -215,7 +215,6 @@ public class ReservaView {
         }
     }
 
-
     private void atualizarDatasReserva(Reserva reserva, int numero) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate novaDataInicio, novaDataFim;
@@ -247,8 +246,6 @@ public class ReservaView {
         }
     }
 
-
-
     private void modificarItensReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("\nO que você deseja fazer com os itens da reserva?");
         System.out.println("1. Adicionar livro");
@@ -270,7 +267,6 @@ public class ReservaView {
             default -> System.out.println("Opção inválida.");
         }
     }
-
 
     private void adicionarLivroNaReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("\n=== Adicionar Livro à Reserva ===");
@@ -325,7 +321,6 @@ public class ReservaView {
         reservaController.adicionarItemNaReserva(reserva.getNumero(), livro, dataInicioReserva, dataFimReserva);
         System.out.println("Livro adicionado com sucesso à reserva.");
     }
-
 
     private void removerLivroDaReserva(Reserva reserva) {
         System.out.println("\n=== Remover Livro da Reserva ===");
@@ -483,7 +478,6 @@ public class ReservaView {
         }
     }
 
-
     public void listarReservas() {
         // Obtém a lista de reservas ativas do controlador
         List<Reserva> reservasAtivas = reservaController.listarTodasReservas();
@@ -571,7 +565,6 @@ public class ReservaView {
                     reserva.getNumero(), utenteNome, itens, dataRegistro, dataInicio);
         }
     }
-
 
     private Utentes obterUtente() {
         Utentes utente = null;
