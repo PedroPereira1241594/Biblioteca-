@@ -53,13 +53,13 @@ public class JornalController {
         }
 
         System.out.println("\n=== Lista de Jornais/Revistas ===");
-        System.out.printf("%-20s %-35s %-20s %-25s %-15s%n",
+        System.out.printf("%-20s %-50s %-50s %-50s %-15s%n",
                 "ISSN", "Título", "Categoria", "Editora", "Data Publicação");
-        System.out.println("-".repeat(115));
+        System.out.println("-".repeat(190));
 
         for (Jornal jornal : jornais) {
             System.out.printf(
-                    "%-20s %-35s %-20s %-25s %-15s%n",
+                    "%-20s %-50s %-50s %-50s %-15s%n",
                     jornal.getIssn(),
                     jornal.getTitulo(),
                     jornal.getCategoria(),
@@ -67,8 +67,6 @@ public class JornalController {
                     jornal.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             );
         }
-
-        System.out.println("-".repeat(115));
     }
 
     // Método para atualizar um jornal ou uma revista
