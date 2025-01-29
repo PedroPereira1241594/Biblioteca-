@@ -20,7 +20,7 @@ public class ReservaView {
     private Scanner scanner;
 
 
-    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController,JornalController jornalController, EmprestimosController emprestimosController) {
+    public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, JornalController jornalController, EmprestimosController emprestimosController) {
         this.reservaController = reservaController;
         this.utenteController = utenteController;
         this.livroController = livroController;
@@ -39,7 +39,7 @@ public class ReservaView {
             System.out.println("3. Atualizar Reserva");
             System.out.println("4. Remover Reserva");
             System.out.println("5. Listar Todas as Reservas");
-            System.out.println("0. Sair");
+            System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar buffer
@@ -452,26 +452,27 @@ public class ReservaView {
             if (reserva == null) {
                 System.out.println("Nenhuma reserva encontrada com o número informado.");
                 return; // Encerra o método se a reserva não for encontrada
-            }
-
-            // Exibir detalhes da reserva antes de remover
-            reservaController.exibirDetalhesReserva(reserva);
-
-            // Confirmar remoção
-            System.out.print("Tem certeza que deseja remover esta reserva? (S/N): ");
-            char confirmacao = scanner.next().toUpperCase().charAt(0);
-            scanner.nextLine(); // Limpar buffer
-
-            if (confirmacao == 'S') {
-                boolean sucesso =reservaController.removerReserva(numero);
-
-                if (sucesso) {
-                    System.out.println("Reserva removida com sucesso!");
-                } else {
-                    System.out.println("Erro ao tentar remover a reserva.");
-                }
             } else {
-                System.out.println("Operação cancelada.");
+
+                // Exibir detalhes da reserva antes de remover
+                reservaController.exibirDetalhesReserva(reserva);
+
+                // Confirmar remoção
+                System.out.print("Tem certeza que deseja remover esta reserva? (S/N): ");
+                char confirmacao = scanner.next().toUpperCase().charAt(0);
+                scanner.nextLine(); // Limpar buffer
+
+                if (confirmacao == 'S') {
+                    boolean sucesso = reservaController.removerReserva(numero);
+
+                    if (!sucesso) {
+                        System.out.println("Erro ao tentar remover a reserva.");
+                    } else {
+                        System.out.println("Reserva removida com sucesso!");
+                    }
+                } else {
+                    System.out.println("Operação cancelada.");
+                }
             }
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -516,7 +517,7 @@ public class ReservaView {
 
         // Exibir as reservas
         System.out.println("\n=== Lista de Reservas ===");
-        System.out.printf("%-10s %-35s %-45s %-25s %-20s %-20s\n",
+        System.out.printf("%-10s %-35s %-100s %-25s %-20s %-20s\n",
                 "Número", "Utente", "Itens Reservados", "Data Registro", "Data Início", "Data Fim");
 
         for (Reserva reserva : reservasSemDuplicados) {
@@ -565,7 +566,7 @@ public class ReservaView {
                     : "Pendente";
 
             // Exibe as informações da reserva
-            System.out.printf("%-10d %-35s %-45s %-25s %-20s %-20s\n",
+            System.out.printf("%-10d %-35s %-100s %-25s %-20s %-20s\n",
                     reserva.getNumero(), utenteNome, itens, dataRegistro, dataInicio, dataFim);
         }
     }
@@ -660,7 +661,7 @@ public class ReservaView {
                 jornal = jornalController.procurarPorIssn(nome);
 
                 if (jornal == null) {
-                        System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
+                    System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
                     do {
                         System.out.println("1. Adicionar Jornal");
                         System.out.println("2. Tentar novamente");
@@ -669,19 +670,19 @@ public class ReservaView {
                         opcao = scanner.nextInt();
                         scanner.nextLine();
 
-                    switch (opcao) {
-                        case 1:
-                            jornalController.criarJornal(jornal.getIssn(), jornal.getTitulo(), jornal.getCategoria(), jornal.getEditora(), jornal.getDataPublicacao());
-                            jornal = jornalController.procurarPorIssn(jornal.getIssn());
-                            break;
-                        case 2:
-                            System.out.println("Tente novamente...");
-                            break;
-                        case 0:
-                            return jornais;
-                        default:
-                            System.out.println("Opção inválida! Tente novamente.");
-                    }
+                        switch (opcao) {
+                            case 1:
+                                jornalController.criarJornal(jornal.getIssn(), jornal.getTitulo(), jornal.getCategoria(), jornal.getEditora(), jornal.getDataPublicacao());
+                                jornal = jornalController.procurarPorIssn(jornal.getIssn());
+                                break;
+                            case 2:
+                                System.out.println("Tente novamente...");
+                                break;
+                            case 0:
+                                return jornais;
+                            default:
+                                System.out.println("Opção inválida! Tente novamente.");
+                        }
                     } while (opcao != 0);
                 } else if (jornais.contains(jornal)) {
                     System.out.println("Erro: O jornal já foi adicionado a esta reserva.");
