@@ -28,12 +28,11 @@ public class LivroView {
             System.out.println("Nenhum livro registrado.");
         } else {
             System.out.println("\n=== Lista de Livros ===");
-            System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10s\n",
+            System.out.printf("%-15s %-50s %-50s %-50s %-35s %-10s\n",
                     "ISBN", "Título", "Autor", "Editora", "Categoria", "Ano");
-            System.out.println("---------------------------------------------------------------------------------------------" +
-                    "-----------------------------------------------");
+            System.out.println("-".repeat(210));
             for (Livro livro : livros) {
-                System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10d\n",
+                System.out.printf("%-15s %-50s %-50s %-50s %-35s %-10d\n",
                         livro.getIsbn(),
                         livro.getNome(),
                         livro.getAutor(),
