@@ -26,7 +26,7 @@ public class PesquisaEstatisticasView {
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
             System.out.println("3. Tempo Médio de Empréstimos em um Intervalo de Datas");
-            System.out.println("4. Exibir Item Mais Requisitado no Intervalo de Datas");
+            System.out.println("4. Item Mais Requisitado no Intervalo de Datas");
             System.out.println("5. Exibir Utentes com Atraso Superior a N Dias"); // Nova opção
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
@@ -380,8 +380,8 @@ public class PesquisaEstatisticasView {
 
         // Exibir o resultado
         if (itemMaisRequisitado != null) {
-            System.out.println("\nO item mais requisitado entre as datas " + dataInicio.format(formato) + " e " + dataFim.format(formato) + " é: ");
-            System.out.println("Livro com o ISBN: " + itemMaisRequisitado);
+            System.out.println("\nO(s) item(ns) mais requisitado(s) entre as datas " + dataInicio.format(formato) + " e " + dataFim.format(formato) + " é: ");
+            System.out.println(itemMaisRequisitado);
         } else {
             System.out.println("Não foram encontradas requisições no intervalo de datas fornecido.");
         }

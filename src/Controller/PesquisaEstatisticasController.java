@@ -231,30 +231,49 @@ public class PesquisaEstatisticasController {
         // Processa os empréstimos
         for (Emprestimos emprestimo : emprestimos) {
             LocalDate dataEmprestimo = emprestimo.getDataInicio();
-            LocalDate dataDevolucao = (emprestimo.getDataEfetivaDevolucao() != null) ? emprestimo.getDataEfetivaDevolucao() : emprestimo.getDataPrevistaDevolucao();
+            LocalDate dataDevolucao = (emprestimo.getDataEfetivaDevolucao() != null)
+                    ? emprestimo.getDataEfetivaDevolucao()
+                    : emprestimo.getDataPrevistaDevolucao();
 
             if (!dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim) &&
                     !dataDevolucao.isBefore(dataInicio) && !dataDevolucao.isAfter(dataFim)) {
 
                 for (ItemEmprestavel item : emprestimo.getItens()) {
-                    String identificador = (item instanceof Livro) ? ((Livro) item).getIsbn() : ((Jornal) item).getIssn();
-                    String chave = item.getTitulo() + " - " + identificador;
+                    String chave = null;
 
-                    adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                    if (item instanceof Livro) {
+                        chave = pesquisaTituloISBN(item.getIdentificador()) + " - " + ((Livro) item).getIsbn();
+                    } else if (item instanceof Jornal) {
+                        chave = pesquisaTituloISSN(item.getIdentificador()) + " - " + ((Jornal) item).getIssn();
+                    }
+
+                    if (chave != null) {
+                        adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                    }
                 }
             }
         }
 
+
         // Processa as reservas
         for (Reserva reserva : reservas) {
-            if (!reserva.getDataInicio().isBefore(dataInicio) && !reserva.getDataInicio().isAfter(dataFim) &&
-                    !reserva.getDataFim().isBefore(dataInicio) && !reserva.getDataFim().isAfter(dataFim)) {
+            LocalDate dataReserva = reserva.getDataInicio();
+            LocalDate dataFimReserva = reserva.getDataFim();
+            if (!dataReserva.isBefore(dataInicio) && !dataReserva.isAfter(dataFim) &&
+                    !dataFimReserva.isBefore(dataInicio) && !dataFimReserva.isAfter(dataFim)) {
 
                 for (ItemEmprestavel item : reserva.getItens()) {
-                    String identificador = (item instanceof Livro) ? ((Livro) item).getIsbn() : ((Jornal) item).getIssn();
-                    String chave = item.getTitulo() + " - " + identificador;
+                    String chave = null;
 
-                    adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                    if (item instanceof Livro) {
+                        chave = pesquisaTituloISBN(item.getIdentificador()) + " - " + ((Livro) item).getIsbn();
+                    } else if (item instanceof Jornal) {
+                        chave = pesquisaTituloISSN(item.getIdentificador()) + " - " + ((Jornal) item).getIssn();
+                    }
+
+                    if (chave != null) {
+                        adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                    }
                 }
             }
         }
@@ -317,6 +336,26 @@ public class PesquisaEstatisticasController {
         } else {
             return true;
         }
+    }
+
+    // Método para evolver o título Livro por ISBN
+    public String pesquisaTituloISBN(String ISBN) {
+        for (Livro livro : livros) {
+            if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
+                return livro.getNome(); // Retorna o livro encontrado.
+            }
+        }
+        return null; // Retorna null se nenhum livro for encontrado.
+    }
+
+    // Método para devolver o título Jornal/Revista por ISSN
+    public String pesquisaTituloISSN(String ISSN) {
+        for (Jornal jornal : jornals) { // Iterando sobre a lista de jornais
+            if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
+                return jornal.getTitulo(); // Retorna o jornal encontrado
+            }
+        }
+        return null; // Retorna null se nenhum jornal for encontrado.
     }
 
 
