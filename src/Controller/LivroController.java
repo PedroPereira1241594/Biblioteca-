@@ -16,16 +16,18 @@ public class LivroController {
     private LivroView livroView;
     private final EmprestimosController emprestimosController;
     private final List<Reserva> reservas; // Adicionada a lista de reservas
+    private final List<Emprestimos> emprestimos;
 
     public void setLivroView(LivroView livroView) {
         this.livroView = livroView;
     }
 
-    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas) {
+    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.livros = livros;
         this.livroView = livroView;
         this.emprestimosController = emprestimosController;
         this.reservas = reservas; // Inicializa a lista de reservas
+        this.emprestimos = emprestimos;
     }
 
     public void adicionarLivro() {
@@ -122,32 +124,43 @@ public class LivroController {
             return;
         }
 
-       /* // Verificar se o livro está associado a alguma reserva
         boolean livroReservado = false;
         for (Reserva reserva : reservas) {
-            if (reserva.getLivros().contains(livro1)) {
-                livroReservado = true;
-                break;
+            for (ItemEmprestavel item : reserva.getItens()) {
+                if  (item.getIdentificador().equals(livro1.getIsbn())){
+                    livroReservado = true;
+                    break;
+                }
             }
-        }*/
-
-        // Verificar se o livro está associado a algum empréstimo ativo
-        boolean livroEmprestado = false;
-        for (Emprestimos emprestimo : emprestimosController.getEmprestimos()) {
-            if (emprestimo.getItens().contains(livro1) && emprestimo.getDataEfetivaDevolucao() == null) {
-                livroEmprestado = true;
+            if (livroReservado) {
                 break;
             }
         }
 
-        /*if (livroReservado) {
-            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
+        // Verificar se o livro está associado a algum empréstimo ativo
+        boolean livroEmprestado = false;
+        for (Emprestimos emprestimos : emprestimos) {
+            for (ItemEmprestavel item : emprestimos.getItens()) {
+                if (item.getIdentificador().equals(livro1.getIsbn())) {
+                    livroEmprestado = true;
+                    break;
+                }
+            }
+            if (livroEmprestado) {
+                break;
+            }
+        }
+
+        if (livroReservado && livroEmprestado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva, a um empréstimo e não pode ser removido.");
         } else if (livroEmprestado) {
             System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo ativo e não pode ser removido.");
+        } else if (livroReservado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
         } else {
             livros.remove(livro1);
             System.out.println("Livro removido com sucesso!");
-        }*/
+        }
     }
 
     public Livro buscarLivroPorIsbn(String isbn) {

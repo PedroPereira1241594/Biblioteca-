@@ -120,7 +120,7 @@ public class JornalController {
             return;
         }
 
-        // Deletando o jornal encontrado
+        // Eliminar o jornal encontrado
         System.out.println("A eliminar o jornal/revista: " + issn + "...");
         jornais.remove(jornalEncontrado);
         System.out.println("Jornal/revista removido com sucesso!");

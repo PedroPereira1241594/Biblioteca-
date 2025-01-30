@@ -41,7 +41,7 @@ public class Main {
         ReservaController reservaController = new ReservaController(null, reservas);
         EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
         reservaController.setEmprestimosController(emprestimosController);
-        LivroController livroController = new LivroController(livros, null, emprestimosController, reservas);
+        LivroController livroController = new LivroController(livros, null, emprestimosController, reservas, emprestimos);
 
         // Agora configura o livroView antes de usá-lo
         LivroView livroView = new LivroView(livroController, scanner);
