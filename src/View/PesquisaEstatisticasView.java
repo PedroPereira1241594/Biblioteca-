@@ -25,7 +25,7 @@ public class PesquisaEstatisticasView {
             System.out.println("\n=== Menu de Pesquisas ===");
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
-            System.out.println("3. Exibir Tempo Médio de Empréstimos em um Intervalo de Datas");
+            System.out.println("3. Tempo Médio de Empréstimos em um Intervalo de Datas");
             System.out.println("4. Exibir Item Mais Requisitado no Intervalo de Datas");
             System.out.println("5. Exibir Utentes com Atraso Superior a N Dias"); // Nova opção
             System.out.println("0. Voltar ao menu principal...");
@@ -343,7 +343,7 @@ public class PesquisaEstatisticasView {
         System.out.println("\nTotal de empréstimos realizados no intervalo: " + emprestimos.size());
 
         // Calcular e exibir o tempo médio dos empréstimos
-        double tempoMedio = pesquisaEstatisticasController.calcularTempoMedioEmpréstimos(dataInicio, dataFim);
+        double tempoMedio = pesquisaEstatisticasController.calcularTempoMedioEmpréstimos(dataInicio, dataFim, emprestimos);
         if (tempoMedio > 0) {
             System.out.println("Tempo médio dos empréstimos (em dias): " + tempoMedio);
         } else {

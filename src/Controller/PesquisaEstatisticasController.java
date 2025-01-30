@@ -184,7 +184,6 @@ public class PesquisaEstatisticasController {
         System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicioFormat +"' - '" + dataFimFormat + "': " + contador);
     }
 
-
     // Método para contar o total de reservas em um intervalo de datas
     public void contarReservasEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
         long contador = 0;
@@ -203,7 +202,7 @@ public class PesquisaEstatisticasController {
     }
 
     // Método para calcular o tempo médio dos empréstimos em um intervalo de datas
-    public double calcularTempoMedioEmpréstimos(LocalDate dataInicio, LocalDate dataFim) {
+    public double calcularTempoMedioEmpréstimos(LocalDate dataInicio, LocalDate dataFim, List<Emprestimos> emprestimos) {
         long totalDias = 0;
         long count = 0;
 
