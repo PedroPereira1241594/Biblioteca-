@@ -128,7 +128,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas
@@ -149,7 +149,7 @@ public class PesquisaEstatisticasView {
 
         switch (opcao) {
             case 1:
-                List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+                List<Emprestimos> emprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
                 mostrarEmprestimos(emprestimos);
                 break;
             case 2:
@@ -157,7 +157,7 @@ public class PesquisaEstatisticasView {
                 mostrarReservas(reservas);
                 break;
             case 3:
-                List<Emprestimos> todosEmprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+                List<Emprestimos> todosEmprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
                 List<Reserva> todasReservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
                 mostrarEmprestimos(todosEmprestimos);
                 mostrarReservas(todasReservas);
@@ -274,7 +274,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas
@@ -285,7 +285,7 @@ public class PesquisaEstatisticasView {
         }
 
         // Buscar todos os empréstimos entre as datas fornecidas
-        List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
+        List<Emprestimos> emprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
 
         // Exibir o total de empréstimos encontrados no intervalo
         System.out.println("\nTotal de empréstimos realizados no intervalo: " + emprestimos.size());
@@ -313,7 +313,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas
@@ -363,12 +363,6 @@ public class PesquisaEstatisticasView {
             }
         }
     }
-    public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
-        if (dataFim.isBefore(dataInicio)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+
 
 }
