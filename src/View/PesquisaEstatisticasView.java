@@ -117,11 +117,27 @@ public class PesquisaEstatisticasView {
     // Método para mostrar Jornal/Revista por ISSN
     private void pesquisarEntreDatas() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataInicio;
+        LocalDate dataFim;
+        // Loop para validação das datas
+        while (true) {
+            try {
+                System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
+                dataInicio = lerData(formato);
+                System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
+                dataFim = lerData(formato);
 
-        System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataInicio = lerData(formato);
-        System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataFim = lerData(formato);
+                // Verifica se a data de fim é anterior à data de início
+                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                    System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
+                } else {
+                    break; // Sai do loop se as datas forem válidas
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: Entrada inválida. Por favor, insira as datas no formato correto (dd/MM/yyyy).");
+            }
+        }
+
 
         System.out.println("\nEscolha o que deseja pesquisar:");
         System.out.println("1. Apenas Empréstimos");
@@ -247,12 +263,26 @@ public class PesquisaEstatisticasView {
     // Método para mostrar o tempo médio de empréstimos no intervalo de datas fornecido
     private void mostrarTempoMedioEmprestimosNoIntervalo() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataInicio;
+        LocalDate dataFim;
+        // Loop para validação das datas
+        while (true) {
+            try {
+                System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
+                dataInicio = lerData(formato);
+                System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
+                dataFim = lerData(formato);
 
-        // Solicitar data de início e fim para o intervalo
-        System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataInicio = lerData(formato);
-        System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataFim = lerData(formato);
+                // Verifica se a data de fim é anterior à data de início
+                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                    System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
+                } else {
+                    break; // Sai do loop se as datas forem válidas
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: Entrada inválida. Por favor, insira as datas no formato correto (dd/MM/yyyy).");
+            }
+        }
 
         // Buscar todos os empréstimos entre as datas fornecidas
         List<Emprestimos> emprestimos = pesquisaEstatisticasController.buscarEmprestimosEntreDatas(dataInicio, dataFim);
@@ -272,12 +302,26 @@ public class PesquisaEstatisticasView {
     // Método para mostrar o item mais requisitado no intervalo de datas fornecido
     private void mostrarItemMaisRequisitado() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataInicio;
+        LocalDate dataFim;
+        // Loop para validação das datas
+        while (true) {
+            try {
+                System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
+                dataInicio = lerData(formato);
+                System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
+                dataFim = lerData(formato);
 
-        // Solicitar data de início e fim para o intervalo
-        System.out.print("\nInsira a Data de Início da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataInicio = lerData(formato);
-        System.out.print("Insira a Data de Fim da Pesquisa (dd/MM/yyyy): ");
-        LocalDate dataFim = lerData(formato);
+                // Verifica se a data de fim é anterior à data de início
+                if (!verificarDataAnterior(dataInicio, dataFim)) {
+                    System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
+                } else {
+                    break; // Sai do loop se as datas forem válidas
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: Entrada inválida. Por favor, insira as datas no formato correto (dd/MM/yyyy).");
+            }
+        }
 
         // Buscar o item mais requisitado no intervalo de datas
         List<String> itemMaisRequisitado = pesquisaEstatisticasController.pesquisarItensMaisRequisitados(dataInicio, dataFim);
@@ -317,6 +361,13 @@ public class PesquisaEstatisticasView {
                         emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             }
+        }
+    }
+    public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
+        if (dataFim.isBefore(dataInicio)) {
+            return false;
+        } else {
+            return true;
         }
     }
 

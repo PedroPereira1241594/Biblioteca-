@@ -118,7 +118,6 @@ public class LivroController {
                 break;
             }
         }
-
         if (livro1 == null) {
             System.out.println("ISBN inválido!");
             return;
