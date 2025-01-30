@@ -38,8 +38,8 @@ public class Main {
         utenteView.setUtenteController(utenteController); // Configura o controller
         JornalController jornalController = new JornalController(jornals);
         JornalView jornalView = new JornalView(jornalController);
-        ReservaController reservaController = new ReservaController(null, reservas);
-        EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
+        ReservaController reservaController = new ReservaController(null, reservas, livros, jornals);
+        EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos, livros, jornals);
         reservaController.setEmprestimosController(emprestimosController);
         LivroController livroController = new LivroController(livros, null, emprestimosController, reservas, emprestimos);
 
@@ -52,6 +52,7 @@ public class Main {
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas, emprestimosController, reservaController);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
+
 
         int opcao;
         int escolha;

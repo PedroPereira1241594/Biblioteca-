@@ -13,11 +13,15 @@ public class EmprestimosController {
     private int maiorId;  // Inicializa com o maior ID dos empréstimos existentes
     private Scanner scanner;
     private ReservaController reservaController; // Adicionando a referência ao ReservaController
+    private List<Livro> livros;
+    private List<Jornal> jornais;
 
     // Construtor
-    public EmprestimosController(ReservaController reservaController, List<Emprestimos> emprestimos) {
+    public EmprestimosController(ReservaController reservaController, List<Emprestimos> emprestimos, List<Livro> livros, List<Jornal> jornais) {
         this.emprestimos = emprestimos; // Use a mesma lista do main
         this.reservaController = reservaController;
+        this.livros = livros;
+        this.jornais = jornais;
         this.scanner = new Scanner(System.in);
 
         // Inicializa maiorId com o maior ID dos empréstimos já existentes
@@ -108,9 +112,9 @@ public class EmprestimosController {
         System.out.println("Itens Emprestados:");
         for (ItemEmprestavel item : emprestimo.getItens()) {
             if (item instanceof Livro) {
-                System.out.println(" - Livro: " + item.getIdentificador());
+                System.out.println(" - Livro: " + reservaController.pesquisaISBN(item.getIdentificador()) + " (ISBN: " + ((Livro) item).getIsbn() + ")");
             } else if (item instanceof Jornal) {
-                System.out.println(" - Jornal: " + item.getIdentificador());
+                System.out.println(" - Jornal: " + reservaController.pesquisaISSN(item.getIdentificador()) + " (ISSN: " + ((Jornal) item).getIssn() + ")");
             }
         }
         System.out.println("=".repeat(44));

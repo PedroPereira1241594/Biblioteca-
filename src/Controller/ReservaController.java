@@ -15,10 +15,14 @@ public class ReservaController {
     private int maiorId;
     private Scanner scanner;
     private EmprestimosController emprestimosController;
+    private List<Livro> livros;
+    private List<Jornal> jornais;
 
-    public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas) {
+    public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas, List<Livro> livros, List<Jornal> jornais) {
         this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
         this.reservas = reservas; // Atribui a lista de reservas
+        this.livros = livros;
+        this.jornais = jornais;
         this.maiorId = calcularMaiorId(reservas);
         this.scanner = new Scanner(System.in);
     }
@@ -125,9 +129,9 @@ public class ReservaController {
         System.out.println("Itens Reservados:");
         for (ItemEmprestavel item : reserva.getItens()) {
             if (item instanceof Livro) {
-                System.out.println(" - Livro: " + item.getIdentificador() + " (ISBN: " + ((Livro) item).getIsbn() + ")");
+                System.out.println(" - Livro: " + pesquisaISBN(item.getIdentificador()) + " (ISBN: " + ((Livro) item).getIsbn() + ")");
             } else if (item instanceof Jornal) {
-                System.out.println(" - Jornal: " + item.getIdentificador() + " (ISSN: " + ((Jornal) item).getIssn() + ")");
+                System.out.println(" - Jornal: " + pesquisaISSN(item.getIdentificador()) + " (ISSN: " + ((Jornal) item).getIssn() + ")");
             }
         }
         System.out.println("=".repeat(42));
@@ -196,6 +200,26 @@ public class ReservaController {
 
     public List<Reserva> listarTodasReservas() {
         return reservas; // Retorna a lista de reservas
+    }
+
+    // Método para pesquisar Livro por ISBN
+    public String pesquisaISBN(String ISBN) {
+        for (Livro livro : livros) {
+            if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
+                return livro.getNome(); // Retorna o livro encontrado.
+            }
+        }
+        return null; // Retorna null se nenhum livro for encontrado.
+    }
+
+    // Método para pesquisar Jornal/Revista por ISSN
+    public String pesquisaISSN(String ISSN) {
+        for (Jornal jornal : jornais) { // Iterando sobre a lista de jornais
+            if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
+                return jornal.getTitulo(); // Retorna o jornal encontrado
+            }
+        }
+        return null; // Retorna null se nenhum jornal for encontrado.
     }
 
 
