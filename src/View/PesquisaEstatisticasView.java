@@ -1,4 +1,8 @@
 package View;
+/** View para as pesquisas e estatísticas do sistema
+ * @author Pedro Pereira
+ * @since 2025-01-20
+ */
 
 import Controller.PesquisaEstatisticasController;
 import Model.*;
@@ -13,25 +17,37 @@ public class PesquisaEstatisticasView {
     private PesquisaEstatisticasController pesquisaEstatisticasController;
     private Scanner scanner;
 
+    /** Construtor para aceder ao controller das pesquisas/estatísticas
+     * @param scanner
+     * @param pesquisaEstatisticasController
+     */
     public PesquisaEstatisticasView(Scanner scanner, PesquisaEstatisticasController pesquisaEstatisticasController) {
         this.scanner = scanner;
         this.pesquisaEstatisticasController = pesquisaEstatisticasController;
     }
 
-    // Método para mostar o menu
+    /** Método do enu principal das pesquisas e estatísticas
+     * Diversas opções
+     *  1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN
+     *  2. Pesquisar Empréstimos e Reservas num intervalo de datas
+     *  3. Tempo Médio de Empréstimos num Intervalo de Datas
+     *  4. Item Mais Requisitado no Intervalo de Datas
+     *  5. Utentes com Atraso Superior a N Dias
+     *  0. Voltar ao menu principal...
+     */
     public void exibirMenu() {
         int opcao;
         do {
             System.out.println("\n=== Menu de Pesquisas ===");
             System.out.println("1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN");
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
-            System.out.println("3. Tempo Médio de Empréstimos em um Intervalo de Datas");
+            System.out.println("3. Tempo Médio de Empréstimos num Intervalo de Datas");
             System.out.println("4. Item Mais Requisitado no Intervalo de Datas");
-            System.out.println("5. Utentes com Atraso Superior a N Dias"); // Nova opção
+            System.out.println("5. Utentes com Atraso Superior a N Dias");
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine();  // Limpar buffer
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -47,7 +63,7 @@ public class PesquisaEstatisticasView {
                     mostrarItemMaisRequisitado();
                     break;
                 case 5:
-                    mostrarUtentesComAtraso(); // Método para exibir utentes com atraso
+                    mostrarUtentesComAtraso();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -58,7 +74,8 @@ public class PesquisaEstatisticasView {
         } while (opcao != 0);
     }
 
-    // Método para mostrar Livro por ISBN
+    /** Método auxiliar para a pesquisa de consultar Livro por ISBN ou Jornal/Revista por ISSN
+     */
     private void pesquisarPorISBNouISSN() {
         int option;
         do {
@@ -114,7 +131,7 @@ public class PesquisaEstatisticasView {
         } while (option != 0);
     }
 
-    // Método para mostrar Jornal/Revista por ISSN
+    // Método para mostrar os empréstimos e/ou reservados no intervalos de datas
     private void pesquisarEntreDatas() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataInicio;
