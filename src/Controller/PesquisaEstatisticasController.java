@@ -15,14 +15,16 @@ public class PesquisaEstatisticasController {
     private List<Emprestimos> emprestimos;
     private List<Reserva> reservas;
     private EmprestimosController emprestimosController;
+    private ReservaController reservaController;
 
     // Construtor que inicializa as listas
-    public PesquisaEstatisticasController(List<Livro> livros, List<Jornal> jornals, List<Emprestimos> emprestimos, List<Reserva> reservas, EmprestimosController emprestimosController) {
+    public PesquisaEstatisticasController(List<Livro> livros, List<Jornal> jornals, List<Emprestimos> emprestimos, List<Reserva> reservas, EmprestimosController emprestimosController, ReservaController reservaController) {
         this.livros = livros != null ? livros : new ArrayList<>();
         this.jornals = jornals != null ? jornals : new ArrayList<>();
         this.emprestimos = emprestimos != null ? emprestimos : new ArrayList<>();
         this.reservas = reservas != null ? reservas : new ArrayList<>();
         this.emprestimosController = emprestimosController;
+        this.reservaController = reservaController;
     }
 
     // Método para pesquisar Livro por ISBN
@@ -59,18 +61,20 @@ public class PesquisaEstatisticasController {
         // Filtrar os empréstimos pelo intervalo de datas
         List<Emprestimos> emprestimosFiltrados = new ArrayList<>();
         for (Emprestimos emprestimo : emprestimosAtivos) {
-            LocalDate dataEmprestimo = emprestimo.getDataInicio();
-            if (dataEmprestimo != null &&
-                    (dataEmprestimo.isEqual(dataInicio) || dataEmprestimo.isAfter(dataInicio)) &&
-                    (dataEmprestimo.isEqual(dataFim) || dataEmprestimo.isBefore(dataFim))) {
+            LocalDate dataInicioEmprestimo = emprestimo.getDataInicio();
+            LocalDate dataFimEmprestimo;
+
+            if (emprestimo.getDataEfetivaDevolucao() != null) {
+                dataFimEmprestimo = emprestimo.getDataEfetivaDevolucao();
+            } else {
+                dataFimEmprestimo = emprestimo.getDataPrevistaDevolucao();
+            }
+
+            if (dataInicioEmprestimo != null &&
+                    (dataInicioEmprestimo.isEqual(dataInicio) || dataInicioEmprestimo.isAfter(dataInicio)) &&
+                    (dataFimEmprestimo.isEqual(dataFim) || dataFimEmprestimo.isBefore(dataFim))) {
                 emprestimosFiltrados.add(emprestimo);
             }
-        }
-
-        // Verificar se há empréstimos no intervalo especificado
-        if (emprestimosFiltrados.isEmpty()) {
-            System.out.println("\nNenhum empréstimo encontrado no intervalo de datas especificado.");
-            return new ArrayList<>();
         }
 
         // Remover duplicados manualmente
@@ -99,87 +103,103 @@ public class PesquisaEstatisticasController {
             }
         }
 
-        // Exibir os empréstimos
-        System.out.println("\n=== Lista de Empréstimos no Intervalo de Datas ===");
-        System.out.printf("%-10s %-50s %-80s %-20s %-25s %-25s\n",
-                "Número", "Utente", "Itens Emprestados", "Data Início", "Data Prev. Devolução", "Data Ef. Devolução");
-
-        for (Emprestimos emprestimo : emprestimosSemDuplicados) {
-            // Validação do nome do utente
-            String utenteNome = (emprestimo.getUtente() != null && emprestimo.getUtente().getNome() != null)
-                    ? emprestimo.getUtente().getNome()
-                    : "Desconhecido";
-
-            // Validação e construção da string de itens
-            String itens = "Sem itens";
-            if (emprestimo.getItens() != null && !emprestimo.getItens().isEmpty()) {
-                List<ItemEmprestavel> itensEmprestados = emprestimo.getItens();
-                itens = ""; // Inicializa vazio
-                for (int i = 0; i < itensEmprestados.size(); i++) {
-                    ItemEmprestavel item = itensEmprestados.get(i);
-                    if (item != null) {
-                        if (item instanceof Livro) {
-                            itens += "ISBN: " + ((Livro) item).getIsbn();
-                        } else if (item instanceof Jornal) {
-                            itens += "ISSN: " + ((Jornal) item).getIssn();
-                        } else {
-                            itens += "Item desconhecido";
-                        }
-                    } else {
-                        itens += "Item desconhecido";
-                    }
-
-                    if (i < itensEmprestados.size() - 1) {
-                        itens += ", ";
-                    }
-                }
-            }
-
-            // Validação das datas
-            String dataInicioStr = (emprestimo.getDataInicio() != null)
-                    ? emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                    : "Data desconhecida";
-
-            String dataPrevista = (emprestimo.getDataPrevistaDevolucao() != null)
-                    ? emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                    : "Data desconhecida";
-
-            String dataEfetiva = (emprestimo.getDataEfetivaDevolucao() != null)
-                    ? emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                    : "Pendente";
-
-            // Exibe as informações do empréstimo
-            System.out.printf("%-10d %-50s %-80s %-20s %-25s %-25s\n",
-                    emprestimo.getNumero(), utenteNome, itens, dataInicioStr, dataPrevista, dataEfetiva);
-        }
-
         // Retorna a lista final filtrada e ordenada
         return emprestimosSemDuplicados;
     }
 
+    public List<Reserva> listarReservasPorIntervalo(LocalDate dataInicio, LocalDate dataFim) {
+        // Obter lista de reservas
+        List<Reserva> reservas1 = reservaController.listarTodasReservas();
 
+        // Verificar se existem reservas registadas
+        if (reservas1 == null || reservas1.isEmpty()) {
+            System.out.println("\nNenhuma reserva registada.");
+            return new ArrayList<>();
+        }
 
-    // Método para buscar reservas em um intervalo de datas
-    public List<Reserva> buscarReservasEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
-        List<Reserva> resultados = new ArrayList<>();
-        for (Reserva reserva : reservas) {
-            LocalDate dataReserva = reserva.getDataInicio();
-            if ((dataReserva.isEqual(dataInicio) || dataReserva.isAfter(dataInicio)) &&
-                    (dataReserva.isEqual(dataFim) || dataReserva.isBefore(dataFim))) {
-                resultados.add(reserva);
+        // Filtrar as reservas pelo intervalo de datas
+        List<Reserva> reservaFiltro = new ArrayList<>();
+        for (Reserva reserva : reservas1) {
+            LocalDate dataInicioReserva = reserva.getDataInicio();
+            LocalDate dataFimReserva  = reserva.getDataFim();
+
+            if (dataInicioReserva != null &&
+                    (dataInicioReserva.isEqual(dataInicio) || dataInicioReserva.isAfter(dataInicio)) &&
+                    (dataFimReserva.isEqual(dataFim) || dataFimReserva.isBefore(dataFim))) {
+                reservaFiltro.add(reserva);
             }
         }
-        return resultados;
+
+        // Remover duplicados manualmente
+        List<Reserva> reservaSemDuplicados = new ArrayList<>();
+        for (Reserva reserva : reservaFiltro) {
+            boolean jaExiste = false;
+            for (Reserva r : reservaSemDuplicados) {
+                if (r.getNumero() == reserva.getNumero()) {
+                    jaExiste = true;
+                    break;
+                }
+            }
+            if (!jaExiste) {
+                reservaSemDuplicados.add(reserva);
+            }
+        }
+
+        // Ordenar a lista manualmente usando Bubble Sort
+        for (int i = 0; i < reservaSemDuplicados.size() - 1; i++) {
+            for (int j = 0; j < reservaSemDuplicados.size() - i - 1; j++) {
+                if (reservaSemDuplicados.get(j).getNumero() > reservaSemDuplicados.get(j + 1).getNumero()) {
+                    Reserva temp = reservaSemDuplicados.get(j);
+                    reservaSemDuplicados.set(j, reservaSemDuplicados.get(j + 1));
+                    reservaSemDuplicados.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Retorna a lista final filtrada e ordenada
+        return reservaSemDuplicados;
     }
 
     // Método para contar o total de empréstimos em um intervalo de datas
-    public long contarEmprestimosEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
-        return emprestimos.stream()
-                .filter(emprestimo -> {
-                    LocalDate dataEmprestimo = emprestimo.getDataInicio();
-                    return !dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim);
-                })
-                .count(); // Retorna o número total de empréstimos no intervalo
+    public void contarEmprestimosEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
+        long contador = 0;
+        for (Emprestimos emprestimo : emprestimos) {
+            LocalDate dataInicioEmprestimo = emprestimo.getDataInicio();
+            LocalDate dataFimEmprestimo;
+
+            if (emprestimo.getDataEfetivaDevolucao() != null) {
+                dataFimEmprestimo = emprestimo.getDataEfetivaDevolucao();
+            } else {
+                dataFimEmprestimo = emprestimo.getDataPrevistaDevolucao();
+            }
+
+            if (dataInicioEmprestimo != null &&
+                    (dataInicioEmprestimo.isEqual(dataInicio) || dataInicioEmprestimo.isAfter(dataInicio)) &&
+                    (dataFimEmprestimo.isEqual(dataFim) || dataFimEmprestimo.isBefore(dataFim))) {
+                contador++;
+            }
+        }
+        String dataInicioFormat = dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String dataFimFormat = dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicioFormat +"' - '" + dataFimFormat + "': " + contador);
+    }
+
+
+    // Método para contar o total de reservas em um intervalo de datas
+    public void contarReservasEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
+        long contador = 0;
+        for (Reserva reserva : reservas) {
+            LocalDate dataInicioReserva = reserva.getDataInicio();
+            LocalDate dataFimReserva  = reserva.getDataFim();
+            if (dataInicioReserva != null &&
+                    (dataInicioReserva.isEqual(dataInicio) || dataInicioReserva.isAfter(dataInicio)) &&
+                    (dataFimReserva.isEqual(dataFim) || dataFimReserva.isBefore(dataFim))) {
+                contador++;
+            }
+        }
+        String dataInicioFormat = dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String dataFimFormat = dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println("Total de reservas no intervalo de datas fornecidas '" + dataInicioFormat +"' - '" + dataFimFormat + "': " + contador); // Exibindo o total de reservas
     }
 
     // Método para calcular o tempo médio dos empréstimos em um intervalo de datas

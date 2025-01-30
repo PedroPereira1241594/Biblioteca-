@@ -8,4 +8,4 @@ ID: 8; Nome: Tiago Nogueira; ISSN: ; ISBN: 4561237894560; DataRegisto: 2024-08-0
 ID: 9; Nome: Inês Ferreira; ISSN: ; ISBN: 7539516548520; DataRegisto: 2024-09-10; DataInicioReserva: 2024-10-01; DataFimReserva: 2024-10-15
 ID: 10; Nome: Miguel Rocha; ISSN: ; ISBN: 9514567891230, 7539516548520; DataRegisto: 2024-10-15; DataInicioReserva: 2024-11-01; DataFimReserva: 2024-11-15
 ID: 1; Nome: 1; ISSN: 12; ISBN: 1; DataRegisto: 2025-01-20; DataInicioReserva: 2025-01-20; DataFimReserva: 2025-01-20
-ID: 2; Nome: 1; ISSN: ; ISBN: 12; DataRegisto: 2025-01-20; DataInicioReserva: 2025-01-20; DataFimReserva: 2025-01-20
+

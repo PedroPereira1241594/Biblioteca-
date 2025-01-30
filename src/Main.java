@@ -50,7 +50,7 @@ public class Main {
         emprestimosController.setLivroController(livroController);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController,jornalController, jornalView,emprestimosController);
         EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController);
-        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas, emprestimosController);
+        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas, emprestimosController, reservaController);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
         int opcao;

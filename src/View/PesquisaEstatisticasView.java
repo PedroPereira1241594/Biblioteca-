@@ -151,57 +151,86 @@ public class PesquisaEstatisticasView {
             case 1:
                 List<Emprestimos> emprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
                 mostrarEmprestimos(emprestimos);
+                pesquisaEstatisticasController.contarEmprestimosEntreDatas(dataInicio, dataFim);
                 break;
             case 2:
-                List<Reserva> reservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
+                List<Reserva> reservas = pesquisaEstatisticasController.listarReservasPorIntervalo(dataInicio, dataFim);
                 mostrarReservas(reservas);
+                pesquisaEstatisticasController.contarReservasEntreDatas(dataInicio, dataFim);
                 break;
             case 3:
                 List<Emprestimos> todosEmprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
-                List<Reserva> todasReservas = pesquisaEstatisticasController.buscarReservasEntreDatas(dataInicio, dataFim);
+                List<Reserva> todasReservas = pesquisaEstatisticasController.listarReservasPorIntervalo(dataInicio, dataFim);
                 mostrarEmprestimos(todosEmprestimos);
                 mostrarReservas(todasReservas);
+                pesquisaEstatisticasController.contarEmprestimosEntreDatas(dataInicio, dataFim);
+                pesquisaEstatisticasController.contarReservasEntreDatas(dataInicio, dataFim);
                 break;
             default:
                 System.out.println("Opção inválida!");
         }
 
-        // Exibir total de empréstimos realizados no intervalo
-        long totalEmprestimos = pesquisaEstatisticasController.contarEmprestimosEntreDatas(dataInicio, dataFim);
-        System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicio +"' - '" + dataFim + "': " + totalEmprestimos); // Exibindo o total de empréstimos
     }
 
     // Método auxiliar para mostrar empréstimos
     private void mostrarEmprestimos(List<Emprestimos> emprestimos) {
         if (emprestimos.isEmpty()) {
-            System.out.println("Nenhum empréstimo encontrado no intervalo de datas fornecido.");
+            System.out.println("\nNenhum empréstimo encontrado no intervalo de datas fornecido.");
         } else {
-            System.out.println("\n=== Lista de Empréstimos ===");
-            // Ajustando os espaçamentos para garantir que "Livros Emprestados" tenha mais espaço
-            System.out.printf("%-10s %-20s %-20s %-25s %-50s %-25s\n",
-                    "Número", "Utente", "Data Início", "Data Prev. Devolução", "Livros Emprestados", "Data Devolução");
+            // Exibir os empréstimos
+            System.out.println("\n=== Lista de Empréstimos no Intervalo de Datas ===");
+            System.out.printf("%-10s %-50s %-20s %-25s %-25s %-80s\n",
+                    "Número", "Utente", "Data Início", "Data Prev. Devolução", "Data Devolução", "Itens Emprestados");
 
-            // Exibindo os empréstimos
             for (Emprestimos emprestimo : emprestimos) {
-                String livros = "";
-                for (ItemEmprestavel livro : emprestimo.getItens()) {
-                    livros += livro.getTitulo() + " (ISBN: " + livro.getISBN() + "), ";
-                }
-                // Remover última vírgula e espaço
-                if (!livros.isEmpty()) {
-                    livros = livros.substring(0, livros.length() - 2);
+                // Validação do nome do utente
+                String utenteNome = (emprestimo.getUtente() != null && emprestimo.getUtente().getNome() != null)
+                        ? emprestimo.getUtente().getNome()
+                        : "Desconhecido";
+
+
+
+                // Validação das datas
+                String dataInicioStr = (emprestimo.getDataInicio() != null)
+                        ? emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data desconhecida";
+
+                String dataPrevista = (emprestimo.getDataPrevistaDevolucao() != null)
+                        ? emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data desconhecida";
+
+                String dataEfetiva = (emprestimo.getDataEfetivaDevolucao() != null)
+                        ? emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Pendente";
+
+                // Validação e construção da string de itens
+                String itens = "Sem itens";
+                if (emprestimo.getItens() != null && !emprestimo.getItens().isEmpty()) {
+                    List<ItemEmprestavel> itensEmprestados = emprestimo.getItens();
+                    itens = ""; // Inicializa vazio
+                    for (int i = 0; i < itensEmprestados.size(); i++) {
+                        ItemEmprestavel item = itensEmprestados.get(i);
+                        if (item != null) {
+                            if (item instanceof Livro) {
+                                itens += "ISBN: " + ((Livro) item).getIsbn();
+                            } else if (item instanceof Jornal) {
+                                itens += "ISSN: " + ((Jornal) item).getIssn();
+                            } else {
+                                itens += "Item desconhecido";
+                            }
+                        } else {
+                            itens += "Item desconhecido";
+                        }
+
+                        if (i < itensEmprestados.size() - 1) {
+                            itens += ", ";
+                        }
+                    }
                 }
 
-                // Imprime o empréstimo com a lista de livros
-                System.out.printf("%-10d %-20s %-20s %-25s %-50s %-25s\n",
-                        emprestimo.getNumero(),
-                        emprestimo.getUtente().getNome(),
-                        emprestimo.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        emprestimo.getDataPrevistaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        livros,
-                        emprestimo.getDataEfetivaDevolucao() != null ?
-                                emprestimo.getDataEfetivaDevolucao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) :
-                                "Em aberto");
+                // Exibe as informações do empréstimo
+                System.out.printf("%-10d %-50s %-20s %-25s %-25s %-80s\n",
+                        emprestimo.getNumero(), utenteNome, dataInicioStr, dataPrevista, dataEfetiva, itens);
             }
         }
     }
@@ -211,42 +240,65 @@ public class PesquisaEstatisticasView {
         if (reservas.isEmpty()) {
             System.out.println("Nenhuma reserva encontrada no intervalo de datas fornecido.");
         } else {
-            System.out.println("\n=== Lista de Reservas ===");
+            // Exibir as reservas
+            System.out.println("\n=== Lista de Reservas no Intervalo de Datas ===");
 
             // Cabeçalhos das colunas
-            System.out.printf("%-10s %-20s %-15s %-15s %-15s %-40s\n",
+            System.out.printf("%-10s %-50s %-20s %-25s %-25s %-80s\n",
                     "Número", "Utente", "Data Registo", "Data Início", "Data Fim", "Itens Reservados");
 
-            // Exibindo as reservas
             for (Reserva reserva : reservas) {
-                String itensReservados = "";
+                // Validação do nome do utente
+                String utenteNome = (reserva.getUtente() != null && reserva.getUtente().getNome() != null)
+                        ? reserva.getUtente().getNome()
+                        : "Desconhecido";
 
-                for (ItemEmprestavel item : reserva.getItens()) {
-                    if (item instanceof Livro) {
-                        if (!itensReservados.isEmpty()) {
-                            itensReservados += ", ";
+
+
+                // Validação das datas
+                String dataRegisto = (reserva.getDataRegisto() != null)
+                        ? reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data desconhecida";
+
+                String dataInicio = (reserva.getDataInicio() != null)
+                        ? reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Data desconhecida";
+
+                String dataFim = (reserva.getDataFim() != null)
+                        ? reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "Pendente";
+
+                // Validação e construção da string de itens
+                String itens = "Sem itens";
+                if (reserva.getItens() != null && !reserva.getItens().isEmpty()) {
+                    List<ItemEmprestavel> itensReservados = reserva.getItens();
+                    itens = ""; // Inicializa vazio
+                    for (int i = 0; i < itensReservados.size(); i++) {
+                        ItemEmprestavel item = itensReservados.get(i);
+                        if (item != null) {
+                            if (item instanceof Livro) {
+                                itens += "ISBN: " + ((Livro) item).getIsbn();
+                            } else if (item instanceof Jornal) {
+                                itens += "ISSN: " + ((Jornal) item).getIssn();
+                            } else {
+                                itens += "Item desconhecido";
+                            }
+                        } else {
+                            itens += "Item desconhecido";
                         }
-                        itensReservados += item.getTitulo() + " (ISBN: " + ((Livro) item).getIsbn() + ")";
-                    } else if (item instanceof Jornal) {
-                        if (!itensReservados.isEmpty()) {
-                            itensReservados += ", ";
+
+                        if (i < itensReservados.size() - 1) {
+                            itens += ", ";
                         }
-                        itensReservados += item.getTitulo() + " (ISSN: " + ((Jornal) item).getIssn() + ")";
                     }
                 }
 
-                // Exibe a linha da reserva
-                System.out.printf("%-10d %-20s %-15s %-15s %-15s %-40s\n",
-                        reserva.getNumero(),
-                        reserva.getUtente().getNome(),
-                        reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        reserva.getDataInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        reserva.getDataFim().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        itensReservados);
+                // Exibe as informações do empréstimo
+                System.out.printf("%-10d %-50s %-20s %-25s %-25s %-80s\n",
+                        reserva.getNumero(), utenteNome, dataRegisto, dataInicio, dataFim, itens);
             }
         }
     }
-
 
     // Método para ler a data no formato correto
     private LocalDate lerData(DateTimeFormatter formato) {
