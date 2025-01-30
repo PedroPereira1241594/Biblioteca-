@@ -27,7 +27,7 @@ public class PesquisaEstatisticasView {
             System.out.println("2. Pesquisar Empréstimos e Reservas num intervalo de datas");
             System.out.println("3. Tempo Médio de Empréstimos em um Intervalo de Datas");
             System.out.println("4. Item Mais Requisitado no Intervalo de Datas");
-            System.out.println("5. Exibir Utentes com Atraso Superior a N Dias"); // Nova opção
+            System.out.println("5. Utentes com Atraso Superior a N Dias"); // Nova opção
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
