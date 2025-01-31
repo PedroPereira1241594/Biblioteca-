@@ -11,14 +11,47 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe de visualização responsável pela interação com o utilizador para operações relacionadas a empréstimos.
+ * Esta classe fornece um menu de opções para criar, consultar, atualizar, remover e listar empréstimos.
+ * Ela também interage com os controllers para realizar as operações solicitadas.
+ */
 public class EmprestimosView {
+    /**
+     * Controller responsável por gerir empréstimos.
+     */
     private EmprestimosController emprestimosController;
+    /**
+     * Controller responsável por gerir utentes.
+     */
     private UtenteController utenteController;
+    /**
+     * Controller responsável por gerir livros.
+     */
     private LivroController livroController;
+    /**
+     * Controller responsável por gerir jornais.
+     */
     private JornalController jornalController;
+    /**
+            * Controller responsável por gerir reservas de itens.
+     */
     private ReservaController reservaController;
+    /**
+     * Scanner para entrada de dados do utilizador.
+     */
     private Scanner scanner;
 
+    /**
+     * Construtor da classe {@code EmprestimosView}.
+     * Inicializa os controllers e o scanner para entrada de dados.
+     *
+     * @param emprestimosController o controller de empréstimos
+     * @param utenteController o controller de utentes
+     * @param livroController o controller de livros
+     * @param jornalController o controller de jornais
+     * @param reservaController o controller de reservas
+     */
     public EmprestimosView(EmprestimosController emprestimosController, UtenteController utenteController, LivroController livroController, JornalController jornalController, ReservaController reservaController) {
         this.emprestimosController = emprestimosController;
         this.utenteController = utenteController;
@@ -28,6 +61,10 @@ public class EmprestimosView {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Mostra o menu principal de opções relacionadas a empréstimos.
+     * O utilizador pode escolher diferentes operações, como criar, consultar, atualizar ou remover um empréstimo.
+     */
     public void exibirMenu() {
         int opcao;
         do {
@@ -54,6 +91,9 @@ public class EmprestimosView {
         } while (opcao != 0);
     }
 
+    /**
+     * Inicia o processo de criação de um empréstimo, permitindo a seleção de utente, itens e datas.
+     */
     private void criarEmprestimo() {
         try {
             System.out.println("\n=== Criar Empréstimo ===");
@@ -159,6 +199,12 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Obtém um utente com base no NIF introduzido pelo utilizador.
+     * Oferece opções para adicionar um novo utente ou tentar novamente se o NIF não for encontrado.
+     *
+     * @return o utente encontrado ou {@code null} se a operação for cancelada
+     */
     private Utentes obterUtente() {
         Utentes utente = null;
         while (utente == null) {
@@ -195,6 +241,11 @@ public class EmprestimosView {
         return utente;
     }
 
+    /**
+     * Permite ao utilizador selecionar livros para o empréstimo.
+     *
+     * @return uma lista de livros selecionados ou {@code null} se a operação for cancelada
+     */
     private List<Livro> obterLivros() {
         List<Livro> livrosParaEmprestimo = new ArrayList<>();
         System.out.print("Quantos livros vai requisitar? ");
@@ -241,6 +292,11 @@ public class EmprestimosView {
         return livrosParaEmprestimo;
     }
 
+    /**
+     * Permite ao utilizador selecionar jornais para o empréstimo.
+     *
+     * @return uma lista de jornais selecionados ou {@code null} se a operação for cancelada
+     */
     private List<Jornal> obterJornais() {
         List<Jornal> jornaisParaEmprestimo = new ArrayList<>();
         System.out.print("Quantos jornais vai requisitar? ");
@@ -301,11 +357,25 @@ public class EmprestimosView {
         return jornaisParaEmprestimo;
     }
 
+    /**
+     * Solicita uma data ao utilizador com base no formato especificado.
+     *
+     * @param mensagem a mensagem exibida ao utilizador
+     * @param formato o formato da data
+     * @return a data informada pelo utilizador
+     */
     private LocalDate obterData(String mensagem, DateTimeFormatter formato) {
         System.out.print(mensagem);
         return lerData(formato);
     }
 
+    /**
+     * Solicita a data efetiva de devolução ao utilizador, caso aplicável.
+     *
+     * @param dataInicio a data de início do empréstimo
+     * @param formato o formato da data
+     * @return a data efetiva de devolução ou {@code null} se o utilizador optar por não informar
+     */
     private LocalDate obterDataEfetivaDevolucao(LocalDate dataInicio, DateTimeFormatter formato) {
         LocalDate dataEfetivaDevolucao = null;
         System.out.print("Deseja adicionar a data efetiva de devolução? (S/N): ");
@@ -325,6 +395,12 @@ public class EmprestimosView {
         return dataEfetivaDevolucao;
     }
 
+    /**
+     * Lê uma data do utilizador e verifica o formato informado.
+     *
+     * @param formato o formato esperado da data (dd/MM/yyyy)
+     * @return a data válida informada pelo utilizador
+     */
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
             try {
@@ -336,6 +412,10 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Consulta um empréstimo com base no número informado pelo utilizador.
+     * Mostra os detalhes do empréstimo encontrado ou uma mensagem de erro caso não exista.
+     */
     private void consultarEmprestimo() {
         System.out.println("\n=== Consultar Empréstimo ===");
         int numero = obterNumeroEmprestimo();
@@ -349,6 +429,12 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Solicita ao utilizador o número do empréstimo.
+     * Garante que o valor inserido é um número inteiro válido.
+     *
+     * @return O número do empréstimo inserido pelo utilizador.
+     */
     private int obterNumeroEmprestimo() {
         System.out.print("Número do Empréstimo: ");
         while (!scanner.hasNextInt()) {
@@ -358,6 +444,11 @@ public class EmprestimosView {
         return scanner.nextInt();
     }
 
+    /**
+     * Permite ao utilizador atualizar informações de um empréstimo existente.
+     * As opções incluem a atualização de datas ou de itens associados ao empréstimo.
+     * Caso o número do empréstimo seja inválido ou o empréstimo não seja encontrado, uma mensagem de erro será mostrada.
+     */
     public void atualizarEmprestimo() {
         System.out.println("\n=== Atualizar Empréstimo ===");
 
@@ -415,6 +506,13 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Atualiza as datas do empréstimo, permitindo que o utilizador inserir uma nova data efetiva de devolução.
+     * Verifica se a nova data não é anterior à data de início do empréstimo.
+     *
+     * @param emprestimo O empréstimo a ser atualizado.
+     * @param numero O número do empréstimo.
+     */
     private void atualizarDatasEmprestimo(Emprestimos emprestimo, int numero) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate novaDataEfetivaDevolucao;
@@ -440,6 +538,14 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Altera os itens associados a um empréstimo.
+     * Oferece opções para adicionar ou remover livros e jornais.
+     *
+     * @param emprestimo O empréstimo a ser alterado.
+     * @param dataInicio A data de início do empréstimo.
+     * @param dataFim A data de término do empréstimo.
+     */
     private void modificarItensEmprestimo(Emprestimos emprestimo, LocalDate dataInicio, LocalDate dataFim) {
         System.out.println("\nO que você deseja fazer com os itens do empréstimo?");
         System.out.println("1. Adicionar livro");
@@ -461,6 +567,14 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Adiciona um livro a um empréstimo, verifica se o livro está disponível e não já associado ao empréstimo.
+     * Permite ao utilizador registar um novo livro caso o ISBN fornecido não corresponda a nenhum livro existente.
+     *
+     * @param emprestimo O empréstimo ao qual o livro será adicionado.
+     * @param dataInicioEmprestimo A data de início do empréstimo para verificar se o livro está disponível.
+     * @param dataFimEmprestimo A data de término do empréstimo para verificar se o livro está disponível.
+     */
     private void adicionarLivroAoEmprestimo(Emprestimos emprestimo, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
         Livro livro = null;
         while (livro == null) {
@@ -516,6 +630,12 @@ public class EmprestimosView {
         System.out.println("Livro adicionado com sucesso.");
     }
 
+    /**
+     * Remove um livro de um empréstimo, com base no ISBN fornecido pelo utilizador.
+     * Verifica se o livro está associado ao empréstimo antes de removê-lo.
+     *
+     * @param emprestimo O empréstimo do qual o livro será removido.
+     */
     private void removerLivroDoEmprestimo(Emprestimos emprestimo) {
         System.out.print("ISBN do livro a remover: ");
         String isbn = scanner.nextLine();
@@ -529,6 +649,14 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Adiciona um jornal a um empréstimo, verifica se o jornal está disponível e não já associado ao empréstimo.
+     * Permite ao utilizador registar um novo jornal caso o ISSN fornecido não corresponda a nenhum jornal existente.
+     *
+     * @param emprestimo O empréstimo ao qual o jornal será adicionado.
+     * @param dataInicioEmprestimo A data de início do empréstimo para verificar se o jornal está disponível.
+     * @param dataFimEmprestimo A data de término do empréstimo para verificar se o jornal está disponível.
+     */
     private void adicionarJornalAoEmprestimo(Emprestimos emprestimo, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
         Jornal jornal = null;
         while (jornal == null) {
@@ -594,6 +722,12 @@ public class EmprestimosView {
         System.out.println("Jornal adicionado com sucesso.");
     }
 
+    /**
+     * Remove um jornal de um empréstimo, com base no ISSN fornecido pelo utilizador.
+     * Verifica se o jornal está associado ao empréstimo antes de removê-lo.
+     *
+     * @param emprestimo O empréstimo do qual o jornal será removido.
+     */
     private void removerJornalDoEmprestimo(Emprestimos emprestimo) {
         System.out.print("ISSN do jornal a remover: ");
         String issn = scanner.nextLine();
@@ -607,6 +741,10 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Remove um empréstimo com base no número fornecido pelo utilizador.
+     * Mostra os detalhes do empréstimo antes de removê-lo e verifica se a operação foi bem-sucedida.
+     */
     public void removerEmprestimo() {
         try {
             System.out.print("Insira o número do empréstimo que deseja remover: ");
@@ -636,13 +774,18 @@ public class EmprestimosView {
         }
     }
 
+    /**
+     * Lista todos os empréstimos registados no sistema.
+     * Remove duplicados manualmente e ordena os empréstimos pelo número em ordem crescente.
+     * Mostra os detalhes de cada empréstimo, incluindo itens, datas e informações do utente.
+     */
     public void listarEmprestimos() {
         // Obtém a lista de empréstimos ativos do controlador
         List<Emprestimos> emprestimosAtivos = emprestimosController.listarTodosEmprestimos();
 
-        // Verifica se existem empréstimos registrados
+        // Verifica se existem empréstimos registados
         if (emprestimosAtivos == null || emprestimosAtivos.isEmpty()) {
-            System.out.println("\nNenhum empréstimo registrado.");
+            System.out.println("\nNenhum empréstimo registado.");
             return;
         }
 
