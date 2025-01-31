@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Classe responsável por apresentar ao utilizador a inferface para a gestão de utentes.
+ * Classe responsável por apresentar ao utilizador a interface para a gestão de utentes.
  *
  * Esta classe permite ao utilizador realizar diversas operações relacionadas
  * com utentes, como adicionar, consultar, editar, remover e listar utentes,
