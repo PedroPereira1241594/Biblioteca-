@@ -305,6 +305,20 @@ public class ReservaController {
         return null;
     }
 
+    /**
+     * Converte uma reserva em um empréstimo.
+     * Este método verifica se o EmprestimosController foi inicializado, consulta a reserva pelo número fornecido,
+     * cria um empréstimo com base nos dados da reserva e remove a reserva após a conversão.
+     * Se o EmprestimosController não estiver inicializado ou a reserva não for encontrada, uma mensagem de erro será exibida.
+     *
+     * @param numeroReserva O número da reserva que será convertida em empréstimo.
+     * @param dataInicio A data de início do empréstimo (geralmente a mesma data de início da reserva).
+     * @param dataPrevistaDevolucao A data prevista para devolução do empréstimo (geralmente a mesma data de fim da reserva).
+     *
+     * @see EmprestimosController#criarEmprestimo(Utentes, List, LocalDate, LocalDate, LocalDate)
+     * @see #consultarReserva(int)
+     * @see #removerReserva(int)
+     */
     public void converterReservaEmEmprestimo(int numeroReserva, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
         // Verifica se o EmprestimosController foi inicializado
         if (emprestimosController == null) {
