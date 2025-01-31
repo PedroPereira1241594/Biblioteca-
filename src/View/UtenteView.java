@@ -36,13 +36,12 @@ public class UtenteView {
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
 
-            // Usa nextLine para evitar problemas de buffer
             while (!scanner.hasNextInt()) {
                 System.out.println("Por favor, insira um número válido.");
                 scanner.next();
             }
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine();  
 
             switch (opcao) {
                 case 1:

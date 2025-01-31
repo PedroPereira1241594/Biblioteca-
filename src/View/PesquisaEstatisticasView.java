@@ -18,15 +18,15 @@ public class PesquisaEstatisticasView {
     private Scanner scanner;
 
     /** Construtor para aceder ao controller das pesquisas/estatísticas
-     * @param scanner
-     * @param pesquisaEstatisticasController
+     * @param scanner para leitura de dados
+     * @param pesquisaEstatisticasController controller para realizar as verificações e a captura de dados
      */
     public PesquisaEstatisticasView(Scanner scanner, PesquisaEstatisticasController pesquisaEstatisticasController) {
         this.scanner = scanner;
         this.pesquisaEstatisticasController = pesquisaEstatisticasController;
     }
 
-    /** Método do enu principal das pesquisas e estatísticas
+    /** Método do menu principal das pesquisas e estatísticas
      * Diversas opções
      *  1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN
      *  2. Pesquisar Empréstimos e Reservas num intervalo de datas
@@ -85,7 +85,7 @@ public class PesquisaEstatisticasView {
             System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();  
 
             switch (option) {
                 case 1:
@@ -162,7 +162,7 @@ public class PesquisaEstatisticasView {
         System.out.println("3. Ambos (Empréstimos e Reservas)");
         System.out.print("Opção: ");
         int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
+        scanner.nextLine();  
 
         switch (opcao) {
             case 1:
@@ -408,7 +408,7 @@ public class PesquisaEstatisticasView {
     private void mostrarUtentesComAtraso() {
         System.out.print("Insira o número de dias de atraso: ");
         int diasAtraso = scanner.nextInt();
-        scanner.nextLine();  // Limpar buffer
+        scanner.nextLine();   
 
         // Buscar empréstimos com atraso maior que o número de dias informado
         List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.buscarEmprestimosComAtraso(diasAtraso);

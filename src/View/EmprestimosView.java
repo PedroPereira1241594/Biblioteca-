@@ -77,7 +77,7 @@ public class EmprestimosView {
                 System.out.println("0. Finalizar seleção de itens...");
                 System.out.print("Escolha uma opção: ");
                 int opcaoItem = scanner.nextInt();
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine();  
 
                 if (opcaoItem == 0) {
                     break; // Finaliza a seleção de itens
@@ -310,7 +310,7 @@ public class EmprestimosView {
         LocalDate dataEfetivaDevolucao = null;
         System.out.print("Deseja adicionar a data efetiva de devolução? (S/N): ");
         char confirmacao = scanner.next().toUpperCase().charAt(0);
-        scanner.nextLine(); // Limpar o buffer antes de ler a próxima entrada
+        scanner.nextLine();  
 
         if (confirmacao == 'S') {
             System.out.print("Data Efetiva de Devolução (dd/MM/yyyy): ");
@@ -364,7 +364,7 @@ public class EmprestimosView {
         // Obter o número do empréstimo
         System.out.print("Digite o número do empréstimo: ");
         int numeroEmprestimo = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
+        scanner.nextLine();  
 
         // Consultar o empréstimo pelo número
         Emprestimos emprestimo = emprestimosController.consultarEmprestimo(numeroEmprestimo);
@@ -386,10 +386,10 @@ public class EmprestimosView {
         int opcao;
         try {
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();  
         } catch (InputMismatchException e) {
             System.out.println("Erro: Opção inválida. Digite um número.");
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();  
             return;
         }
 
@@ -431,7 +431,7 @@ public class EmprestimosView {
                 System.out.println("Erro: A data efetiva de devolução não pode ser anterior à data de início do empréstimo.");
                 System.out.print("Deseja tentar novamente? (S/N): ");
                 char resposta = scanner.next().toUpperCase().charAt(0);
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine();  
                 if (resposta == 'N') {
                     System.out.println("Operação cancelada.");
                     break;
@@ -449,7 +449,7 @@ public class EmprestimosView {
         System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
         int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
+        scanner.nextLine();  
 
         switch (opcao) {
             case 1 -> adicionarLivroAoEmprestimo(emprestimo, dataInicio, dataFim);

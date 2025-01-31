@@ -65,7 +65,7 @@ public class LivroView {
                 scanner.next(); // Limpa a entrada inválida
             }
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine();  
 
             switch (opcao) {
                 case 1:

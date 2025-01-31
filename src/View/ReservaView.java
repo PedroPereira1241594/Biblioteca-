@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ReservaView {
-    private ReservaController reservaController;
-    private UtenteController utenteController;
-    private LivroController livroController;
-    private JornalController jornalController;
-    private JornalView jornalView;
-    private EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
-    private Scanner scanner;
+    private final ReservaController reservaController;
+    private final UtenteController utenteController;
+    private final LivroController livroController;
+    private final JornalController jornalController;
+    private final JornalView jornalView;
+    private final EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
+    private final Scanner scanner;
 
 
     public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, JornalController jornalController, JornalView jornalView, EmprestimosController emprestimosController) {
@@ -44,7 +44,7 @@ public class ReservaView {
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine(); 
 
             switch (opcao) {
                 case 1 -> criarReserva();
@@ -79,7 +79,7 @@ public class ReservaView {
                 System.out.println("0. Finalizar seleção de itens...");
                 System.out.print("Escolha uma opção: ");
                 int opcaoItem = scanner.nextInt();
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine();
 
                 if (opcaoItem == 0) {
                     break; // Finaliza a seleção de itens
@@ -126,7 +126,6 @@ public class ReservaView {
                         return;
                     }
                 } else if (item instanceof Jornal) {
-                    // Para jornais, verifique se já está emprestado ou reservado
                     if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim)) {
                         System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
                         return;
@@ -136,8 +135,6 @@ public class ReservaView {
                     }
                 }
             }
-
-            // Criar a reserva
             reservaController.criarReserva(utente, itensParaReserva, dataRegisto, dataInicio, dataFim, emprestimosController);
         } catch (Exception e) {
             System.out.println("Erro ao criar reserva: " + e.getMessage());
@@ -160,12 +157,11 @@ public class ReservaView {
         System.out.println("\n=== Consultar Reserva ===");
         System.out.print("Número da Reserva: ");
         int numero = scanner.nextInt();
-        scanner.nextLine();  // Limpar buffer
+        scanner.nextLine(); 
 
         // Chama o método consultarReserva do controller
         Reserva reserva = reservaController.consultarReserva(numero);
-
-        // Se a reserva for encontrada, exibe os detalhes
+        
         if (reserva != null) {
             reservaController.exibirDetalhesReserva(reserva);
         } else {
@@ -181,10 +177,10 @@ public class ReservaView {
         int numeroReserva;
         try {
             numeroReserva = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println("Erro: Entrada inválida. Digite um número.");
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();
             return;
         }
 
@@ -208,10 +204,10 @@ public class ReservaView {
         int opcao;
         try {
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine(); 
         } catch (InputMismatchException e) {
             System.out.println("Erro: Opção inválida. Digite um número.");
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine(); 
             return;
         }
 
@@ -253,7 +249,7 @@ public class ReservaView {
                 System.out.println("Erro: A data de fim não pode ser anterior à data de início da reserva.");
                 System.out.print("Deseja tentar novamente? (S/N): ");
                 char resposta = scanner.next().toUpperCase().charAt(0);
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine(); 
                 if (resposta == 'N') {
                     System.out.println("Operação cancelada.");
                     break;
@@ -272,7 +268,7 @@ public class ReservaView {
         System.out.print("Escolha uma opção: ");
 
         int opcao = scanner.nextInt();
-        scanner.nextLine(); // Limpar buffer
+        scanner.nextLine(); 
 
         switch (opcao) {
             case 1 -> adicionarLivroNaReserva(reserva, dataInicioReserva, dataFimReserva);
@@ -300,7 +296,7 @@ public class ReservaView {
                 System.out.println("0. Cancelar");
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine(); 
 
                 switch (opcao) {
                     case 1:
@@ -321,7 +317,7 @@ public class ReservaView {
                 for (ItemEmprestavel item : reserva.getItens()) {
                     if (item instanceof Livro && item.equals(livro)) {
                         System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
-                        livro = null; // Voltar ao loop para tentar novamente
+                        livro = null;
                         break;
                     }
                 }
@@ -351,14 +347,14 @@ public class ReservaView {
         System.out.print("Informe o ISBN do livro a ser removido: ");
         String isbn = scanner.nextLine();
 
-        // Buscar o livro pelo ISBN
+        // Procura o livro pelo ISBN
         Livro livro = livroController.buscarLivroPorIsbn(isbn);
         if (livro == null) {
             System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
             return;
         }
 
-        // Verificar se o livro está na reserva sem usar streams
+        // Verificar se o livro está na reserva
         boolean encontrado = false;
         for (ItemEmprestavel item : reserva.getItens()) {
             if (item instanceof Livro && item.equals(livro)) {
@@ -390,7 +386,7 @@ public class ReservaView {
                 System.out.println("0. Cancelar");
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine(); 
 
                 switch (opcao) {
                     case 1 -> {
@@ -473,7 +469,7 @@ public class ReservaView {
             System.out.println("\n=== Remover Reserva ===");
             System.out.print("Número da Reserva: ");
             int numero = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();
 
             // Consultar a reserva
             Reserva reserva = reservaController.consultarReserva(numero);
@@ -489,7 +485,7 @@ public class ReservaView {
                 // Confirmar remoção
                 System.out.print("Tem certeza que deseja remover esta reserva? (S/N): ");
                 char confirmacao = scanner.next().toUpperCase().charAt(0);
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine(); 
 
                 if (confirmacao == 'S') {
                     boolean sucesso = reservaController.removerReserva(numero);
@@ -544,7 +540,7 @@ public class ReservaView {
             }
         }
 
-        // Exibir as reservas
+        // Mostra as reservas
         System.out.println("\n=== Lista de Reservas ===");
         System.out.printf("%-10s %-35s %-100s %-25s %-20s %-20s\n",
                 "Número", "Utente", "Itens Reservados", "Data Registo", "Data Início", "Data Fim");
@@ -612,7 +608,7 @@ public class ReservaView {
                 System.out.println("1. Adicionar Utente\n2. Tentar novamente\n0. Cancelar");
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
-                scanner.nextLine(); // Limpar buffer
+                scanner.nextLine(); 
 
                 switch (opcao) {
                     case 1:
