@@ -47,9 +47,7 @@ ISBN: 1236547894561; Nome: O Grande Gatsby; Editora: Scribner; Categoria: Ficç�
 ISBN: 8529637418529; Nome: Moby Dick; Editora: Penguin; Categoria: Aventura; Ano: 1851; Autor: Herman Melville
 ISBN: 7539514568523; Nome: Crime e Castigo; Editora: 34; Categoria: Romance; Ano: 1866; Autor: Fiódor Dostoiévski
 ISBN: 4561237894560; Nome: Matei 1 Urso; Editora: O urso me matou; Categoria: Terror; Ano: 1111; Autor: Andre
-ISBN: 1472583690123; Nome: Atirei ao Gato; Editora: Tom; Categoria: Criança; Ano: 1999; Autor: Jerry
 ISBN: 1593574568523; Nome: O gato atirou uma pedra; Editora: ALguem; Categoria: adulto; Ano: 1998; Autor: Rato
-ISBN: 4561237894560; Nome: O Júlio; Editora: Logo; Categoria: Rir; Ano: 1995; Autor: Juliano
 ISBN: 7539516548520; Nome: Zeca Afonso; Editora: Bolsonaro; Categoria: Terror; Ano: 2020; Autor: Billie
 ISBN: 9514567891230; Nome: O terror; Editora: Ceu; Categoria: Romance; Ano: 1950; Autor: Bebado
 ISBN: 007; Nome: Agente Secreto; Editora: Porto Editora; Categoria: Açao; Ano: 2000; Autor: Autor
