@@ -123,8 +123,20 @@ public class LivroController {
             if (!autor.isEmpty()) livro1.setAutor(autor);
 
             System.out.println("Introduza o novo ISBN (ou pressione Enter para manter): ");
-            isbn = scanner.nextLine();
-            if (!isbn.isEmpty()) livro1.setIsbn(isbn);
+            isbn = scanner.next();
+            if (!isbn.isEmpty())
+            {
+                for (ItemEmprestavel item : livros) {
+                    if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                        System.out.println("Já Existe um Livro com o Mesmo ISBN");
+                        return;
+                    }
+                    else {
+                        livro1.setIsbn(isbn);
+                    }
+                }
+            }
+
 
             System.out.println("Livro editado com sucesso!");
         } else {
