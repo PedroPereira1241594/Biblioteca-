@@ -171,19 +171,19 @@ public class EmprestimosView {
             for (ItemEmprestavel item : itensParaEmprestimo) {
                 if (item instanceof Livro) {
                     if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     } else if (emprestimosController.verificarItemEmprestado((Livro) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     }
                 } else if (item instanceof Jornal) {
                     // Para jornais, verifique se já está emprestado ou reservado
                     if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     } else if (emprestimosController.verificarItemEmprestado((Jornal) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     }
                 }
@@ -616,11 +616,12 @@ public class EmprestimosView {
                 // Verificar se o livro está reservado ou emprestado para o período indicado
                 if (reservaController.verificarItemReservado(livro, dataInicioEmprestimo, dataFimEmprestimo)) {
                     System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está reservado para o período indicado entre "
-                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                            + (dataInicioEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+
                     return;
                 } else if (emprestimosController.verificarItemEmprestado(livro, dataInicioEmprestimo, dataFimEmprestimo)) {
                     System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está emprestado para o período indicado entre "
-                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                            + (dataInicioEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 }
             }
@@ -708,11 +709,11 @@ public class EmprestimosView {
                 // Verificar se o livro está reservado ou emprestado para o período indicado
                 if (reservaController.verificarItemReservado(jornal, dataInicioEmprestimo, dataFimEmprestimo)) {
                     System.out.println("Erro: O jornal com o ISSN: '" + jornal.getIdentificador() + "' já está reservado para o período indicado entre "
-                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                            + (dataInicioEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 } else if (emprestimosController.verificarItemEmprestado(jornal, dataInicioEmprestimo, dataFimEmprestimo)) {
                     System.out.println("Erro: O jornal com o ISSN: '" + jornal.getIdentificador() + "' já está emprestado para o período indicado entre "
-                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                            + (dataInicioEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimEmprestimo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 }
             }
