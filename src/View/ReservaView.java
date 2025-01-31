@@ -145,18 +145,18 @@ public class ReservaView {
             for (ItemEmprestavel item : itensParaReserva) {
                 if (item instanceof Livro) {
                     if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     } else if (emprestimosController.verificarItemEmprestado((Livro) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     }
                 } else if (item instanceof Jornal) {
                     if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     } else if (emprestimosController.verificarItemEmprestado((Jornal) item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + (dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                         return;
                     }
                 }
@@ -216,13 +216,13 @@ public class ReservaView {
         System.out.println("\n=== Atualizar Reserva ===");
 
         // Obter o número da reserva
-        System.out.print("Digite o número da reserva: ");
+        System.out.print("Insira o número da reserva: ");
         int numeroReserva;
         try {
             numeroReserva = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            System.out.println("Erro: Entrada inválida. Digite um número.");
+            System.out.println("Erro: Entrada inválida. Insira um número.");
             scanner.nextLine();
             return;
         }
@@ -237,7 +237,7 @@ public class ReservaView {
         }
 
         // Exibir opções de atualização
-        System.out.println("O que você deseja atualizar?");
+        System.out.println("\nO que você deseja atualizar?");
         System.out.println("1. Atualizar as datas da reserva");
         System.out.println("2. Alterar itens da reserva");
         System.out.println("0. Cancelar");
@@ -249,7 +249,7 @@ public class ReservaView {
             opcao = scanner.nextInt();
             scanner.nextLine(); 
         } catch (InputMismatchException e) {
-            System.out.println("Erro: Opção inválida. Digite um número.");
+            System.out.println("Erro: Opção inválida. Insira um número.");
             scanner.nextLine(); 
             return;
         }
@@ -353,7 +353,7 @@ public class ReservaView {
             livro = livroController.procurarLivroPorIsbn(isbn);
 
             if (livro == null) {
-                System.out.println("Erro: Livro não encontrado. Deseja:");
+                System.out.println("\nErro: Livro não encontrado. Deseja:");
                 System.out.println("1. Adicionar novo livro");
                 System.out.println("2. Tentar novamente");
                 System.out.println("0. Cancelar");
@@ -388,11 +388,11 @@ public class ReservaView {
                 // Verificar se o livro está reservado ou emprestado para o período indicado
                 if (reservaController.verificarItemReservado(livro, dataInicioReserva, dataFimReserva)) {
                     System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está reservado para o período indicado entre "
-                            + dataInicioReserva + " e " + dataFimReserva);
+                            + (dataInicioReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 } else if (emprestimosController.verificarItemEmprestado(livro, dataInicioReserva, dataFimReserva)) {
                     System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está emprestado para o período indicado entre "
-                            + dataInicioReserva + " e " + dataFimReserva);
+                            + (dataInicioReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 }
             }
@@ -455,7 +455,7 @@ public class ReservaView {
             jornal = jornalController.procurarPorIssn(issn);
 
             if (jornal == null) {
-                System.out.println("Erro: Jornal não encontrado. Deseja:");
+                System.out.println("\nErro: Jornal não encontrado. Deseja:");
                 System.out.println("1. Adicionar novo jornal");
                 System.out.println("2. Tentar novamente");
                 System.out.println("0. Cancelar");
@@ -498,11 +498,11 @@ public class ReservaView {
                 // Verificar se o jornal está reservado ou emprestado para o período indicado
                 if (reservaController.verificarItemReservado(jornal, dataInicioReserva, dataFimReserva)) {
                     System.out.println("Erro: O jornal com ISSN: '" + jornal.getIdentificador() + "' já está reservado para o período indicado entre "
-                            + dataInicioReserva + " e " + dataFimReserva);
+                            + (dataInicioReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 } else if (emprestimosController.verificarItemEmprestado(jornal, dataInicioReserva, dataFimReserva)) {
                     System.out.println("Erro: O jornal com ISSN: '" + jornal.getIdentificador() + "' já está emprestado para o período indicado entre "
-                            + dataInicioReserva + " e " + dataFimReserva);
+                            + (dataInicioReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))+ " e " + (dataFimReserva.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
                     return;
                 }
             }
@@ -697,7 +697,7 @@ public class ReservaView {
             utente = utenteController.procurarUtentePorNif(nif);
 
             if (utente == null) {
-                System.out.println("Erro: Utente com NIF '" + nif + "' não encontrado.");
+                System.out.println("\nErro: Utente com NIF '" + nif + "' não encontrado.");
                 System.out.println("1. Adicionar Utente\n2. Tentar novamente\n0. Cancelar");
                 System.out.print("Escolha uma opção: ");
                 int opcao = scanner.nextInt();
@@ -741,7 +741,7 @@ public class ReservaView {
                 livro = livroController.procurarLivroPorIsbn(isbn);
 
                 if (livro == null) {
-                    System.out.println("Erro: Livro não encontrado.");
+                    System.out.println("\nErro: Livro não encontrado.");
                     System.out.println("1. Adicionar Livro\n2. Tentar novamente\n0. Cancelar");
                     System.out.print("Escolha uma opção: ");
                     int opcao = scanner.nextInt();
@@ -791,7 +791,7 @@ public class ReservaView {
                 jornal = jornalController.procurarPorIssn(issn);
 
                 if (jornal == null) {
-                    System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
+                    System.out.println("\nErro: Jornal não encontrado. O que você deseja realizar?");
 
                     System.out.println("1. Adicionar Jornal");
                     System.out.println("2. Tentar novamente");
