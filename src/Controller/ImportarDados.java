@@ -127,7 +127,7 @@ public class ImportarDados {
      * @param caminhoJornal O caminho do txt que contem os dados dos jornais/revistas.
      * @return Uma lista de objetos Jornal/Revista carregados do txt.
      */
-public static List<Jornal> carregarJornais(String caminhoJornal) {
+    public static List<Jornal> carregarJornais(String caminhoJornal) {
     List<Jornal> jornais = new ArrayList<>();
     int countLinhas = 0;
 
@@ -174,7 +174,7 @@ public static List<Jornal> carregarJornais(String caminhoJornal) {
      * @param caminhoEmprestimo O caminho do txt que contem os dados dos emprestimos.
      * @return Uma lista de objetos Emprestimos carregados do txt.
      */
-public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<ItemEmprestavel> itens) {
+    public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, List<Utentes> utentes, List<ItemEmprestavel> itens) {
     List<Emprestimos> emprestimos = new ArrayList<>();
     int countLinhas = 0;
 
@@ -283,13 +283,14 @@ public static List<Emprestimos> carregarEmprestimos(String caminhoEmprestimo, Li
 
     return emprestimos;
 }
+
     /**
      * Carrega os dados dos utentes a partir de um txt.
      *
      * @param caminhoReserva O caminho do txt que contem os dados das Reservas.
      * @return Uma lista de objetos com as Reservas carregados do txt.
      */
-public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<ItemEmprestavel> itensDisponiveis) {
+    public static List<Reserva> carregarReservas(String caminhoReserva, List<Utentes> utentes, List<ItemEmprestavel> itensDisponiveis) {
     List<Reserva> reservas = new ArrayList<>();
     int countLinhas = 0;
 
