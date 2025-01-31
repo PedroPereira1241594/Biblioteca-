@@ -60,7 +60,7 @@ public class UtenteController {
             } else if (genero1.equals("F")) {
                 Genero = false;
             } else {
-                System.out.println("Entrada inválida! Digite 'M' para Masculino ou 'F' para Feminino.");
+                System.out.println("Entrada inválida! Insira 'M' para Masculino ou 'F' para Feminino.");
             }
         }
 
@@ -119,7 +119,7 @@ public class UtenteController {
      */
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nIntroduza o NIF do utente a editar: ");
+        System.out.print("\nInsira o NIF do utente a editar: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
         for (Utentes Indice : utentes) {
@@ -130,16 +130,16 @@ public class UtenteController {
         }
         if (utente != null) {
             System.out.println("Editando o utente: " + utente.getNome());
-            System.out.print("Introduza o novo nome (ou pressione Enter para manter): ");
+            System.out.print("Insira o novo nome (ou pressione Enter para manter): ");
             String nome = scanner.nextLine();
             if (!nome.isEmpty()) utente.setNome(nome);
 
-            System.out.print("Introduza o novo NIF (ou pressione Enter para manter): ");
+            System.out.print("Insira o novo NIF (ou pressione Enter para manter): ");
             String nifStr = scanner.nextLine();
             if (!nifStr.isEmpty()) utente.setNif(nifStr);
 
             while (true) {
-                System.out.print("Insira o Gênero (M/F) (ou Pressione Enter para manter): ");
+                System.out.print("Insira o Género (M/F) (ou Pressione Enter para manter): ");
                 String generoStr = scanner.nextLine().trim().toUpperCase();
 
                 if (generoStr.isEmpty()) {
@@ -154,11 +154,11 @@ public class UtenteController {
                     System.out.println("Gênero atualizado para (F)");
                     break;
                 } else {
-                    System.out.println("Entrada inválida! Digite 'M' para Masculino ou 'F' para Feminino.");
+                    System.out.println("Entrada inválida! Insira 'M' para Masculino ou 'F' para Feminino.");
                 }
             }
 
-            System.out.print("Digite o novo contacto (ou pressione Enter para manter): ");
+            System.out.print("Insira o novo contacto (ou pressione Enter para manter): ");
             String contactoStr = scanner.nextLine();
             if (!contactoStr.isEmpty()) utente.setContacto(contactoStr);
 
@@ -174,7 +174,7 @@ public class UtenteController {
      */
     public void removerUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nIntroduza o NIF do utente a remover: ");
+        System.out.print("\nInsira o NIF do utente a remover: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
 
