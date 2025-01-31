@@ -11,25 +11,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controlador responsável por gerir operações dos livros.
+ */
 public class LivroController {
-    private final ArrayList<Livro> livros; // Agora é uma lista de ItemEmprestavel
+    private final ArrayList<Livro> livros;
     private LivroView livroView;
     private final EmprestimosController emprestimosController;
-    private final List<Reserva> reservas; // Adicionada a lista de reservas
+    private final List<Reserva> reservas;
     private final List<Emprestimos> emprestimos;
 
+    /**
+     * Visualização de um livro.
+     *
+     * @param livroView A visualização dos livros.
+     */
     public void setLivroView(LivroView livroView) {
         this.livroView = livroView;
     }
 
+    /**
+     * Construtor da classe LivroController.
+     *
+     * @param livros Lista de livros disponíveis.
+     * @param livroView Visualização do livro.
+     * @param emprestimosController Controlador de empréstimos.
+     * @param reservas Lista de reservas.
+     * @param emprestimos Lista de empréstimos.
+     */
     public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.livros = livros;
         this.livroView = livroView;
         this.emprestimosController = emprestimosController;
-        this.reservas = reservas; // Inicializa a lista de reservas
+        this.reservas = reservas;
         this.emprestimos = emprestimos;
     }
 
+    /**
+     * Adiciona um novo livro ao sistema.
+     * São inseridos todos os dados de um Livro.
+     */
     public void adicionarLivro() {
         Scanner scanner = new Scanner(System.in);
 
@@ -58,10 +79,16 @@ public class LivroController {
         System.out.println("Livro adicionado com sucesso!\n");
     }
 
+    /**
+     * Lista todos os livros disponíveis.
+     */
     public void listarLivros() {
         livroView.exibirLivros(livros);
     }
 
+    /**
+     * Edição das informações de um livro existente, procurando pelo ISBN.
+     */
     public void editarLivro() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insira o ISBN do Livro que Pretende Editar: ");
@@ -106,11 +133,16 @@ public class LivroController {
         }
     }
 
+    /**
+     * Remove um livro da lista procurando pelo ISBN.
+     *
+     */
     public void removerLivro() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insira o ISBN do Livro que Pretende Remover: ");
         String isbn = scanner.nextLine();
 
+        //Procura pelo ISBN
         Livro livro1 = null;
         for (ItemEmprestavel item : livros) {
             if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
@@ -123,6 +155,7 @@ public class LivroController {
             return;
         }
 
+        // Verifica se o livro está associado a alguma reserva ativa
         boolean livroReservado = false;
         for (Reserva reserva : reservas) {
             for (ItemEmprestavel item : reserva.getItens()) {
@@ -136,7 +169,7 @@ public class LivroController {
             }
         }
 
-        // Verificar se o livro está associado a algum empréstimo ativo
+        // Verifica se o livro está associado a algum empréstimo ativo
         boolean livroEmprestado = false;
         for (Emprestimos emprestimos : emprestimos) {
             for (ItemEmprestavel item : emprestimos.getItens()) {
@@ -162,14 +195,18 @@ public class LivroController {
         }
     }
 
+    /**
+     * Procura um livro na coleção pelo seu ISBN.
+     *
+     * @param isbn O ISBN do livro a ser procurado.
+     * @return O livro encontrado ou null se não existir na list.
+     */
     public Livro buscarLivroPorIsbn(String isbn) {
         for (ItemEmprestavel item : livros) {
             if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
-                return (Livro) item; // Retorna o livro se o ISBN for encontrado
+                return (Livro) item;
             }
         }
-        return null; // Retorna null se o livro com o ISBN não for encontrado
+        return null;
     }
-
-
 }
