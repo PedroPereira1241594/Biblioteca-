@@ -4,16 +4,27 @@ import Model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
+/**
+ * Controller responsável por gerir os empréstimos de itens, incluindo livros e jornais.
+ * Possui operações de criação, consulta, atualização e remoção de empréstimos, além de validações
+ * relacionadas a reservas e disponibilidade de itens.
+ */
 public class EmprestimosController {
     private final List<Emprestimos> emprestimos;
     private LivroController livroController;
     private int maiorId;  // Inicializa com o maior ID dos empréstimos existentes
     private ReservaController reservaController; // Adicionando a referência ao ReservaController
 
-    // Construtor
+    /**
+     * Construtor da classe EmprestimosController.
+     *
+     * @param reservaController Controller responsável por gerir as reservas.
+     * @param emprestimos Lista de empréstimos existentes.
+     * @param livros Lista de livros disponíveis.
+     * @param jornais Lista de jornais disponíveis.
+     */
     public EmprestimosController(ReservaController reservaController, List<Emprestimos> emprestimos, List<Livro> livros, List<Jornal> jornais) {
         this.emprestimos = emprestimos; // Use a mesma lista do main
         this.reservaController = reservaController;
@@ -23,6 +34,12 @@ public class EmprestimosController {
         this.maiorId = calcularMaiorId(emprestimos);
     }
 
+    /**
+     * Calcula o maior ID entre os empréstimos existentes.
+     *
+     * @param emprestimos Lista de empréstimos.
+     * @return O maior ID encontrado.
+     */
     private int calcularMaiorId(List<Emprestimos> emprestimos) {
         int maior = 0;
         for (Emprestimos emprestimos1 : emprestimos) {
@@ -33,14 +50,24 @@ public class EmprestimosController {
         return maior;
     }
 
-    /*public List<Emprestimos> getEmprestimos() {
-        return emprestimos;
-    }*/
-
+    /**
+     * Define o controller de livros.
+     *
+     * @param livroController Controller de livros.
+     */
     public void setLivroController(LivroController livroController) {
         this.livroController = livroController;
     }
 
+    /**
+     * Cria um novo empréstimo para um utente com itens selecionados.
+     *
+     * @param utente Utente que realiza o empréstimo.
+     * @param itensParaEmprestimo Lista de itens a serem emprestados.
+     * @param dataInicio Data de início do empréstimo.
+     * @param dataPrevistaDevolucao Data prevista para devolução.
+     * @param dataEfetivaDevolucao Data efetiva de devolução (opcional, pode ser null).
+     */
     public void criarEmprestimo(Utentes utente, List<ItemEmprestavel> itensParaEmprestimo, LocalDate dataInicio, LocalDate dataPrevistaDevolucao, LocalDate dataEfetivaDevolucao) {
         if (utente == null) {
             System.out.println("Erro: O utente informado é inválido.");
@@ -92,7 +119,11 @@ public class EmprestimosController {
         exibirDetalhesEmprestimo(novoEmprestimo);
     }
 
-    // Exibe detalhes do empréstimo de forma estruturada
+    /**
+     * Mostra detalhes de um empréstimo de forma estruturada.
+     *
+     * @param emprestimo Empréstimo a ser apresentado.
+     */
     public void exibirDetalhesEmprestimo(Emprestimos emprestimo) {
         System.out.println("\n========== Detalhes do Empréstimo ==========");
         System.out.println("Número do Empréstimo: " + emprestimo.getNumero());
@@ -118,7 +149,12 @@ public class EmprestimosController {
         System.out.println("=".repeat(44));
     }
 
-    // CRUD: Read
+    /**
+     * Consulta um empréstimo pelo seu número.
+     *
+     * @param numero Número do empréstimo.
+     * @return O empréstimo encontrado ou null se não existir.
+     */
     public Emprestimos consultarEmprestimo(int numero) {
         for (Emprestimos emprestimo : emprestimos) {
             if (emprestimo.getNumero() == numero) {
@@ -128,7 +164,12 @@ public class EmprestimosController {
         return null; // Se não encontrar o empréstimo, retorna null
     }
 
-    // CRUD: Update
+    /**
+     * Atualiza a data efetiva de devolução de um empréstimo.
+     *
+     * @param numero Número do empréstimo.
+     * @param novaDataEfetivaDevolucao Nova data efetiva de devolução.
+     */
     public void atualizarEmprestimo(int numero, LocalDate novaDataEfetivaDevolucao) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
         if (emprestimo == null) {
@@ -145,7 +186,12 @@ public class EmprestimosController {
         System.out.println("Data efetiva de devolução atualizada com sucesso para: " + novaDataEfetivaDevolucao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
-    // CRUD: Delete
+    /**
+     * Remove um empréstimo pelo número.
+     *
+     * @param numero Número do empréstimo.
+     * @return true se o empréstimo foi removido, false caso contrário.
+     */
     public boolean removerEmprestimo(int numero) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
         if (emprestimo != null) {
@@ -155,6 +201,13 @@ public class EmprestimosController {
         return false;
     }
 
+    /**
+     * Verifica se a data de devolução é válida em relação à data de início.
+     *
+     * @param dataInicio Data de início do empréstimo.
+     * @param dataDevolucao Data de devolução.
+     * @return true se a data de devolução não for anterior à data de início.
+     */
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataDevolucao) {
         if (dataDevolucao == null) {
             return true;  // Se a data efetiva de devolução for null, considera válido
@@ -162,10 +215,21 @@ public class EmprestimosController {
         return !dataDevolucao.isBefore(dataInicio);  // Verifica se a data de devolução não é anterior à data de início
     }
 
+    /**
+     * Retorna todos os empréstimos cadastrados.
+     *
+     * @return Lista de empréstimos.
+     */
     public List<Emprestimos> listarTodosEmprestimos() {
         return emprestimos; // Retorna uma cópia da lista de empréstimos
     }
 
+    /**
+     * Adiciona um item a um empréstimo existente.
+     *
+     * @param numero Número do empréstimo.
+     * @param item Item a ser adicionado.
+     */
     public void adicionarItemEmprestimo(int numero, ItemEmprestavel item) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
         if (emprestimo != null) {
@@ -177,6 +241,12 @@ public class EmprestimosController {
         }
     }
 
+    /**
+     * Remove um item de um empréstimo existente.
+     *
+     * @param numero Número do empréstimo.
+     * @param item Item a ser removido.
+     */
     public void removerItemEmprestimo(int numero, ItemEmprestavel item) {
         Emprestimos emprestimo = consultarEmprestimo(numero);
         if (emprestimo != null) {
@@ -188,6 +258,14 @@ public class EmprestimosController {
         }
     }
 
+    /**
+     * Verifica se um item está emprestado em um período especificado.
+     *
+     * @param item Item a ser verificado.
+     * @param dataInicio Data de início do período.
+     * @param dataFim Data de término do período.
+     * @return true se o item estiver emprestado no período.
+     */
     public boolean verificarItemEmprestado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
         for (Emprestimos emprestimos1 : emprestimos) {
             for (ItemEmprestavel i : emprestimos1.getItens()) {
