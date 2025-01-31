@@ -117,7 +117,7 @@ public class JornalController {
             System.out.println("Nenhum Jornal/Revista encontrado com o ISSN fornecido.");
             return;
         }
-        System.out.printf(String.valueOf(novaDataPublicacao));
+
 
         // Atualiza os dados do jornal encontrado
         if (!novoIssn.isEmpty()) jornalEncontrado.setIssn(novoIssn);

@@ -93,7 +93,7 @@ public class JornalView {
         String issn = scanner.nextLine();
         for (ItemEmprestavel item : jornais) {
             if (item instanceof Jornal && ((Jornal) item).getIssn().equals(issn)) {
-                System.out.println("Já Existe um Jornal/Revista com o Mesmo ISBN");
+                System.out.println("Já Existe um Jornal/Revista com o Mesmo ISSN");
                 return;
             }
         }
@@ -148,6 +148,12 @@ public class JornalView {
         System.out.println("Introduza os novos dados:");
         System.out.print("Novo ISSN: ");
         String novoIssn = scanner.nextLine();
+        for (ItemEmprestavel item : jornais) {
+            if (item instanceof Jornal && ((Jornal) item).getIssn().equals(novoIssn)) {
+                System.out.println("Já Existe um Jornal/Revista com o Mesmo ISSN");
+                return;
+            }
+        }
 
         System.out.print("Novo Título: ");
         String titulo = scanner.nextLine();
