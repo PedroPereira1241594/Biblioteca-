@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe para gerir pesquisas e estatísticas relacionadas a empréstimos e reservas.
+ */
 public class PesquisaEstatisticasController {
     private List<Livro> livros;
     private List<Jornal> jornals;
@@ -15,7 +18,16 @@ public class PesquisaEstatisticasController {
     private EmprestimosController emprestimosController;
     private ReservaController reservaController;
 
-    // Construtor que inicializa as listas
+    /**
+     * Construtor que inicializa as listas e os controllers.
+     *
+     * @param livros Lista de livros.
+     * @param jornals Lista de jornais.
+     * @param emprestimos Lista de empréstimos.
+     * @param reservas Lista de reservas.
+     * @param emprestimosController Controller de empréstimos.
+     * @param reservaController Controller de reservas.
+     */
     public PesquisaEstatisticasController(List<Livro> livros, List<Jornal> jornals, List<Emprestimos> emprestimos, List<Reserva> reservas, EmprestimosController emprestimosController, ReservaController reservaController) {
         this.livros = livros != null ? livros : new ArrayList<>();
         this.jornals = jornals != null ? jornals : new ArrayList<>();
@@ -25,7 +37,12 @@ public class PesquisaEstatisticasController {
         this.reservaController = reservaController;
     }
 
-    // Método para pesquisar Livro por ISBN
+    /**
+     * Pesquisa um livro pelo ISBN.
+     *
+     * @param ISBN O ISBN do livro a ser pesquisado.
+     * @return O livro correspondente ou null se não encontrado.
+     */
     public Livro pesquisaISBN(String ISBN) {
         for (Livro livro : livros) {
             if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
@@ -35,7 +52,12 @@ public class PesquisaEstatisticasController {
         return null; // Retorna null se nenhum livro for encontrado.
     }
 
-    // Método para pesquisar Jornal/Revista por ISSN
+    /**
+     * Pesquisa um jornal pelo ISSN.
+     *
+     * @param ISSN O ISSN do jornal a ser pesquisado.
+     * @return O jornal correspondente ou null se não encontrado.
+     */
     public Jornal pesquisaISSN(String ISSN) {
         for (Jornal jornal : jornals) { // Iterando sobre a lista de jornais
             if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
@@ -45,7 +67,13 @@ public class PesquisaEstatisticasController {
         return null; // Retorna null se nenhum jornal for encontrado.
     }
 
-    // Método para pesquisar empréstimos em um intervalo de datas
+    /**
+     * Lista os empréstimos em um intervalo de datas.
+     *
+     * @param dataInicio Data de início do intervalo.
+     * @param dataFim Data de término do intervalo.
+     * @return Lista de empréstimos no intervalo especificado.
+     */
     public List<Emprestimos> listarEmprestimosPorIntervalo(LocalDate dataInicio, LocalDate dataFim) {
         // Obter lista de empréstimos
         List<Emprestimos> emprestimosAtivos = emprestimosController.listarTodosEmprestimos();
@@ -105,6 +133,13 @@ public class PesquisaEstatisticasController {
         return emprestimosSemDuplicados;
     }
 
+    /**
+     * Lista as reservas em um intervalo de datas.
+     *
+     * @param dataInicio Data de início do intervalo.
+     * @param dataFim Data de término do intervalo.
+     * @return Lista de reservas no intervalo especificado.
+     */
     public List<Reserva> listarReservasPorIntervalo(LocalDate dataInicio, LocalDate dataFim) {
         // Obter lista de reservas
         List<Reserva> reservas1 = reservaController.listarTodasReservas();
@@ -158,7 +193,12 @@ public class PesquisaEstatisticasController {
         return reservaSemDuplicados;
     }
 
-    // Método para contar o total de empréstimos em um intervalo de datas
+    /**
+     * Conta o número de empréstimos em um intervalo de datas.
+     *
+     * @param dataInicio Data de início do intervalo.
+     * @param dataFim Data de término do intervalo.
+     */
     public void contarEmprestimosEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
         long contador = 0;
         for (Emprestimos emprestimo : emprestimos) {
@@ -182,7 +222,12 @@ public class PesquisaEstatisticasController {
         System.out.println("\nTotal de empréstimos no intervalo de datas fornecidas '" + dataInicioFormat +"' - '" + dataFimFormat + "': " + contador);
     }
 
-    // Método para contar o total de reservas em um intervalo de datas
+    /**
+     * Conta o total de reservas em um intervalo de datas.
+     *
+     * @param dataInicio a data de início do intervalo (inclusive).
+     * @param dataFim a data de término do intervalo (inclusive).
+     */
     public void contarReservasEntreDatas(LocalDate dataInicio, LocalDate dataFim) {
         long contador = 0;
         for (Reserva reserva : reservas) {
@@ -199,7 +244,14 @@ public class PesquisaEstatisticasController {
         System.out.println("Total de reservas no intervalo de datas fornecidas '" + dataInicioFormat +"' - '" + dataFimFormat + "': " + contador); // Exibindo o total de reservas
     }
 
-    // Método para calcular o tempo médio dos empréstimos em um intervalo de datas
+    /**
+     * Calcula o tempo médio dos empréstimos em dias dentro de um intervalo de datas.
+     *
+     * @param dataInicio a data de início do intervalo (inclusive).
+     * @param dataFim a data de término do intervalo (inclusive).
+     * @param emprestimos a lista de empréstimos a serem analisados.
+     * @return o tempo médio de empréstimos em dias no intervalo fornecido.
+     */
     public double calcularTempoMedioEmpréstimos(LocalDate dataInicio, LocalDate dataFim, List<Emprestimos> emprestimos) {
         long totalDias = 0;
         long count = 0;
@@ -222,6 +274,13 @@ public class PesquisaEstatisticasController {
         return count > 0 ? (double) totalDias / count : 0;
     }
 
+    /**
+     * Pesquisa os itens mais requisitados (emprestados ou reservados) em um intervalo de datas.
+     *
+     * @param dataInicio a data de início do intervalo (inclusive).
+     * @param dataFim a data de término do intervalo (inclusive).
+     * @return uma lista com os itens mais requisitados no intervalo fornecido.
+     */
     public List<String> pesquisarItensMaisRequisitados(LocalDate dataInicio, LocalDate dataFim) {
         List<String> itensRegistados = new ArrayList<>();
         List<Integer> contagens = new ArrayList<>();
@@ -295,7 +354,13 @@ public class PesquisaEstatisticasController {
         return itensMaisRequisitados;
     }
 
-    // Método auxiliar para adicionar ou incrementar a contagem de um item
+    /**
+     * Adiciona ou incrementa a contagem de um item na lista de itens registados.
+     *
+     * @param itensRegistados a lista de itens registados.
+     * @param contagens a lista de contagens correspondentes aos itens registados.
+     * @param chave a identificação única do item.
+     */
     private void adicionarOuIncrementar(List<String> itensRegistados, List<Integer> contagens, String chave) {
         for (int i = 0; i < itensRegistados.size(); i++) {
             if (itensRegistados.get(i).equals(chave)) {
@@ -308,7 +373,12 @@ public class PesquisaEstatisticasController {
         contagens.add(1);
     }
 
-    // Método para pesquisar os empréstimos com N dias de atraso
+    /**
+     * Procura empréstimos com um atraso superior a um número especificado de dias.
+     *
+     * @param diasAtraso o número mínimo de dias de atraso.
+     * @return uma lista de empréstimos que possuem atraso maior que o valor especificado.
+     */
     public List<Emprestimos> procurarEmprestimosComAtraso(int diasAtraso) {
         List<Emprestimos> emprestimosComAtraso = new ArrayList<>();
         LocalDate hoje = LocalDate.now();
@@ -328,6 +398,13 @@ public class PesquisaEstatisticasController {
         return emprestimosComAtraso;
     }
 
+    /**
+     * Verifica se a data de fim é anterior à data de início.
+     *
+     * @param dataInicio a data de início.
+     * @param dataFim a data de fim.
+     * @return {@code true} se a data de fim for anterior à data de início, caso contrário, {@code false}.
+     */
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
         if (dataFim.isBefore(dataInicio)) {
             return true;
@@ -336,7 +413,12 @@ public class PesquisaEstatisticasController {
         }
     }
 
-    // Método para evolver o título Livro por ISBN
+    /**
+     * Pesquisa o título de um livro a partir do ISBN.
+     *
+     * @param ISBN o identificador único do livro.
+     * @return o título do livro, ou {@code null} se nenhum livro for encontrado.
+     */
     public String pesquisaTituloISBN(String ISBN) {
         for (Livro livro : livros) {
             if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
@@ -346,7 +428,12 @@ public class PesquisaEstatisticasController {
         return null; // Retorna null se nenhum livro for encontrado.
     }
 
-    // Método para devolver o título Jornal/Revista por ISSN
+    /**
+     * Pesquisa o título de um jornal a partir do ISSN.
+     *
+     * @param ISSN o identificador único do jornal.
+     * @return o título do jornal, ou {@code null} se nenhum jornal for encontrado.
+     */
     public String pesquisaTituloISSN(String ISSN) {
         for (Jornal jornal : jornals) { // Iterando sobre a lista de jornais
             if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
