@@ -19,3 +19,4 @@ ISSN: 666777889; Titulo: Cultura e Sociedade; Categoria: Artes; Editora: Express
 ISSN: 999000112; Titulo: Turismo no Mundo; Categoria: Turismo; Editora: Viagem Livre; Data Publicação: 2024-07-05
 ISSN: 111222334; Titulo: Ecologia em Foco; Categoria: Meio Ambiente; Editora: Natureza Pura; Data Publicação: 2024-08-10
 ISSN: 12; Titulo: 12; Categoria: 12; Editora: 12; Data Publicação: 2025-01-20
+ISSN: 123; Titulo: 132; Categoria: 123; Editora: 123; Data Publicação: 2024-08-20

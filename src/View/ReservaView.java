@@ -64,6 +64,7 @@ public class ReservaView {
             System.out.println("3. Atualizar Reserva");
             System.out.println("4. Remover Reserva");
             System.out.println("5. Listar Todas as Reservas");
+            System.out.println("6. Converter Reserva em Empréstimo");
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -75,6 +76,7 @@ public class ReservaView {
                 case 3 -> atualizarReserva();
                 case 4 -> removerReserva();
                 case 5 -> listarReservas();
+                case 6 -> converterReservaEmEmprestimo();
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }
@@ -682,6 +684,31 @@ public class ReservaView {
                     reserva.getNumero(), utenteNome, itens, dataRegisto, dataInicio, dataFim);
         }
     }
+
+    private void converterReservaEmEmprestimo() {
+        System.out.println("\n=== Converter Reserva em Empréstimo ===");
+
+        // Solicita o número da reserva
+        System.out.print("Insira o número da reserva: ");
+        int numeroReserva = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha
+
+        // Consulta a reserva para obter as datas
+        Reserva reserva = reservaController.consultarReserva(numeroReserva);
+        if (reserva == null) {
+            System.out.println("Erro: Reserva com número '" + numeroReserva + "' não encontrada.");
+            return;
+        }
+
+        // Usa as datas da reserva para o empréstimo
+        LocalDate dataInicio = reserva.getDataInicio(); // Data de início da reserva
+        LocalDate dataPrevistaDevolucao = reserva.getDataFim(); // Data de fim da reserva
+
+        // Chama o método no ReservaController
+        reservaController.converterReservaEmEmprestimo(numeroReserva, dataInicio, dataPrevistaDevolucao);
+    }
+
+
 
     /**
      * Obtém um utente (utilizador do sistema) a partir do NIF informado. Permite

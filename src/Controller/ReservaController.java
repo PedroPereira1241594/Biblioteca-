@@ -305,5 +305,30 @@ public class ReservaController {
         return null;
     }
 
+    public void converterReservaEmEmprestimo(int numeroReserva, LocalDate dataInicio, LocalDate dataPrevistaDevolucao) {
+        // Verifica se o EmprestimosController foi inicializado
+        if (emprestimosController == null) {
+            System.out.println("Erro: EmprestimosController não foi inicializado.");
+            return;
+        }
+
+        // Consulta a reserva pelo número
+        Reserva reserva = this.consultarReserva(numeroReserva); // Usa "this" para acessar o método da própria classe
+        if (reserva == null) {
+            System.out.println("Erro: Reserva com número '" + numeroReserva + "' não encontrada.");
+            return;
+        }
+
+        // Cria o empréstimo com base na reserva
+        emprestimosController.criarEmprestimo(reserva.getUtente(), reserva.getItens(), dataInicio, dataPrevistaDevolucao, null);
+
+        // Remove a reserva após a conversão
+        boolean reservaRemovida = this.removerReserva(numeroReserva); // Usa "this" para acessar o método da própria classe
+        if (reservaRemovida) {
+            System.out.println("Reserva convertida em empréstimo com sucesso!");
+        } else {
+            System.out.println("Erro: Não foi possível remover a reserva após a conversão.");
+        }
+    }
 
 }
