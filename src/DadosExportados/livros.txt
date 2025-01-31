@@ -1,5 +1,5 @@
-ISBN: 123456789; Nome: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; Ano: 2020; Autor: John Doe
-ISBN: 1112223334444; Nome: O Senhor dos Anéis; Editora: HarperCollins; Categoria: Fantasia; Ano: 1995; Autor: J.R.R. Tolkien
+ISBN: 9876543210; Nome: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; Ano: 2020; Autor: John Doe
+ISBN: 1212223334444; Nome: O Senhor dos Anéis; Editora: HarperCollins; Categoria: Fantasia; Ano: 1995; Autor: J.R.R. Tolkien
 ISBN: 1112223334445; Nome: O Código Da Vinci; Editora: Sextante; Categoria: Mistério; Ano: 2003; Autor: Dan Brown
 ISBN: 9781234567897; Nome: 1984; Editora: Companhia das Letras; Categoria: Distopia; Ano: 1949; Autor: George Orwell
 ISBN: 9876543210123; Nome: A Menina que Roubava Livros; Editora: Intrínseca; Categoria: Drama; Ano: 2005; Autor: Markus Zusak
@@ -29,5 +29,26 @@ ISBN: 9514567891230; Nome: Macbeth; Editora: Nova Fronteira; Categoria: Tragédi
 ISBN: 7539516548520; Nome: Hamlet; Editora: L&PM; Categoria: Tragédia; Ano: 1603; Autor: William Shakespeare
 ISBN: 1236547893210; Nome: Odisseia; Editora: Penguin Classics; Categoria: Épico; Ano: -700; Autor: Homero
 ISBN: 9876543210; Nome: Gertrudes; Editora: Avon; Categoria: Terror; Ano: 2015; Autor: Romero
-ISBN: 1; Nome: 1; Editora: 1; Categoria: 1; Ano: 1; Autor: 1
-ISBN: 12; Nome: 12; Editora: 12; Categoria: 12; Ano: 12; Autor: 12
+ISBN: 9781234567897; Nome: 1984; Editora: Companhia das Letras; Categoria: Distopia; Ano: 1949; Autor: George Orwell
+ISBN: 9876543210123; Nome: A Menina que Roubava Livros; Editora: Intrínseca; Categoria: Drama; Ano: 2005; Autor: Markus Zusak
+ISBN: 5556667778889; Nome: O Pequeno Príncipe; Editora: Geração Editorial; Categoria: Infantil; Ano: 1943; Autor: Antoine de Saint-Exupéry
+ISBN: 4445556667771; Nome: Orgulho e Preconceito; Editora: Martin Claret; Categoria: Romance; Ano: 1813; Autor: Jane Austen
+ISBN: 3334445556662; Nome: Harry Potter e a Pedra Filosofal; Editora: Rocco; Categoria: Fantasia; Ano: 1997; Autor: J.K. Rowling
+ISBN: 2223334445553; Nome: Cem Anos de Solidão; Editora: Record; Categoria: Realismo Mágico; Ano: 1967; Autor: Gabriel García Márquez
+ISBN: 1112223334444; Nome: Dom Quixote; Editora: L&PM; Categoria: Clássico; Ano: 1605; Autor: Miguel de Cervantes
+ISBN: 1239874563210; Nome: O Morro dos Ventos Uivantes; Editora: Abril; Categoria: Romance; Ano: 1847; Autor: Emily Brontë
+ISBN: 7894561230987; Nome: O Apanhador no Campo de Centeio; Editora: Editora do Brasil; Categoria: Ficção; Ano: 1951; Autor: J.D. Salinger
+ISBN: 6543219876543; Nome: As Crônicas de Nárnia; Editora: Martins Fontes; Categoria: Fantasia; Ano: 1950; Autor: C.S. Lewis
+ISBN: 1472583690123; Nome: O Hobbit; Editora: HarperCollins; Categoria: Fantasia; Ano: 1937; Autor: J.R.R. Tolkien
+ISBN: 9517538524569; Nome: A Revolução dos Bichos; Editora: Companhia das Letras; Categoria: Satírica; Ano: 1945; Autor: George Orwell
+ISBN: 7890123456789; Nome: Jane Eyre; Editora: BestBolso; Categoria: Romance; Ano: 1847; Autor: Charlotte Brontë
+ISBN: 3216549874567; Nome: Os Miseráveis; Editora: Zahar; Categoria: Drama; Ano: 1862; Autor: Victor Hugo
+ISBN: 1236547894561; Nome: O Grande Gatsby; Editora: Scribner; Categoria: Ficção; Ano: 1925; Autor: F. Scott Fitzgerald
+ISBN: 8529637418529; Nome: Moby Dick; Editora: Penguin; Categoria: Aventura; Ano: 1851; Autor: Herman Melville
+ISBN: 7539514568523; Nome: Crime e Castigo; Editora: 34; Categoria: Romance; Ano: 1866; Autor: Fiódor Dostoiévski
+ISBN: 4561237894560; Nome: Matei 1 Urso; Editora: O urso me matou; Categoria: Terror; Ano: 1111; Autor: Andre
+ISBN: 1472583690123; Nome: Atirei ao Gato; Editora: Tom; Categoria: Criança; Ano: 1999; Autor: Jerry
+ISBN: 1593574568523; Nome: O gato atirou uma pedra; Editora: ALguem; Categoria: adulto; Ano: 1998; Autor: Rato
+ISBN: 4561237894560; Nome: O Júlio; Editora: Logo; Categoria: Rir; Ano: 1995; Autor: Juliano
+ISBN: 7539516548520; Nome: Zeca Afonso; Editora: Bolsonaro; Categoria: Terror; Ano: 2020; Autor: Billie
+ISBN: 9514567891230; Nome: O terror; Editora: Ceu; Categoria: Romance; Ano: 1950; Autor: Bebado

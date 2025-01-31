@@ -1,17 +1,23 @@
 package View;
 
 import Controller.JornalController;
+import Model.ItemEmprestavel;
+import Model.Jornal;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import static Controller.JornalController.jornais;
+
 public class JornalView {
+    private ArrayList<Jornal> jornals;
     private JornalController jornalController;
     private Scanner scanner;
 
-    public JornalView(JornalController jornalController) {
+    public JornalView(JornalController jornalController, ArrayList<Jornal> jornals) {
         this.jornalController = jornalController;
         this.scanner = new Scanner(System.in);
     }
@@ -63,6 +69,12 @@ public class JornalView {
 
         System.out.print("ISSN: ");
         String issn = scanner.nextLine();
+        for (ItemEmprestavel item : jornais) {
+            if (item instanceof Jornal && ((Jornal) item).getIssn().equals(issn)) {
+                System.out.println("Já Existe um Jornal/Revista com o Mesmo ISBN");
+                return;
+            }
+        }
 
         System.out.print("Título: ");
         String titulo = scanner.nextLine();

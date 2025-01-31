@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Emprestimos;
-import Model.Jornal;
-import Model.ItemEmprestavel;
-import Model.Reserva;
+import Model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JornalController {
-    private static ArrayList<Jornal> jornais;
+    public static ArrayList<Jornal> jornais;
     private List<Reserva> reservas; // Adicionada a lista de reservas
     private List<Emprestimos> emprestimos;// Lista para armazenar os jornais
 
