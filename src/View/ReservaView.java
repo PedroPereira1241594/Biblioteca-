@@ -685,6 +685,15 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Converte uma reserva em um empréstimo.
+     * Este método solicita ao usuário o número da reserva, consulta a reserva no sistema,
+     * e utiliza as datas de início e fim da reserva para criar um empréstimo correspondente.
+     * Se a reserva não for encontrada, uma mensagem de erro será exibida.
+     *
+     * @see ReservaController#consultarReserva(int)
+     * @see ReservaController#converterReservaEmEmprestimo(int, LocalDate, LocalDate)
+     */
     private void converterReservaEmEmprestimo() {
         System.out.println("\n=== Converter Reserva em Empréstimo ===");
 
