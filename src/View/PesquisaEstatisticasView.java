@@ -412,7 +412,7 @@ public class PesquisaEstatisticasView {
         System.out.println("\nTotal de empréstimos realizados no intervalo: " + emprestimos.size());
 
         // Calcular e exibir o tempo médio dos empréstimos
-        double tempoMedio = pesquisaEstatisticasController.calcularTempoMedioEmpréstimos(dataInicio, dataFim, emprestimos);
+        int tempoMedio = (int) pesquisaEstatisticasController.calcularTempoMedioEmpréstimos(dataInicio, dataFim, emprestimos);
         if (tempoMedio > 0) {
             System.out.println("Tempo médio dos empréstimos (em dias): " + tempoMedio);
         } else {

@@ -273,7 +273,7 @@ public class PesquisaEstatisticasController {
         }
 
         // Se não houver empréstimos no intervalo, retornamos 0 para evitar divisão por zero
-        return count > 0 ? (double) totalDias / count : 0;
+        return count > 0 ? (int) totalDias / count : 0;
     }
 
     /**
