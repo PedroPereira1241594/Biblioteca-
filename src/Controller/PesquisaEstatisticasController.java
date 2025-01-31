@@ -50,9 +50,9 @@ public class PesquisaEstatisticasController {
         // Obter lista de empréstimos
         List<Emprestimos> emprestimosAtivos = emprestimosController.listarTodosEmprestimos();
 
-        // Verificar se existem empréstimos registrados
+        // Verificar se existem empréstimos registados
         if (emprestimosAtivos == null || emprestimosAtivos.isEmpty()) {
-            System.out.println("\nNenhum empréstimo registrado.");
+            System.out.println("\nNenhum empréstimo registado.");
             return new ArrayList<>();
         }
 
@@ -223,7 +223,7 @@ public class PesquisaEstatisticasController {
     }
 
     public List<String> pesquisarItensMaisRequisitados(LocalDate dataInicio, LocalDate dataFim) {
-        List<String> itensRegistrados = new ArrayList<>();
+        List<String> itensRegistados = new ArrayList<>();
         List<Integer> contagens = new ArrayList<>();
 
         // Processa os empréstimos
@@ -246,7 +246,7 @@ public class PesquisaEstatisticasController {
                     }
 
                     if (chave != null) {
-                        adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                        adicionarOuIncrementar(itensRegistados, contagens, chave);
                     }
                 }
             }
@@ -270,7 +270,7 @@ public class PesquisaEstatisticasController {
                     }
 
                     if (chave != null) {
-                        adicionarOuIncrementar(itensRegistrados, contagens, chave);
+                        adicionarOuIncrementar(itensRegistados, contagens, chave);
                     }
                 }
             }
@@ -286,9 +286,9 @@ public class PesquisaEstatisticasController {
 
         // Criar lista dos itens mais requisitados
         List<String> itensMaisRequisitados = new ArrayList<>();
-        for (int i = 0; i < itensRegistrados.size(); i++) {
+        for (int i = 0; i < itensRegistados.size(); i++) {
             if (contagens.get(i) == maxRequisicoes) {
-                itensMaisRequisitados.add(itensRegistrados.get(i));
+                itensMaisRequisitados.add(itensRegistados.get(i));
             }
         }
 
@@ -296,15 +296,15 @@ public class PesquisaEstatisticasController {
     }
 
     // Método auxiliar para adicionar ou incrementar a contagem de um item
-    private void adicionarOuIncrementar(List<String> itensRegistrados, List<Integer> contagens, String chave) {
-        for (int i = 0; i < itensRegistrados.size(); i++) {
-            if (itensRegistrados.get(i).equals(chave)) {
+    private void adicionarOuIncrementar(List<String> itensRegistados, List<Integer> contagens, String chave) {
+        for (int i = 0; i < itensRegistados.size(); i++) {
+            if (itensRegistados.get(i).equals(chave)) {
                 contagens.set(i, contagens.get(i) + 1);
                 return;
             }
         }
         // Se não encontrou, adiciona um novo
-        itensRegistrados.add(chave);
+        itensRegistados.add(chave);
         contagens.add(1);
     }
 
