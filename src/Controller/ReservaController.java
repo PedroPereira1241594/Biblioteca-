@@ -81,7 +81,7 @@ public class ReservaController {
         }
 
         if (itensParaReserva == null || itensParaReserva.isEmpty()) {
-            System.out.println("Erro: Nenhum item foi selecionado para reserva.");
+            System.out.println("Erro: Nenhum item foi selecionado para a reserva.");
             return;
         }
 
