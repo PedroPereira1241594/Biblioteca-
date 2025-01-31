@@ -344,7 +344,6 @@ public class ReservaView {
         System.out.println("Livro adicionado com sucesso à reserva.");
     }
 
-
     private void removerLivroDaReserva(Reserva reserva) {
         System.out.println("\n=== Remover Livro da Reserva ===");
 
@@ -442,7 +441,6 @@ public class ReservaView {
         reservaController.adicionarItemNaReserva(reserva.getNumero(), jornal, dataInicioReserva, dataFimReserva);
         System.out.println("Jornal adicionado com sucesso à reserva.");
     }
-
 
     private void removerJornalDaReserva(Reserva reserva) {
         System.out.print("ISSN do jornal a remover: ");

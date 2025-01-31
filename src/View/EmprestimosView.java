@@ -1,9 +1,6 @@
 package View;
 
-import Controller.EmprestimosController;
-import Controller.JornalController;
-import Controller.LivroController;
-import Controller.UtenteController;
+import Controller.*;
 import Model.*;
 
 import java.time.LocalDate;
@@ -19,13 +16,15 @@ public class EmprestimosView {
     private UtenteController utenteController;
     private LivroController livroController;
     private JornalController jornalController;
+    private ReservaController reservaController;
     private Scanner scanner;
 
-    public EmprestimosView(EmprestimosController emprestimosController, UtenteController utenteController, LivroController livroController, JornalController jornalController) {
+    public EmprestimosView(EmprestimosController emprestimosController, UtenteController utenteController, LivroController livroController, JornalController jornalController, ReservaController reservaController) {
         this.emprestimosController = emprestimosController;
         this.utenteController = utenteController;
         this.livroController = livroController;
         this.jornalController = jornalController;
+        this.reservaController = reservaController;
         this.scanner = new Scanner(System.in);
     }
 
@@ -120,6 +119,36 @@ public class EmprestimosView {
             // Solicitar a data efetiva de devolução (se necessário)
             LocalDate dataEfetivaDevolucao = obterDataEfetivaDevolucao(dataInicio, formato);
 
+            LocalDate dataFim;
+
+            if (dataEfetivaDevolucao != null) {
+                dataFim = dataEfetivaDevolucao;
+            } else {
+                dataFim = dataPrevistaDevolucao;
+            }
+
+            // Verificar se algum item está emprestado e não pode ser reservado
+            for (ItemEmprestavel item : itensParaEmprestimo) {
+                if (item instanceof Livro) {
+                    if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    } else if (emprestimosController.verificarItemEmprestado((Livro) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    }
+                } else if (item instanceof Jornal) {
+                    // Para jornais, verifique se já está emprestado ou reservado
+                    if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    } else if (emprestimosController.verificarItemEmprestado((Jornal) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    }
+                }
+            }
+
             // Criação do empréstimo
             emprestimosController.criarEmprestimo(utente, itensParaEmprestimo, dataInicio, dataPrevistaDevolucao, dataEfetivaDevolucao);
 
@@ -129,7 +158,6 @@ public class EmprestimosView {
             System.out.println("Erro ao criar empréstimo: " + e.getMessage());
         }
     }
-
 
     private Utentes obterUtente() {
         Utentes utente = null;
@@ -371,7 +399,13 @@ public class EmprestimosView {
                 atualizarDatasEmprestimo(emprestimo, numeroEmprestimo);
                 break;
             case 2:
-                modificarItensEmprestimo(emprestimo);
+                LocalDate dataFim;
+                if (emprestimo.getDataEfetivaDevolucao() != null) {
+                    dataFim = emprestimo.getDataEfetivaDevolucao();
+                } else {
+                    dataFim = emprestimo.getDataPrevistaDevolucao();
+                }
+                modificarItensEmprestimo(emprestimo, emprestimo.getDataInicio(), dataFim);
                 break;
             case 0:
                 System.out.println("Operação cancelada.");
@@ -380,7 +414,6 @@ public class EmprestimosView {
                 System.out.println("Opção inválida.");
         }
     }
-
 
     private void atualizarDatasEmprestimo(Emprestimos emprestimo, int numero) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -407,7 +440,7 @@ public class EmprestimosView {
         }
     }
 
-    private void modificarItensEmprestimo(Emprestimos emprestimo) {
+    private void modificarItensEmprestimo(Emprestimos emprestimo, LocalDate dataInicio, LocalDate dataFim) {
         System.out.println("\nO que você deseja fazer com os itens do empréstimo?");
         System.out.println("1. Adicionar livro");
         System.out.println("2. Remover livro");
@@ -419,16 +452,16 @@ public class EmprestimosView {
         scanner.nextLine(); // Limpar buffer
 
         switch (opcao) {
-            case 1 -> adicionarLivroAoEmprestimo(emprestimo);
+            case 1 -> adicionarLivroAoEmprestimo(emprestimo, dataInicio, dataFim);
             case 2 -> removerLivroDoEmprestimo(emprestimo);
-            case 3 -> adicionarJornalAoEmprestimo(emprestimo);
+            case 3 -> adicionarJornalAoEmprestimo(emprestimo, dataInicio, dataFim);
             case 4 -> removerJornalDoEmprestimo(emprestimo);
             case 0 -> System.out.println("Operação cancelada.");
             default -> System.out.println("Opção inválida.");
         }
     }
 
-    private void adicionarLivroAoEmprestimo(Emprestimos emprestimo) {
+    private void adicionarLivroAoEmprestimo(Emprestimos emprestimo, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
         Livro livro = null;
         while (livro == null) {
             System.out.print("ISBN do livro a adicionar: ");
@@ -456,9 +489,26 @@ public class EmprestimosView {
                     }
                     default -> System.out.println("Opção inválida!");
                 }
-            } else if (emprestimo.getItens().contains(livro)) {
-                System.out.println("Erro: O livro '" + livro.getNome() + "' já está no empréstimo.");
-                livro = null;
+            } else {
+                // Verificar se o livro já está na reserva
+                for (ItemEmprestavel item : emprestimo.getItens()) {
+                    if (item instanceof Livro && item.equals(livro)) {
+                        System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
+                        livro = null; // Voltar ao loop para tentar novamente
+                        break;
+                    }
+                }
+
+                // Verificar se o livro está reservado ou emprestado para o período indicado
+                if (reservaController.verificarItemReservado(livro, dataInicioEmprestimo, dataFimEmprestimo)) {
+                    System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está reservado para o período indicado entre "
+                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                    return;
+                } else if (emprestimosController.verificarItemEmprestado(livro, dataInicioEmprestimo, dataFimEmprestimo)) {
+                    System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está emprestado para o período indicado entre "
+                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                    return;
+                }
             }
         }
 
@@ -479,7 +529,7 @@ public class EmprestimosView {
         }
     }
 
-    private void adicionarJornalAoEmprestimo(Emprestimos emprestimo) {
+    private void adicionarJornalAoEmprestimo(Emprestimos emprestimo, LocalDate dataInicioEmprestimo, LocalDate dataFimEmprestimo) {
         Jornal jornal = null;
         while (jornal == null) {
             System.out.print("ISSN do jornal a adicionar: ");
@@ -517,9 +567,26 @@ public class EmprestimosView {
                     }
                     default -> System.out.println("Opção inválida!");
                 }
-            } else if (emprestimo.getItens().contains(jornal)) {
-                System.out.println("Erro: O jornal '" + jornal.getTitulo() + "' já está no empréstimo.");
-                jornal = null;
+            } else {
+                // Verificar se o livro já está na reserva
+                for (ItemEmprestavel item : emprestimo.getItens()) {
+                    if (item instanceof Livro && item.equals(jornal)) {
+                        System.out.println("Erro: O livro '" + jornal.getTitulo() + "' já está na reserva.");
+                        jornal = null; // Voltar ao loop para tentar novamente
+                        break;
+                    }
+                }
+
+                // Verificar se o livro está reservado ou emprestado para o período indicado
+                if (reservaController.verificarItemReservado(jornal, dataInicioEmprestimo, dataFimEmprestimo)) {
+                    System.out.println("Erro: O jornal com o ISSN: '" + jornal.getIdentificador() + "' já está reservado para o período indicado entre "
+                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                    return;
+                } else if (emprestimosController.verificarItemEmprestado(jornal, dataInicioEmprestimo, dataFimEmprestimo)) {
+                    System.out.println("Erro: O jornal com o ISSN: '" + jornal.getIdentificador() + "' já está emprestado para o período indicado entre "
+                            + dataInicioEmprestimo + " e " + dataFimEmprestimo);
+                    return;
+                }
             }
         }
 
@@ -608,7 +675,7 @@ public class EmprestimosView {
         // Exibir os empréstimos
         System.out.println("\n=== Lista de Empréstimos ===");
         System.out.printf("%-10s %-50s %-80s %-20s %-25s %-25s\n",
-                "Número", "Utente", "Itens Emprestados", "Data Início", "Data Prev. Devolução","Data Ef. Devolução");
+                "Número", "Utente", "Itens Emprestados", "Data Início", "Data Prev. Devolução", "Data Ef. Devolução");
 
         for (Emprestimos emprestimo : emprestimosSemDuplicados) {
             // Validação do nome do utente
@@ -660,9 +727,6 @@ public class EmprestimosView {
                     emprestimo.getNumero(), utenteNome, itens, dataInicio, dataPrevista, dataEfetiva);
         }
     }
-
-
-
 
 
 }

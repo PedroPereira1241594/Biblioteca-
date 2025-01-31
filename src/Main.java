@@ -49,7 +49,7 @@ public class Main {
 
         emprestimosController.setLivroController(livroController);
         ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController,jornalController, jornalView,emprestimosController);
-        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController);
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController, reservaController);
         PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas, emprestimosController, reservaController);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
 
@@ -122,6 +122,7 @@ public class Main {
                                 exportarJornal(caminhoJornal, jornals);
                                 exportarEmprestimos(caminhoEmprestimo, emprestimos);
                                 exportarReservas(caminhoReserva, reservas);
+                                escolha = 0;
                                 break;
                             case 0:
                                 System.out.println("Saindo...");
