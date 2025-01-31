@@ -52,3 +52,4 @@ ISBN: 1593574568523; Nome: O gato atirou uma pedra; Editora: ALguem; Categoria: 
 ISBN: 4561237894560; Nome: O Júlio; Editora: Logo; Categoria: Rir; Ano: 1995; Autor: Juliano
 ISBN: 7539516548520; Nome: Zeca Afonso; Editora: Bolsonaro; Categoria: Terror; Ano: 2020; Autor: Billie
 ISBN: 9514567891230; Nome: O terror; Editora: Ceu; Categoria: Romance; Ano: 1950; Autor: Bebado
+ISBN: 007; Nome: Agente Secreto; Editora: Porto Editora; Categoria: Açao; Ano: 2000; Autor: Autor
