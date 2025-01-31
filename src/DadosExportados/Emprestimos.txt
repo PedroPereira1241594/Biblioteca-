@@ -19,3 +19,4 @@ ID: 20; Nome: 1; ISSN: ; ISBN: 7539514568523; DataInicio: 2025-05-05; DataPrevis
 ID: 21; Nome: 12345; ISSN: ; ISBN: 7894561230987; DataInicio: 2025-11-20; DataPrevistaDevolução: 2025-11-30; DataEfetivaDevolução: 2025-11-28
 ID: 22; Nome: 1234; ISSN: ; ISBN: 3216549874567; DataInicio: 2024-08-20; DataPrevistaDevolução: 2024-08-30; DataEfetivaDevolução: null
 ID: 23; Nome: 1; ISSN: 123; ISBN: 1234; DataInicio: 2025-01-20; DataPrevistaDevolução: 2025-01-30; DataEfetivaDevolução: null
+ID: 24; Nome: Maria Santos; ISSN: 555666778; ISBN: ; DataInicio: 2024-10-20; DataPrevistaDevolução: 2024-10-28; DataEfetivaDevolução: null
