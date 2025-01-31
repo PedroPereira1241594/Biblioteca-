@@ -1,5 +1,5 @@
-ISBN: 123456789; Nome: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; Ano: 2020; Autor: John Doe
-ISBN: 9783161484100; Nome: O Senhor dos Anéis; Editora: HarperCollins; Categoria: Fantasia; Ano: 1995; Autor: J.R.R. Tolkien
+ISBN: 9876543210; Nome: A Vida Secreta; Editora: Editora ABC; Categoria: Ficção; Ano: 2020; Autor: John Doe
+ISBN: 1212223334444; Nome: O Senhor dos Anéis; Editora: HarperCollins; Categoria: Fantasia; Ano: 1995; Autor: J.R.R. Tolkien
 ISBN: 1112223334445; Nome: O Código Da Vinci; Editora: Sextante; Categoria: Mistério; Ano: 2003; Autor: Dan Brown
 ISBN: 9781234567897; Nome: 1984; Editora: Companhia das Letras; Categoria: Distopia; Ano: 1949; Autor: George Orwell
 ISBN: 9876543210123; Nome: A Menina que Roubava Livros; Editora: Intrínseca; Categoria: Drama; Ano: 2005; Autor: Markus Zusak
@@ -28,6 +28,4 @@ ISBN: 4561237894560; Nome: A Divina Comédia; Editora: L&PM; Categoria: Poesia; 
 ISBN: 9514567891230; Nome: Macbeth; Editora: Nova Fronteira; Categoria: Tragédia; Ano: 1606; Autor: William Shakespeare
 ISBN: 7539516548520; Nome: Hamlet; Editora: L&PM; Categoria: Tragédia; Ano: 1603; Autor: William Shakespeare
 ISBN: 1236547893210; Nome: Odisseia; Editora: Penguin Classics; Categoria: Épico; Ano: -700; Autor: Homero
-ISBN: 9876543210; Nome: Gertrudes; Editora: Avon; Categoria: Terror; Ano: 2015; Autor: Romero
-ISBN: 123; Nome: Amelia; Editora: amelia; Categoria: terror; Ano: 1234; Autor: autiz
-ISBN: 1; Nome: 1; Editora: 1; Categoria: 1; Ano: 1; Autor: 1
+ISBN: 007; Nome: Agente Secreto; Editora: Porto Editora; Categoria: Açao; Ano: 2000; Autor: Autor

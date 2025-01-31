@@ -7,12 +7,23 @@ import View.UtenteView;
 
 import java.util.*;
 
+/**
+ * Controlador responsável pela gestão de utentes.
+ */
 public class UtenteController {
     private final ArrayList<Utentes> utentes;
     private final UtenteView utenteView;
     private final List<Reserva> reservas;
     private final List<Emprestimos> emprestimos;
 
+    /**
+     * Construtor para iniciar a classe UtenteController.
+     *
+     * @param utentes    Lista de utentes do sistema.
+     * @param utenteView Instância da view para interação com utentes.
+     * @param reservas   Lista de reservas feitas pelos utentes.
+     * @param emprestimos Lista de empréstimos feitos pelos utentes.
+     */
     public UtenteController(ArrayList<Utentes> utentes, UtenteView utenteView, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.utentes = utentes;
         this.utenteView = utenteView;
@@ -20,10 +31,16 @@ public class UtenteController {
         this.emprestimos = emprestimos;
     }
 
+    /**
+     * Adiciona um novo utente ao sistema.
+     * Pede as informações necessárias para criar um utente.
+     */
     public void adicionarUtente() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("NIF: ");
         String NIF = scanner.nextLine();
+
+        // Verifica se o utente já existe
         for (Utentes utentes1 : utentes) {
             if (utentes1.getNif().equals(NIF)) {
                 System.out.println("Esse Utente Já Existe!");
@@ -37,6 +54,7 @@ public class UtenteController {
             System.out.print("Gênero (M/F): ");
             String genero1 = scanner.nextLine().trim().toUpperCase();
 
+            // Converte boolean para M/F (Genero)
             if (genero1.equals("M")) {
                 Genero = true;
             } else if (genero1.equals("F")) {
@@ -49,12 +67,18 @@ public class UtenteController {
         System.out.print("Contacto: ");
         String Contacto = scanner.nextLine();
 
-
         Utentes utente = new Utentes(nome, NIF, Genero, Contacto);
         utentes.add(utente);
         System.out.println("Utente adicionado com sucesso!\n");
     }
 
+    /**
+     * Lista todos os utentes que possuem reservas ou empréstimos ativos.
+     *
+     * @param utentes    Lista de utentes do sistema.
+     * @param reservas   Lista de reservas realizadas.
+     * @param emprestimos Lista de empréstimos efetuados.
+     */
     public void listarUtentesComReservasOuEmprestimos(List<Utentes> utentes, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         Set<Utentes> utentesComReservasOuEmprestimos = new HashSet<>();
 
@@ -68,20 +92,19 @@ public class UtenteController {
             utentesComReservasOuEmprestimos.add(emprestimo.getUtente());
         }
 
-        // Exibe os utentes com reservas ou empréstimos
+        // Verifica e mostra os utentes com reservas ou empréstimos
         if (utentesComReservasOuEmprestimos.isEmpty()) {
             System.out.println("Não há utentes com reservas ou empréstimos.");
         } else {
             System.out.println("\n=== Lista de Utentes com Reservas ou Empréstimos ===");
-            System.out.printf("%-30s %-15s %-15s %-10s\n", "Nome", "NIF", "Contacto", "Género");
-            System.out.println("--------------------------------------------------------------------------");
-
+            System.out.printf("%-60s %-30s %-30s %-30s\n", "Nome", "NIF", "Contacto", "Género");
+            System.out.println("-".repeat(133));
             for (Utentes utente : utentesComReservasOuEmprestimos) {
                 String genero = (utente.getGenero() == null)
                         ? "Indefinido"
                         : (utente.getGenero() ? "Masculino" : "Feminino");
 
-                System.out.printf("%-30s %-15s %-15s %-10s\n",
+                System.out.printf("%-60s %-30s %-30s %-30s\n",
                         utente.getNome(),
                         utente.getNif(),
                         utente.getContacto(),
@@ -90,11 +113,14 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Edita as informações do utente, permitindo a alteração do nome, NIF, género e contacto.
+     * O utente é identificado pelo NIF.
+     */
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduza o NIF do utente a editar: ");
+        System.out.print("\nIntroduza o NIF do utente a editar: ");
         String nif = scanner.nextLine();
-
         Utentes utente = null;
         for (Utentes Indice : utentes) {
             if (Indice.getNif().equals(nif)) {
@@ -111,7 +137,6 @@ public class UtenteController {
             System.out.print("Introduza o novo NIF (ou pressione Enter para manter): ");
             String nifStr = scanner.nextLine();
             if (!nifStr.isEmpty()) utente.setNif(nifStr);
-
 
             while (true) {
                 System.out.print("Insira o Gênero (M/F) (ou Pressione Enter para manter): ");
@@ -143,13 +168,17 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Remove um utente do sistema pelo NIF.
+     * Só remove se o utente não estiver associado a emprestimo ou reserva.
+     */
     public void removerUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduza o NIF do utente a remover: ");
+        System.out.print("\nIntroduza o NIF do utente a remover: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
 
-        // Procurar o utente pelo NIF
+        // Procura o utente pelo NIF
         for (Utentes Indice : utentes) {
             if (Indice.getNif().equals(nif)) {
                 utente = Indice;
@@ -162,7 +191,7 @@ public class UtenteController {
             return;
         }
 
-        // Verificar se o utente tem reservas associadas
+        // Verifica se o utente tem reservas associadas
         boolean utenteComReserva = false;
         for (Reserva reserva : reservas) {
             if (reserva.getUtente().equals(utente)) {
@@ -171,7 +200,7 @@ public class UtenteController {
             }
         }
 
-        // Verificar se o utente tem empréstimos ativos
+        // Verifica se o utente tem empréstimos ativos
         boolean utenteComEmprestimo = false;
         for (Emprestimos emprestimo : emprestimos) {
             if (emprestimo.getUtente().equals(utente)) {
@@ -180,18 +209,22 @@ public class UtenteController {
             }
         }
 
-        // Verificar se o utente está associado a alguma reserva ou empréstimo
         if (utenteComReserva) {
             System.out.println("Erro: O utente '" + utente.getNome() + "' tem reservas associadas e não pode ser removido.");
         } else if (utenteComEmprestimo) {
             System.out.println("Erro: O utente '" + utente.getNome() + "' tem empréstimos ativos e não pode ser removido.");
         } else {
-            // Remover o utente
             utentes.remove(utente);
             System.out.println("Utente removido com sucesso!");
         }
     }
 
+    /**
+     * Procura um utente pelo NIF.
+     *
+     * @param nif O NIF do utente a ser procurado.
+     * @return O utente correspondente ao NIF, ou null se não existir.
+     */
     public Utentes buscarUtentePorNif(String nif) {
         for (Utentes utente : utentes) {
             if (utente.getNif().equals(nif)) {
@@ -201,16 +234,18 @@ public class UtenteController {
         return null;
     }
 
+    /**
+     * Consulta um utente pelo seu NIF.
+     *
+     * @param nif O NIF do utente a ser consultado.
+     * @return O utente correspondente ao NIF, ou null se não existir.
+     */
     public Utentes consultarUtente(String nif) {
-        // Itera sobre a lista de utentes para encontrar o utente pelo NIF
         for (Utentes utente : utentes) {
             if (utente.getNif().equals(nif)) {
-                return utente; // Se encontrado, retorna o utente
+                return utente;
             }
         }
-        // Se não encontrar o utente, retorna null
         return null;
     }
-
-
 }

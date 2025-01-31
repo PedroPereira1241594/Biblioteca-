@@ -1,31 +1,62 @@
 package View;
 
 import Controller.LivroController;
+import Model.ItemEmprestavel;
 import Model.Livro;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Classe responsável pela interface de gestão de livros no sistema.
+ * <p>
+ * Essa classe permite realizar diversas operações relacionadas aos livros, incluindo:
+ * <ul>
+ *     <li>Adicionar novos livros</li>
+ *     <li>Consultar livros existentes</li>
+ *     <li>Editar informações de livros</li>
+ *     <li>Remover livros</li>
+ *     <li>Listar todos os livros registados</li>
+ *     <li>Mostrar informações detalhadas de um livro específico</li>
+ * </ul>
+ */
 public class LivroView {
     private LivroController livroController;
     private Scanner scanner;
 
+    /**
+     * Construtor para inicializar a classe {@code LivroView}.
+     *
+     * @param livroController O controlador responsável pela lógica de gestão de livros.
+     * @param scanner         O objeto {@code Scanner} usado para capturar entradas do utilizador.
+     */
     public LivroView(LivroController livroController, Scanner scanner) {
         this.livroController = livroController;
         this.scanner = scanner;
     }
 
-    public void exibirLivros(ArrayList<Livro> livros) {
+    /**
+     * Apresenta uma lista de todos os livros registados.
+     *
+     * @param itensEmprestaveis Lista de itens emprestáveis contendo possivelmente outros itens além de livros.
+     */
+    public void exibirLivros(ArrayList<Livro> itensEmprestaveis) {
+        // Filtra apenas os itens do tipo Livro
+        ArrayList<Livro> livros = new ArrayList<>();
+        for (ItemEmprestavel item : itensEmprestaveis) {
+            if (item instanceof Livro) {
+                livros.add((Livro) item); // Adiciona o Livro à lista
+            }
+        }
         if (livros.isEmpty()) {
-            System.out.println("Nenhum livro registrado.");
+            System.out.println("Nenhum livro registado.");
         } else {
             System.out.println("\n=== Lista de Livros ===");
-            System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10s\n",
+            System.out.printf("%-15s %-50s %-50s %-50s %-35s %-10s\n",
                     "ISBN", "Título", "Autor", "Editora", "Categoria", "Ano");
-            System.out.println("---------------------------------------------------------------------------------------------" +
-                    "-----------------------------------------------");
+            System.out.println("-".repeat(210));
             for (Livro livro : livros) {
-                System.out.printf("%-15s %-35s %-30s %-30s %-20s %-10d\n",
+                System.out.printf("%-15s %-50s %-50s %-50s %-35s %-10d\n",
                         livro.getIsbn(),
                         livro.getNome(),
                         livro.getAutor(),
@@ -36,6 +67,11 @@ public class LivroView {
         }
     }
 
+    /**
+     * Inicia o menu de gestão de livros, permitindo realizar diversas operações.
+     * <p>
+     * O utilizador pode escolher adicionar, consultar, editar, remover ou listar livros.
+     */
     public void gerirLivros() {
         if (livroController == null || scanner == null) {
             throw new IllegalStateException("LivroController e Scanner precisam ser configurados antes de usar gerirLivros.");
@@ -58,7 +94,7 @@ public class LivroView {
                 scanner.next(); // Limpa a entrada inválida
             }
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpa o buffer
+            scanner.nextLine();  
 
             switch (opcao) {
                 case 1:
@@ -85,6 +121,11 @@ public class LivroView {
         } while (opcao != 0);
     }
 
+    /**
+     * Permite consultar detalhes de um livro a partir do seu ISBN.
+     * <p>
+     * Caso o livro seja encontrado, suas informações detalhadas são mostradas.
+     */
     private void consultarLivro() {
         System.out.println("\n=== Consultar Livro ===");
         System.out.print("ISBN do Livro: ");
@@ -101,15 +142,20 @@ public class LivroView {
         }
     }
 
+    /**
+     * Mostra informações detalhadas de um livro.
+     *
+     * @param livro O objeto {@code Livro} cujas informações devem ser mostradas.
+     */
     public void exibirLivroDetalhado(Livro livro) {
-        System.out.println("=".repeat(24));
-        System.out.println("Detalhes do Livro:");
+
+        System.out.println("\n========== Detalhes do Livro ===========");
         System.out.println("ISBN: " + livro.getIsbn());
         System.out.println("Título: " + livro.getNome());
         System.out.println("Autor: " + livro.getAutor());
         System.out.println("Editora: " + livro.getEditora());
         System.out.println("Categoria: " + livro.getCategoria());
         System.out.println("Ano: " + livro.getAno());
-        System.out.println("=".repeat(24));
+        System.out.println("=".repeat(40));
     }
 }

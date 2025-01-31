@@ -36,22 +36,23 @@ public class Main {
         utenteView.setScanner(new Scanner(System.in));    // Configura o scanner
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
         utenteView.setUtenteController(utenteController); // Configura o controller
-        JornalController jornalController = new JornalController(jornals);
-        JornalView jornalView = new JornalView(jornalController);
-        ReservaController reservaController = new ReservaController(null, reservas);
-        EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos);
+        JornalController jornalController = new JornalController(jornals, reservas, emprestimos);
+        JornalView jornalView = new JornalView(jornalController, jornals);
+        ReservaController reservaController = new ReservaController(null, reservas, livros, jornals);
+        EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos, livros, jornals);
         reservaController.setEmprestimosController(emprestimosController);
-        LivroController livroController = new LivroController(livros, null, emprestimosController, reservas);
+        LivroController livroController = new LivroController(livros, null, emprestimosController, reservas, emprestimos);
 
         // Agora configura o livroView antes de usá-lo
         LivroView livroView = new LivroView(livroController, scanner);
         livroController.setLivroView(livroView); // Configura o livroView no livroController
 
         emprestimosController.setLivroController(livroController);
-        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController, emprestimosController);
-        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController);
-        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas);
+        ReservaView reservaView = new ReservaView(reservaController, utenteController, livroController,jornalController, jornalView,emprestimosController);
+        EmprestimosView emprestimosView = new EmprestimosView(emprestimosController, utenteController, livroController, jornalController, reservaController);
+        PesquisaEstatisticasController pesquisaEstatisticasController = new PesquisaEstatisticasController(livros, jornals, emprestimos, reservas, emprestimosController, reservaController);
         PesquisaEstatisticasView pesquisaEstatisticasView = new PesquisaEstatisticasView(scanner, pesquisaEstatisticasController);
+
 
         int opcao;
         int escolha;
@@ -64,8 +65,8 @@ public class Main {
             System.out.println("4. Gerir Empréstimos");
             System.out.println("5. Gerir Reservas");
             System.out.println("6. Pesquisas/Estatísticas");
-            System.out.println("7. Ler/Guardar dados");
-            System.out.println("0. Sair");
+            System.out.println("7. Carregar/Exportar dados");
+            System.out.println("0. Fechar o programa...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
 
@@ -89,31 +90,48 @@ public class Main {
                     pesquisaEstatisticasView.exibirMenu();  // Já está correto
                     break;
                 case 7:
-                    System.out.println("1. Ler dados");
-                    System.out.println("2. Carregar dados");
-                    System.out.println("0. Voltar");
-                    escolha = scanner.nextInt();
+                    do {
+                        System.out.println("\n=== Carregamento/Exportação de Dados ===");
+                        System.out.println("1. Carregar dados (do ficheiro para o sistema)");
+                        System.out.println("2. Exportar dados (do sistema para o ficheiro)");
+                        System.out.println("0. Voltar ao menu principal...");
+                        System.out.print("Escolha uma opção: ");
+                        escolha = scanner.nextInt();
+                        switch (escolha) {
+                            case 1:
+                                System.out.println("\nCarregando dados...");
+                                livros.addAll(ImportarDados.carregarLivros(caminhoLivros));
+                                utentes.addAll(ImportarDados.carregarUtentes(caminhoUtentes));
+                                jornals.addAll(ImportarDados.carregarJornais(caminhoJornal));
 
-                    if (escolha == 1) {
-                        System.out.println("\nCarregando dados...");
-                        livros.addAll(ImportarDados.carregarLivros(caminhoLivros));
-                        utentes.addAll(ImportarDados.carregarUtentes(caminhoUtentes));
-                        jornals.addAll(ImportarDados.carregarJornais(caminhoJornal));
-                        emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, livros));
-                        reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, livros));
-                        System.out.println("Dados carregados com sucesso!");
-                    } else if (escolha == 2) {
-                        System.out.println("\nGuardando dados...");
-                        exportarLivros(caminhoLivros, livros);
-                        exportarUtentes(caminhoUtentes, utentes);
-                        exportarJornal(caminhoJornal, jornals);
-                        exportarEmprestimos(caminhoEmprestimo, emprestimos);
-                        exportarReservas(caminhoReserva, reservas);
-                    } else if (escolha != 0) {
-                        System.out.println("\nOpção inválida. Tente novamente.");
-                    }
+                                // Combina as listas de itens emprestáveis
+                                ArrayList<ItemEmprestavel> itens = new ArrayList<>();
+                                itens.addAll(livros);
+                                itens.addAll(jornals);
+
+                                // Carrega os empréstimos usando a lista combinada
+                                emprestimos.addAll(ImportarDados.carregarEmprestimos(caminhoEmprestimo, utentes, itens));
+                                reservas.addAll(ImportarDados.carregarReservas(caminhoReserva, utentes, itens));
+                                System.out.println("\nDados carregados com sucesso!");
+                                escolha = 0;
+                                break;
+                            case 2:
+                                System.out.println("\nGuardando dados...");
+                                exportarLivros(caminhoLivros, livros);
+                                exportarUtentes(caminhoUtentes, utentes);
+                                exportarJornal(caminhoJornal, jornals);
+                                exportarEmprestimos(caminhoEmprestimo, emprestimos);
+                                exportarReservas(caminhoReserva, reservas);
+                                escolha = 0;
+                                break;
+                            case 0:
+                                System.out.println("Saindo...");
+                                break;
+                            default:
+                                System.out.println("\nOpção inválida. Tente novamente.");
+                        }
+                    } while (escolha != 0);
                     break;
-
                 case 0:
                     System.out.print("Tem certeza de que deseja sair? (S/N): ");
                     char confirmacao = scanner.next().toUpperCase().charAt(0);
@@ -131,4 +149,3 @@ public class Main {
         scanner.close();
     }
 }
-

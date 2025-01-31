@@ -1,10 +1,11 @@
-ID: 1; Nome: João Silva; ISBN: 123456789; DataRegisto: 2024-01-15; DataInicioReserva: 2024-03-01; DataFimReserva: 2024-03-15
-ID: 2; Nome: Maria Santos; ISBN: 9876543210; DataRegisto: 2024-02-10; DataInicioReserva: 2024-03-20; DataFimReserva: 2024-04-05
-ID: 3; Nome: Pedro Oliveira; ISBN: 8529637418529; DataRegisto: 2024-03-05; DataInicioReserva: 2024-04-10; DataFimReserva: 2024-04-25
-ID: 4; Nome: Ana Costa; ISBN: 7539514568523; DataRegisto: 2024-04-15; DataInicioReserva: 2024-05-01; DataFimReserva: 2024-05-15
-ID: 5; Nome: Rui Pereira; ISBN: 9517538524569; DataRegisto: 2024-05-10; DataInicioReserva: 2024-06-01; DataFimReserva: 2024-06-15
-ID: 6; Nome: Laura Barbosa; ISBN: 1472583690123; DataRegisto: 2024-06-01; DataInicioReserva: 2024-07-01; DataFimReserva: 2024-07-15
-ID: 7; Nome: Sofia Almeida; ISBN: 1593574568523; DataRegisto: 2024-07-20; DataInicioReserva: 2024-08-01; DataFimReserva: 2024-08-15
-ID: 8; Nome: Tiago Nogueira; ISBN: 4561237894560; DataRegisto: 2024-08-05; DataInicioReserva: 2024-09-01; DataFimReserva: 2024-09-15
-ID: 9; Nome: Inês Ferreira; ISBN: 7539516548520; DataRegisto: 2024-09-10; DataInicioReserva: 2024-10-01; DataFimReserva: 2024-10-15
-ID: 10; Nome: Miguel Rocha; ISBN: 9514567891230, 7539516548520; DataRegisto: 2024-10-15; DataInicioReserva: 2024-11-01; DataFimReserva: 2024-11-15
+ID: 2; Nome: Maria Santos; ISSN: ; ISBN: 9876543210; DataRegisto: 2024-02-10; DataInicioReserva: 2024-03-20; DataFimReserva: 2024-04-05
+ID: 3; Nome: Pedro Oliveira; ISSN: ; ISBN: 8529637418529; DataRegisto: 2024-03-05; DataInicioReserva: 2024-04-10; DataFimReserva: 2024-04-25
+ID: 4; Nome: Ana Costa; ISSN: ; ISBN: 7539514568523; DataRegisto: 2024-04-15; DataInicioReserva: 2024-05-01; DataFimReserva: 2024-05-15
+ID: 5; Nome: Rui Pereira; ISSN: ; ISBN: 9517538524569; DataRegisto: 2024-05-10; DataInicioReserva: 2024-06-01; DataFimReserva: 2024-06-15
+ID: 6; Nome: Laura Barbosa; ISSN: ; ISBN: 1472583690123; DataRegisto: 2024-06-01; DataInicioReserva: 2024-07-01; DataFimReserva: 2024-07-15
+ID: 7; Nome: Sofia Almeida; ISSN: ; ISBN: 1593574568523; DataRegisto: 2024-07-20; DataInicioReserva: 2024-08-01; DataFimReserva: 2024-08-15
+ID: 8; Nome: Tiago Nogueira; ISSN: ; ISBN: 4561237894560; DataRegisto: 2024-08-05; DataInicioReserva: 2024-09-01; DataFimReserva: 2024-09-15
+ID: 9; Nome: Inês Ferreira; ISSN: ; ISBN: 7539516548520; DataRegisto: 2024-09-10; DataInicioReserva: 2024-10-01; DataFimReserva: 2024-10-15
+ID: 10; Nome: Miguel Rocha; ISSN: ; ISBN: 9514567891230; DataRegisto: 2024-10-15; DataInicioReserva: 2024-11-01; DataFimReserva: 2024-11-15
+ID: 11; Nome: 1; ISSN: ; ISBN: 8529637418529; DataRegisto: 2024-03-20; DataInicioReserva: 2024-03-20; DataFimReserva: 2024-04-05
+ID: 12; Nome: 1234; ISSN: ; ISBN: 3216549874567; DataRegisto: 2024-08-12; DataInicioReserva: 2024-08-20; DataFimReserva: 2024-08-30

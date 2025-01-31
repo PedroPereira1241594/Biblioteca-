@@ -1,38 +1,63 @@
 package Controller;
 
 import Model.Livro;
+import Model.ItemEmprestavel;
 import Model.Emprestimos;
 import Model.Reserva;
 import View.LivroView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Controlador responsável por gerir operações dos livros.
+ */
 public class LivroController {
     private final ArrayList<Livro> livros;
     private LivroView livroView;
     private final EmprestimosController emprestimosController;
-    private final List<Reserva> reservas; // Adicionada a lista de reservas
+    private final List<Reserva> reservas;
+    private final List<Emprestimos> emprestimos;
 
+    /**
+     * Visualização de um livro.
+     *
+     * @param livroView A visualização dos livros.
+     */
     public void setLivroView(LivroView livroView) {
         this.livroView = livroView;
     }
 
-    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas) {
+    /**
+     * Construtor da classe LivroController.
+     *
+     * @param livros Lista de livros disponíveis.
+     * @param livroView Visualização do livro.
+     * @param emprestimosController Controlador de empréstimos.
+     * @param reservas Lista de reservas.
+     * @param emprestimos Lista de empréstimos.
+     */
+    public LivroController(ArrayList<Livro> livros, LivroView livroView, EmprestimosController emprestimosController, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.livros = livros;
         this.livroView = livroView;
         this.emprestimosController = emprestimosController;
-        this.reservas = reservas; // Inicializa a lista de reservas
+        this.reservas = reservas;
+        this.emprestimos = emprestimos;
     }
 
+    /**
+     * Adiciona um novo livro ao sistema.
+     * São inseridos todos os dados de um Livro.
+     */
     public void adicionarLivro() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Insira o ISBN: ");
+        System.out.print("\nInsira o ISBN: ");
         String isbn = scanner.nextLine();
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equals(isbn)) {
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
                 System.out.println("Já Existe um Livro com o Mesmo ISBN");
                 return;
             }
@@ -54,24 +79,30 @@ public class LivroController {
         System.out.println("Livro adicionado com sucesso!\n");
     }
 
+    /**
+     * Lista todos os livros disponíveis.
+     */
     public void listarLivros() {
         livroView.exibirLivros(livros);
     }
 
+    /**
+     * Edição das informações de um livro existente, procurando pelo ISBN.
+     */
     public void editarLivro() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insira o ISBN do Livro que Pretende Editar: ");
         String isbn = scanner.nextLine();
 
         Livro livro1 = null;
-        for (Livro Indice : livros) {
-            if (Indice.getIsbn().equals(isbn)) {
-                livro1 = Indice;
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                livro1 = (Livro) item;
                 break;
             }
         }
         if (livro1 != null) {
-            System.out.println("Editando o livro: " + livro1.getNome());
+            System.out.println("\nEditando o livro: " + livro1.getNome());
             System.out.print("Introduza o novo nome (ou pressione Enter para manter): ");
             String nome = scanner.nextLine();
             if (!nome.isEmpty()) livro1.setNome(nome);
@@ -102,81 +133,80 @@ public class LivroController {
         }
     }
 
+    /**
+     * Remove um livro da lista procurando pelo ISBN.
+     *
+     */
     public void removerLivro() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Insira o ISBN do Livro que Pretende Remover: ");
         String isbn = scanner.nextLine();
 
+        //Procura pelo ISBN
         Livro livro1 = null;
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equals(isbn)) {
-                livro1 = livro;
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
+                livro1 = (Livro) item;
                 break;
             }
         }
-
         if (livro1 == null) {
             System.out.println("ISBN inválido!");
             return;
         }
 
-        // Verificar se o livro está associado a alguma reserva
+        // Verifica se o livro está associado a alguma reserva ativa
         boolean livroReservado = false;
         for (Reserva reserva : reservas) {
-            if (reserva.getLivros().contains(livro1)) {
-                livroReservado = true;
+            for (ItemEmprestavel item : reserva.getItens()) {
+                if  (item.getIdentificador().equals(livro1.getIsbn())){
+                    livroReservado = true;
+                    break;
+                }
+            }
+            if (livroReservado) {
                 break;
             }
         }
 
-        // Verificar se o livro está associado a algum empréstimo ativo
+        // Verifica se o livro está associado a algum empréstimo ativo
         boolean livroEmprestado = false;
-        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
-            if (emprestimo.getLivros().contains(livro1)) {
-                livroEmprestado = true;
+        for (Emprestimos emprestimos : emprestimos) {
+            for (ItemEmprestavel item : emprestimos.getItens()) {
+                if (item.getIdentificador().equals(livro1.getIsbn())) {
+                    livroEmprestado = true;
+                    break;
+                }
+            }
+            if (livroEmprestado) {
                 break;
             }
         }
 
-        if (livroReservado) {
-            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
+        if (livroReservado && livroEmprestado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva, a um empréstimo e não pode ser removido.");
         } else if (livroEmprestado) {
-            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo ativo e não pode ser removido.");
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo e não pode ser removido.");
+        } else if (livroReservado) {
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
         } else {
             livros.remove(livro1);
             System.out.println("Livro removido com sucesso!");
         }
     }
 
+    /**
+     * Procura um livro na coleção pelo seu ISBN.
+     *
+     * @param isbn O ISBN do livro a ser procurado.
+     * @return O livro encontrado ou null se não existir na list.
+     */
     public Livro buscarLivroPorIsbn(String isbn) {
-        for (Livro livro : livros) {
-            if (livro.getIsbn().equalsIgnoreCase(isbn)) {
-                return livro; // Retorna o livro se o ISBN for encontrado
+        for (ItemEmprestavel item : livros) {
+            if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
+                return (Livro) item;
             }
         }
-        return null; // Retorna null se o livro com o ISBN não for encontrado
-    }
-
-    public boolean verificarLivroDisponivelParaEmprestimo(Livro livro) {
-        // Recuperar todos os empréstimos ativos
-        List<Emprestimos> emprestimosAtivos = emprestimosController.listarEmprestimosAtivos();
-
-        for (Emprestimos emprestimo : emprestimosAtivos) {
-            // Verifica se o livro está na lista de livros do empréstimo e se não tem data efetiva de devolução
-            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
-                return false; // O livro está emprestado e ainda não foi devolvido
-            }
-        }
-        return true; // O livro está disponível para empréstimo
-    }
-
-    public boolean verificarLivroEmprestado(Livro livro) {
-        for (Emprestimos emprestimo : emprestimosController.listarEmprestimosAtivos()) {
-            if (emprestimo.getLivros().contains(livro) && emprestimo.getDataEfetivaDevolucao() == null) {
-                return true; // Livro emprestado, sem data de devolução
-            }
-        }
-
-        return false; // Livro não está emprestado ou já devolvido
+        return null;
     }
 }
