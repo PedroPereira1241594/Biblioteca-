@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.Scanner;
 
+/**
+ * Classe responsável por gerir reservas de itens.
+ * Permite criar, consultar, atualizar, remover e listar reservas,
+ * além de realizar operações relacionadas a itens reservados.
+ */
 public class ReservaController {
     private List<Reserva> reservas;
     private int maiorId;
@@ -17,6 +22,14 @@ public class ReservaController {
     private final List<Livro> livros;
     private final List<Jornal> jornais;
 
+    /**
+     * Construtor da classe.
+     *
+     * @param emprestimosController Controller de empréstimos associado.
+     * @param reservas              lista de reservas existentes.
+     * @param livros                lista de livros disponíveis.
+     * @param jornais               lista de jornais disponíveis.
+     */
     public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas, List<Livro> livros, List<Jornal> jornais) {
         this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
         this.reservas = reservas; // Atribui a lista de reservas
@@ -26,6 +39,12 @@ public class ReservaController {
         Scanner scanner = new Scanner(System.in);
     }
 
+    /**
+     * Calcula o maior ID presente na lista de reservas.
+     *
+     * @param reservas lista de reservas.
+     * @return o maior ID encontrado.
+     */
     private int calcularMaiorId(List<Reserva> reservas) {
         int maior = 0;
         for (Reserva reserva : reservas) {
@@ -36,10 +55,25 @@ public class ReservaController {
         return maior;
     }
 
+    /**
+     * Define o controller de empréstimos.
+     *
+     * @param emprestimosController controlador de empréstimos.
+     */
     public void setEmprestimosController(EmprestimosController emprestimosController) {
         this.emprestimosController = emprestimosController;
     }
 
+    /**
+     * Cria uma nova reserva.
+     *
+     * @param utente            utente que realiza a reserva.
+     * @param itensParaReserva  itens a serem reservados.
+     * @param dataRegisto       data de registro da reserva.
+     * @param dataInicio        data de início da reserva.
+     * @param dataFim           data de fim da reserva.
+     * @param emprestimosController controller de empréstimos.
+     */
     public void criarReserva(Utentes utente, List<ItemEmprestavel> itensParaReserva, LocalDate dataRegisto, LocalDate dataInicio, LocalDate dataFim, EmprestimosController emprestimosController) {
         if (utente == null) {
             System.out.println("Erro: O utente informado é inválido.");
@@ -71,6 +105,12 @@ public class ReservaController {
         exibirDetalhesReserva(novaReserva);
     }
 
+    /**
+     * Consulta uma reserva pelo número.
+     *
+     * @param numero número da reserva.
+     * @return a reserva correspondente, ou null se não encontrada.
+     */
     public Reserva consultarReserva(int numero) {
         for (Reserva reserva : reservas) {
             if (reserva.getNumero() == numero) {
@@ -80,6 +120,13 @@ public class ReservaController {
         return null;
     }
 
+    /**
+     * Atualiza as datas de uma reserva.
+     *
+     * @param numero          número da reserva.
+     * @param novaDataInicio  nova data de início.
+     * @param novaDataFim     nova data de fim.
+     */
     public void atualizarReserva(int numero, LocalDate novaDataInicio, LocalDate novaDataFim) {
         Reserva reserva = consultarReserva(numero);
         if (reserva == null) {
@@ -99,6 +146,12 @@ public class ReservaController {
         System.out.println("Reserva atualizada com sucesso!");
     }
 
+    /**
+     * Remove uma reserva pelo número.
+     *
+     * @param numero número da reserva.
+     * @return true se a reserva foi removida, false caso contrário.
+     */
     public boolean removerReserva(int numero) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
@@ -108,6 +161,11 @@ public class ReservaController {
         return false;
     }
 
+    /**
+     * Mostra os detalhes de uma reserva.
+     *
+     * @param reserva reserva cujos detalhes serão apresentados.
+     */
     public void exibirDetalhesReserva(Reserva reserva) {
         System.out.println("\n========== Detalhes da Reserva ===========");
         System.out.println("Número da Reserva: " + reserva.getNumero());
@@ -127,6 +185,13 @@ public class ReservaController {
         System.out.println("=".repeat(42));
     }
 
+    /**
+     * Verifica se uma data de fim é anterior à data de início.
+     *
+     * @param dataInicio data de início.
+     * @param dataFim    data de fim.
+     * @return true se a dataFim for anterior à dataInicio, false caso contrário.
+     */
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
         if (dataFim.isBefore(dataInicio)) {
             return true;
@@ -135,7 +200,14 @@ public class ReservaController {
         }
     }
 
-    // Método para adicionar item à reserva
+    /**
+     * Adiciona um item à reserva.
+     *
+     * @param numero            número da reserva.
+     * @param item              item a ser adicionado.
+     * @param dataInicioReserva data de início da reserva.
+     * @param dataFimReserva    data de fim da reserva.
+     */
     public void adicionarItemNaReserva(int numero, ItemEmprestavel item, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
@@ -147,6 +219,12 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Remove um item de uma reserva.
+     *
+     * @param numero número da reserva.
+     * @param item   item a ser removido.
+     */
     public void removerItemDaReserva(int numero, ItemEmprestavel item) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
@@ -163,6 +241,14 @@ public class ReservaController {
         }
     }
 
+    /**
+     * Verifica se um item está reservado em um intervalo de datas.
+     *
+     * @param item       item a ser verificado.
+     * @param dataInicio data de início.
+     * @param dataFim    data de fim.
+     * @return true se o item está reservado, false caso contrário.
+     */
     public boolean verificarItemReservado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
         for (Reserva reserva : reservas) {
             for (ItemEmprestavel i : reserva.getItens()) {
@@ -180,11 +266,21 @@ public class ReservaController {
         return false; // O item não está reservado no período informado
     }
 
+    /**
+     * Retorna a lista de todas as reservas.
+     *
+     * @return lista de reservas.
+     */
     public List<Reserva> listarTodasReservas() {
         return reservas; // Retorna a lista de reservas
     }
 
-    // Método para pesquisar Livro por ISBN
+    /**
+     * Pesquisa o título de um livro pelo ISBN.
+     *
+     * @param ISBN código ISBN do livro.
+     * @return o título do livro, ou null se não encontrado.
+     */
     public String pesquisaISBN(String ISBN) {
         for (Livro livro : livros) {
             if (livro.getIsbn().equalsIgnoreCase(ISBN)) {
@@ -194,7 +290,12 @@ public class ReservaController {
         return null;
     }
 
-    // Método para pesquisar Jornal/Revista por ISSN
+    /**
+     * Pesquisa o título de um jornal pelo ISSN.
+     *
+     * @param ISSN código ISSN do jornal.
+     * @return o título do jornal, ou null se não encontrado.
+     */
     public String pesquisaISSN(String ISSN) {
         for (Jornal jornal : jornais) {
             if (jornal.getIssn().equalsIgnoreCase(ISSN)) {
