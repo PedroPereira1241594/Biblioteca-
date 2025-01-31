@@ -132,7 +132,7 @@ public class PesquisaEstatisticasView {
                         System.out.println("Título: " + jornalEncontrado.getTitulo());
                         System.out.println("Editora: " + jornalEncontrado.getEditora());
                         System.out.println("Categoria: " + jornalEncontrado.getCategoria());
-                        System.out.println("Data de Publicação: " + jornalEncontrado.getDataPublicacao());
+                        System.out.println("Data de Publicação: " + jornalEncontrado.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         System.out.println("ISSN: " + jornalEncontrado.getIssn());
                         System.out.println("=".repeat(41));
                     } else {
