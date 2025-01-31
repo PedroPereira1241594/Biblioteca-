@@ -7,8 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe responsável por exportar dados da aplicação para um txt.
+ */
 public class ExportarDados {
 
+    /**
+     * Exporta uma lista de livros para um txt.
+     *
+     * @param caminhoArquivo O caminho do txt de destino.
+     * @param livros         Lista de livros a serem exportados.
+     */
     public static void exportarLivros(String caminhoArquivo, List<Livro> livros) {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Livro livro : livros) {
@@ -26,6 +35,13 @@ public class ExportarDados {
         }
     }
 
+    /**
+     * Exporta uma lista de utentes para um txt.
+     *
+     * @param caminhoArquivo O caminho do txt de destino.
+     * @param utentes        Lista de utentes a serem exportados.
+     * @throws IOException Se ocorrer um erro ao escrever no txt.
+     */
     public static void exportarUtentes(String caminhoArquivo, ArrayList<Utentes> utentes) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Utentes utente : utentes) {
@@ -41,6 +57,13 @@ public class ExportarDados {
         }
     }
 
+    /**
+     * Exporta uma lista de jornais para um txt.
+     *
+     * @param caminhoArquivo O caminho do txt de destino.
+     * @param jornals        Lista de jornais a serem exportados.
+     * @throws IOException Se ocorrer um erro ao escrever no txt.
+     */
     public static void exportarJornal(String caminhoArquivo, ArrayList<Jornal> jornals) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Jornal jornal : jornals) {
@@ -54,10 +77,16 @@ public class ExportarDados {
             System.out.println("Jornais/Revistas exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Jornais/Revistas: " + e.getMessage());
-
         }
     }
 
+    /**
+     * Exporta uma lista de empréstimos para um txt.
+     *
+     * @param caminhoArquivo O caminho do txt de destino.
+     * @param emprestimos    Lista de empréstimos a serem exportados.
+     * @throws IOException Se ocorrer um erro ao escrever no txt.
+     */
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Emprestimos emprestimo : emprestimos) {
@@ -65,50 +94,45 @@ public class ExportarDados {
                 String issns = "";
                 String isbns = "";
 
-                // Iterar sobre os itens emprestados
+                // Separa os itens reservados pelo tipo de objeto
                 for (ItemEmprestavel item : emprestimo.getItens()) {
                     if (item instanceof Jornal) {
                         // Adicionar ISSN (com vírgula se necessário)
-                        if (!issns.isEmpty()) {
-                            issns += ", ";
-                        }
+                        if (!issns.isEmpty()) issns += ", ";
                         issns += ((Jornal) item).getIssn();
                     } else if (item instanceof Livro) {
                         // Adicionar ISBN (com vírgula se necessário)
-                        if (!isbns.isEmpty()) {
-                            isbns += ", ";
-                        }
+                        if (!isbns.isEmpty()) isbns += ", ";
                         isbns += ((Livro) item).getIsbn();
                     }
                 }
 
-                // Garantir que ISSN e ISBN apareçam sempre, mesmo que estejam vazios
-                String issnStr = "ISSN: " + (issns.isEmpty() ? "" : issns);
-                String isbnStr = "ISBN: " + (isbns.isEmpty() ? "" : isbns);
-
-                // Montar a linha de saída
+                // Montagem da linha de saída
                 String linha = String.format(
-                        "ID: %d; Nome: %s; %s; %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
+                        "ID: %d; Nome: %s; ISSN: %s; ISBN: %s; DataInicio: %s; DataPrevistaDevolução: %s; DataEfetivaDevolução: %s\n",
                         emprestimo.getNumero(),
                         emprestimo.getUtente().getNome(),
-                        issnStr,
-                        isbnStr,
+                        issns.isEmpty() ? "" : issns,
+                        isbns.isEmpty() ? "" : isbns,
                         emprestimo.getDataInicio(),
                         emprestimo.getDataPrevistaDevolucao(),
                         emprestimo.getDataEfetivaDevolucao() == null ? "null" : emprestimo.getDataEfetivaDevolucao()
                 );
-
-                // Escrever a linha no arquivo
                 writer.write(linha);
             }
-
             System.out.println("Empréstimos exportados com sucesso para o ficheiro!");
         } catch (IOException e) {
             System.out.println("Erro ao salvar os Empréstimos: " + e.getMessage());
         }
     }
 
-
+    /**
+     * Exporta uma lista de reservas para um txt.
+     *
+     * @param caminhoArquivo O caminho do txt de destino.
+     * @param reservas       Lista de empréstimos a serem exportados.
+     * @throws IOException Se ocorrer um erro ao escrever no txt.
+     */
     public static void exportarReservas(String caminhoArquivo, ArrayList<Reserva> reservas) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Reserva reserva : reservas) {
@@ -116,7 +140,7 @@ public class ExportarDados {
                 String issns = "";
                 String isbns = "";
 
-                // Iterar sobre os itens reservados
+                // Separa os itens reservados pelo tipo de objeto
                 for (ItemEmprestavel item : reserva.getItens()) {
                     if (item instanceof Jornal) {
                         // Adicionar ISSN (com vírgula se necessário)
@@ -133,11 +157,11 @@ public class ExportarDados {
                     }
                 }
 
-                // Garantir que ISSN e ISBN apareçam sempre, mesmo que estejam vazios
+                // Garante que o ISSN e o ISBN apareçam mesmo vazios
                 String issnStr = "ISSN: " + (issns.isEmpty() ? "" : issns);
                 String isbnStr = "ISBN: " + (isbns.isEmpty() ? "" : isbns);
 
-                // Montar a linha de saída
+                // Montagem da linha de saída
                 String linha = String.format(
                         "ID: %d; Nome: %s; %s; %s; DataRegisto: %s; DataInicioReserva: %s; DataFimReserva: %s\n",
                         reserva.getNumero(),
@@ -149,7 +173,6 @@ public class ExportarDados {
                         reserva.getDataFim()
                 );
 
-                // Escrever a linha no arquivo
                 writer.write(linha);
             }
 
@@ -158,7 +181,6 @@ public class ExportarDados {
             System.out.println("Erro ao salvar as Reservas: " + e.getMessage());
         }
     }
-
 
 }
 
