@@ -734,9 +734,6 @@ public class ReservaView {
         }
     }
 
-    private boolean verificarItemEmprestado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
-        return emprestimosController.itemPossuiEmprestimoAtivo(item, dataInicio, dataFim);
-    }
 
 
 }

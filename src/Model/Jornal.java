@@ -4,15 +4,15 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Jornal extends ItemEmprestavel {
-    private String titulo;           // Título do jornal ou revista
-    private String editora;          // Editora responsável
-    private String categoria;        // Categoria do jornal ou revista
-    private String issn;             // ISSN
-    private LocalDate dataPublicacao;   // Data de publicação
+    private String titulo;
+    private String editora;
+    private String categoria;
+    private String issn;
+    private LocalDate dataPublicacao;
 
     // Construtor
     public Jornal(String issn, String titulo, String categoria, String editora, LocalDate dataPublicacao) {
-        super(issn);  // Chama o construtor da classe pai (ItemEmprestavel) com o ISSN
+        super(issn);
         this.titulo = titulo;
         this.categoria = categoria;
         this.editora = editora;

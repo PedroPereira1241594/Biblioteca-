@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Reserva {
     private int numero;
     private Utentes utente;
-    private List<ItemEmprestavel> itens;  // Agora usa ItemEmprestavel, igual a Emprestimos
+    private List<ItemEmprestavel> itens;
     private LocalDate dataRegisto;
     private LocalDate dataInicio;
     private LocalDate dataFim;

@@ -26,7 +26,6 @@ public class ExportarDados {
         }
     }
 
-
     public static void exportarUtentes(String caminhoArquivo, ArrayList<Utentes> utentes) throws IOException {
         try (FileWriter writer = new FileWriter(caminhoArquivo)) {
             for (Utentes utente : utentes) {
@@ -57,7 +56,6 @@ public class ExportarDados {
             System.out.println("Erro ao salvar os Jornais/Revistas: " + e.getMessage());
 
         }
-
     }
 
     public static void exportarEmprestimos(String caminhoArquivo, ArrayList<Emprestimos> emprestimos) throws IOException {

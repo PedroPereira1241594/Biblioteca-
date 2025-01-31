@@ -40,7 +40,7 @@ public class EmprestimosView {
             System.out.println("0. Voltar ao menu principal...");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            scanner.nextLine(); // Limpar buffer
+            scanner.nextLine();
 
             switch (opcao) {
                 case 1 -> criarEmprestimo();
@@ -74,7 +74,7 @@ public class EmprestimosView {
                 System.out.println("\nMenu:");
                 System.out.println("1. Adicionar Livro ao empréstimo");
                 System.out.println("2. Adicionar Jornal/Revista ao empréstimo");
-                System.out.println("0. Finalizar seleção de itens");
+                System.out.println("0. Finalizar seleção de itens...");
                 System.out.print("Escolha uma opção: ");
                 int opcaoItem = scanner.nextInt();
                 scanner.nextLine(); // Limpar buffer

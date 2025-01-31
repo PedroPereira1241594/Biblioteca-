@@ -33,7 +33,7 @@ public class LivroController {
     public void adicionarLivro() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Insira o ISBN: ");
+        System.out.print("\nInsira o ISBN: ");
         String isbn = scanner.nextLine();
         for (ItemEmprestavel item : livros) {
             if (item instanceof Livro && ((Livro) item).getIsbn().equals(isbn)) {
@@ -75,7 +75,7 @@ public class LivroController {
             }
         }
         if (livro1 != null) {
-            System.out.println("Editando o livro: " + livro1.getNome());
+            System.out.println("\nEditando o livro: " + livro1.getNome());
             System.out.print("Introduza o novo nome (ou pressione Enter para manter): ");
             String nome = scanner.nextLine();
             if (!nome.isEmpty()) livro1.setNome(nome);
@@ -153,7 +153,7 @@ public class LivroController {
         if (livroReservado && livroEmprestado) {
             System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva, a um empréstimo e não pode ser removido.");
         } else if (livroEmprestado) {
-            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo ativo e não pode ser removido.");
+            System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a um empréstimo e não pode ser removido.");
         } else if (livroReservado) {
             System.out.println("Erro: O livro '" + livro1.getNome() + "' está associado a uma reserva e não pode ser removido.");
         } else {
@@ -171,24 +171,5 @@ public class LivroController {
         return null; // Retorna null se o livro com o ISBN não for encontrado
     }
 
-    public boolean verificarLivroDisponivelParaEmprestimo(Livro livro) {
-        // Recuperar todos os empréstimos ativos
-        LocalDate dataInicio = LocalDate.now();  // Defina a data de início desejada
-        LocalDate dataPrevistaDevolucao = dataInicio.plusDays(7);  // Exemplo de data prevista de devolução
 
-        if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
-            return false; // O livro está emprestado e não pode ser emprestado novamente
-        }
-        return true; // O livro está disponível para empréstimo
-    }
-
-    public boolean verificarLivroEmprestado(Livro livro) {
-        LocalDate dataInicio = LocalDate.now();  // Defina a data de início desejada
-        LocalDate dataPrevistaDevolucao = dataInicio.plusDays(7);  // Exemplo de data prevista de devolução
-
-        if (emprestimosController.itemPossuiEmprestimoAtivo(livro, dataInicio, dataPrevistaDevolucao)) {
-            return true; // O livro está emprestado no período
-        }
-        return false; // O livro não está emprestado ou já foi devolvido
-    }
 }

@@ -145,7 +145,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
+                if (pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas
@@ -343,7 +343,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
+                if (pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas
@@ -382,7 +382,7 @@ public class PesquisaEstatisticasView {
                 dataFim = lerData(formato);
 
                 // Verifica se a data de fim é anterior à data de início
-                if (!pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
+                if (pesquisaEstatisticasController.verificarDataAnterior(dataInicio, dataFim)) {
                     System.out.println("Erro: A data de fim não pode ser anterior à data de início! Tente novamente.");
                 } else {
                     break; // Sai do loop se as datas forem válidas

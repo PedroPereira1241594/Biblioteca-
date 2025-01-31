@@ -113,7 +113,7 @@ public class JornalView {
         System.out.print("Introduza o ISSN do jornal/revista a ser atualizado: ");
         String issn = scanner.nextLine();
 
-        System.out.println("Introduza os novos dados (deixe em branco para manter o valor atual):");
+        System.out.println("Introduza os novos dados:");
         System.out.print("Novo ISSN: ");
         String novoIssn = scanner.nextLine();
 
@@ -153,7 +153,7 @@ public class JornalView {
             System.out.println("Editora: " + jornal.getEditora());
             System.out.println("Categoria: " + jornal.getCategoria());
             System.out.println("ISSN: " + jornal.getIssn());
-            System.out.println("Data de Publicação: " + jornal.getDataPublicacao());
+            System.out.println("Data de Publicação: " + jornal.getDataPublicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println("=".repeat(43));
         } else {
             System.out.println("\nJornal não encontrado.");

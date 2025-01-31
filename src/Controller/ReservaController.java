@@ -13,10 +13,9 @@ import java.util.Scanner;
 public class ReservaController {
     private List<Reserva> reservas;
     private int maiorId;
-    private Scanner scanner;
     private EmprestimosController emprestimosController;
-    private List<Livro> livros;
-    private List<Jornal> jornais;
+    private final List<Livro> livros;
+    private final List<Jornal> jornais;
 
     public ReservaController(EmprestimosController emprestimosController, List<Reserva> reservas, List<Livro> livros, List<Jornal> jornais) {
         this.emprestimosController = emprestimosController; // Atribui o EmprestimosController
@@ -24,8 +23,9 @@ public class ReservaController {
         this.livros = livros;
         this.jornais = jornais;
         this.maiorId = calcularMaiorId(reservas);
-        this.scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
     }
+
     private int calcularMaiorId(List<Reserva> reservas) {
         int maior = 0;
         for (Reserva reserva : reservas) {
@@ -57,14 +57,6 @@ public class ReservaController {
             return;
         }
 
-        /*// Verifica se os itens possuem empréstimos ativos
-        for (ItemEmprestavel item : itensParaReserva) {
-            if (emprestimosController.itemPossuiEmprestimoAtivo(item, dataInicio, dataFim)) {
-                System.out.println("Erro: O item '" + item.getIdentificador() + "' está emprestado no período solicitado.");
-                return;
-            }
-        }*/
-
         // Atualiza o maiorId com base no array de reservas antes de criar a nova
         this.maiorId = calcularMaiorId(reservas);
 
@@ -80,13 +72,11 @@ public class ReservaController {
     }
 
     public Reserva consultarReserva(int numero) {
-        // Itera sobre a lista de reservas para encontrar a reserva pelo número
         for (Reserva reserva : reservas) {
             if (reserva.getNumero() == numero) {
-                return reserva;  // Se encontrada, retorna a reserva
+                return reserva;
             }
         }
-        // Se não encontrar a reserva, retorna null
         return null;
     }
 
@@ -139,27 +129,23 @@ public class ReservaController {
 
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
         if (dataFim.isBefore(dataInicio)) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
-    // Método para adicionar livro à reserva
+    // Método para adicionar item à reserva
     public void adicionarItemNaReserva(int numero, ItemEmprestavel item, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         Reserva reserva = consultarReserva(numero);
         if (reserva != null) {
             if (!reserva.getItens().contains(item)) {
                 reserva.getItens().add(item);
-                System.out.println("Item '" + item.getTitulo() + "' adicionado com sucesso à reserva!");
-            } else {
-                System.out.println("O item '" + item.getTitulo() + "' já está nesta reserva.");
             }
         } else {
             System.out.println("Erro: Reserva não encontrada.");
         }
     }
-
 
     public void removerItemDaReserva(int numero, ItemEmprestavel item) {
         Reserva reserva = consultarReserva(numero);
@@ -168,9 +154,6 @@ public class ReservaController {
                 // Verifica se a reserva tem mais de um item
                 if (reserva.getItens().size() > 1) {
                     reserva.getItens().remove(item);
-                    System.out.println("Item '" + item.getTitulo() + "' removido com sucesso da reserva!");
-                } else {
-                    System.out.println("Erro: A reserva precisa ter pelo menos dois itens para poder remover um.");
                 }
             } else {
                 System.out.println("Erro: O item '" + item.getTitulo() + "' não está nesta reserva.");
@@ -179,7 +162,6 @@ public class ReservaController {
             System.out.println("Erro: Reserva não encontrada.");
         }
     }
-
 
     public boolean verificarItemReservado(ItemEmprestavel item, LocalDate dataInicio, LocalDate dataFim) {
         for (Reserva reserva : reservas) {
@@ -205,21 +187,21 @@ public class ReservaController {
     // Método para pesquisar Livro por ISBN
     public String pesquisaISBN(String ISBN) {
         for (Livro livro : livros) {
-            if (livro.getIsbn().equalsIgnoreCase(ISBN)) { // Verifica se o ISBN coincide.
-                return livro.getNome(); // Retorna o livro encontrado.
+            if (livro.getIsbn().equalsIgnoreCase(ISBN)) {
+                return livro.getNome();
             }
         }
-        return null; // Retorna null se nenhum livro for encontrado.
+        return null;
     }
 
     // Método para pesquisar Jornal/Revista por ISSN
     public String pesquisaISSN(String ISSN) {
-        for (Jornal jornal : jornais) { // Iterando sobre a lista de jornais
-            if (jornal.getIssn().equalsIgnoreCase(ISSN)) { // Verifica se o ISSN coincide
-                return jornal.getTitulo(); // Retorna o jornal encontrado
+        for (Jornal jornal : jornais) {
+            if (jornal.getIssn().equalsIgnoreCase(ISSN)) {
+                return jornal.getTitulo();
             }
         }
-        return null; // Retorna null se nenhum jornal for encontrado.
+        return null;
     }
 
 

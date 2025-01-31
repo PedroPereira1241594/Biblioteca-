@@ -91,7 +91,7 @@ public class UtenteController {
 
     public void editarUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduza o NIF do utente a editar: ");
+        System.out.print("\nIntroduza o NIF do utente a editar: ");
         String nif = scanner.nextLine();
 
         Utentes utente = null;
@@ -144,7 +144,7 @@ public class UtenteController {
 
     public void removerUtente() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Introduza o NIF do utente a remover: ");
+        System.out.print("\nIntroduza o NIF do utente a remover: ");
         String nif = scanner.nextLine();
         Utentes utente = null;
 
@@ -201,13 +201,11 @@ public class UtenteController {
     }
 
     public Utentes consultarUtente(String nif) {
-        // Itera sobre a lista de utentes para encontrar o utente pelo NIF
         for (Utentes utente : utentes) {
             if (utente.getNif().equals(nif)) {
-                return utente; // Se encontrado, retorna o utente
+                return utente;
             }
         }
-        // Se não encontrar o utente, retorna null
         return null;
     }
 

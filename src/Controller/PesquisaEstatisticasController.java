@@ -5,9 +5,7 @@ import Model.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PesquisaEstatisticasController {
     private List<Livro> livros;
@@ -310,7 +308,6 @@ public class PesquisaEstatisticasController {
         contagens.add(1);
     }
 
-
     // Método para buscar os empréstimos com N dias de atraso
     public List<Emprestimos> buscarEmprestimosComAtraso(int diasAtraso) {
         List<Emprestimos> emprestimosComAtraso = new ArrayList<>();
@@ -330,11 +327,12 @@ public class PesquisaEstatisticasController {
 
         return emprestimosComAtraso;
     }
+
     public boolean verificarDataAnterior(LocalDate dataInicio, LocalDate dataFim) {
         if (dataFim.isBefore(dataInicio)) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 

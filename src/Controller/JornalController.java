@@ -48,7 +48,6 @@ public class JornalController {
         System.out.println("Jornal/Revista adicionado com sucesso!");
     }
 
-
     // Método para listar todos os jornais e revistas
     public void listarJornais() {
         if (jornais.isEmpty()) {
@@ -89,7 +88,7 @@ public class JornalController {
             System.out.println("Nenhum Jornal/Revista encontrado com o ISSN fornecido.");
             return;
         }
-
+        System.out.printf(String.valueOf(novaDataPublicacao));
         // Atualizando os dados do jornal encontrado
         if (!novoIssn.isEmpty()) jornalEncontrado.setIssn(novoIssn);
         if (!novoTitulo.isEmpty()) jornalEncontrado.setTitulo(novoTitulo);
@@ -153,11 +152,11 @@ public class JornalController {
         }
 
         if (jornalReservado && jornalEmprestado) {
-            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a uma reserva e a um empréstimo e não pode ser removido.");
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + " (ISSN: " + jornalEncontrado.getIdentificador() + ")' está associado a uma reserva e a um empréstimo e não pode ser removido.");
         } else if (jornalEmprestado) {
-            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a um empréstimo e não pode ser removido.");
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + " (ISSN: " + jornalEncontrado.getIdentificador() + ")' está associado a um empréstimo e não pode ser removido.");
         } else if (jornalReservado) {
-            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a uma reserva e não pode ser removido.");
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + " (ISSN: " + jornalEncontrado.getIdentificador() + ")' está associado a uma reserva e não pode ser removido.");
         } else {
             jornais.remove(jornalEncontrado);
             System.out.println("Jornal/revista removido com sucesso!");
@@ -179,13 +178,4 @@ public class JornalController {
         return null;
     }
 
-
-    // Método para obter todos os jornais como uma lista de ItemEmprestavel (para integração com o sistema de empréstimos)
-    public static ArrayList<ItemEmprestavel> obterJornaisComoItensEmprestaveis() {
-        ArrayList<ItemEmprestavel> itensEmprestaveis = new ArrayList<>();
-        for (Jornal jornal : jornais) {
-            itensEmprestaveis.add(jornal); // Adiciona cada jornal como um ItemEmprestavel
-        }
-        return itensEmprestaveis;
-    }
 }
