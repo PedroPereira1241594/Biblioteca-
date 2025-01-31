@@ -1,5 +1,8 @@
 package View;
-/** View para as pesquisas e estatísticas do sistema
+/**
+ * Classe responsável por apresentar a interface de utilizador para pesquisas e estatísticas.
+ * Contém o menu principal e opções para pesquisar itens, empréstimos, reservas e outras estatísticas do sistema.
+ *
  * @author Pedro Pereira
  * @since 2025-01-20
  */
@@ -14,26 +17,38 @@ import java.util.List;
 import java.util.Scanner;
 
 public class PesquisaEstatisticasView {
+    /**
+     * Controlador responsável pelas operações de pesquisa e estatísticas.
+     */
     private PesquisaEstatisticasController pesquisaEstatisticasController;
+
+    /**
+     * Scanner para captura de entrada do utilizador.
+     */
     private Scanner scanner;
 
-    /** Construtor para aceder ao controller das pesquisas/estatísticas
-     * @param scanner para leitura de dados
-     * @param pesquisaEstatisticasController controller para realizar as verificações e a captura de dados
+    /**
+     * Construtor para inicializar o controller e o scanner.
+     *
+     * @param scanner Scanner para leitura de dados.
+     * @param pesquisaEstatisticasController Controlador para realizar as operações de pesquisa e estatísticas.
      */
     public PesquisaEstatisticasView(Scanner scanner, PesquisaEstatisticasController pesquisaEstatisticasController) {
         this.scanner = scanner;
         this.pesquisaEstatisticasController = pesquisaEstatisticasController;
     }
 
-    /** Método do menu principal das pesquisas e estatísticas
-     * Diversas opções
-     *  1. Pesquisar Livros/Revistas/Jornais pelo ISBN/ISSN
-     *  2. Pesquisar Empréstimos e Reservas num intervalo de datas
-     *  3. Tempo Médio de Empréstimos num Intervalo de Datas
-     *  4. Item Mais Requisitado no Intervalo de Datas
-     *  5. Utentes com Atraso Superior a N Dias
-     *  0. Voltar ao menu principal...
+    /**
+     * Mostra o menu principal de pesquisas e estatísticas, permitindo ao utilizador aceder diversas funcionalidades.
+     * As opções incluem:
+     * <ul>
+     *   <li>Pesquisar itens por ISBN/ISSN.</li>
+     *   <li>Pesquisar empréstimos e reservas em intervalos de datas.</li>
+     *   <li>Calcular o tempo médio de empréstimos.</li>
+     *   <li>Identificar o item mais requisitado.</li>
+     *   <li>Mostrar utentes com atrasos superiores a um determinado número de dias.</li>
+     *   <li>Sair do menu.</li>
+     * </ul>
      */
     public void exibirMenu() {
         int opcao;
@@ -74,7 +89,9 @@ public class PesquisaEstatisticasView {
         } while (opcao != 0);
     }
 
-    /** Método auxiliar para a pesquisa de consultar Livro por ISBN ou Jornal/Revista por ISSN
+    /**
+     * Permite ao utilizador pesquisar itens no sistema por meio de ISBN (para livros) ou ISSN (para jornais/revistas).
+     * O resultado da pesquisa é exibido no ecrã.
      */
     private void pesquisarPorISBNouISSN() {
         int option;
@@ -85,7 +102,7 @@ public class PesquisaEstatisticasView {
             System.out.println("0. Voltar ao menu anterior...");
             System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
-            scanner.nextLine();  
+            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -131,7 +148,10 @@ public class PesquisaEstatisticasView {
         } while (option != 0);
     }
 
-    // Método para mostrar os empréstimos e/ou reservados no intervalos de datas
+    /**
+     * Realiza a pesquisa de empréstimos e/ou reservas em um intervalo de datas fornecido pelo utilizador.
+     * Mostra os resultados encontrados no ecrã.
+     */
     private void pesquisarEntreDatas() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataInicio;
@@ -162,7 +182,7 @@ public class PesquisaEstatisticasView {
         System.out.println("3. Ambos (Empréstimos e Reservas)");
         System.out.print("Opção: ");
         int opcao = scanner.nextInt();
-        scanner.nextLine();  
+        scanner.nextLine();
 
         switch (opcao) {
             case 1:
@@ -189,7 +209,19 @@ public class PesquisaEstatisticasView {
 
     }
 
-    // Método auxiliar para mostrar empréstimos
+    /**
+     * Mostra uma lista de empréstimos no intervalo de datas fornecido.
+     *
+     * @param emprestimos Lista de empréstimos a serem apresentados.
+     *                    Se estiver vazia, será exibida uma mensagem informativa.
+     * Cada empréstimo mostrará as seguintes informações:
+     * - Número do empréstimo
+     * - Nome do utente
+     * - Data de início do empréstimo
+     * - Data prevista para devolução
+     * - Data efetiva de devolução (se já devolvido)
+     * - Lista de itens emprestados (ISBN/ISSN ou "Item desconhecido" caso inválido)
+     */
     private void mostrarEmprestimos(List<Emprestimos> emprestimos) {
         if (emprestimos.isEmpty()) {
             System.out.println("\nNenhum empréstimo encontrado no intervalo de datas fornecido.");
@@ -252,7 +284,19 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método auxiliar para mostrar reservas
+    /**
+     * Mostra uma lista de reservas no intervalo de datas fornecido.
+     *
+     * @param reservas Lista de reservas a serem apresentadas.
+     *                 Se estiver vazia, será exibida uma mensagem informativa.
+     * Cada reserva exibirá as seguintes informações:
+     * - Número da reserva
+     * - Nome do utente
+     * - Data de registo da reserva
+     * - Data de início da reserva
+     * - Data de término da reserva
+     * - Lista de itens reservados (ISBN/ISSN ou "Item desconhecido" caso inválido)
+     */
     private void mostrarReservas(List<Reserva> reservas) {
         if (reservas.isEmpty()) {
             System.out.println("Nenhuma reserva encontrada no intervalo de datas fornecido.");
@@ -317,7 +361,13 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método para ler a data no formato correto
+    /**
+     * Lê e valida uma data inserida pelo utilizador no formato dd/MM/yyyy.
+     * Caso a data seja inválida, solicita novamente ao utilizador.
+     *
+     * @param formato O formato esperado para a data.
+     * @return A data lida e validada.
+     */
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
             try {
@@ -329,7 +379,9 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método para mostrar o tempo médio de empréstimos no intervalo de datas fornecido
+    /**
+     * Calcula e mostra o tempo médio de empréstimos realizados em um intervalo de datas fornecido.
+     */
     private void mostrarTempoMedioEmprestimosNoIntervalo() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataInicio;
@@ -368,7 +420,9 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método para mostrar o item mais requisitado no intervalo de datas fornecido
+    /**
+     * Identifica e mostra o item ou itens mais requisitado em um intervalo de datas fornecido pelo utilizador.
+     */
     private void mostrarItemMaisRequisitado() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataInicio;
@@ -404,11 +458,13 @@ public class PesquisaEstatisticasView {
         }
     }
 
-    // Método para mostrar os empréstimos com N dias de atraso
+    /**
+     * Mostra a lista de utentes com empréstimos atrasados superiores a um número de dias especificado pelo utilizador.
+     */
     private void mostrarUtentesComAtraso() {
         System.out.print("Insira o número de dias de atraso: ");
         int diasAtraso = scanner.nextInt();
-        scanner.nextLine();   
+        scanner.nextLine();
 
         // Buscar empréstimos com atraso maior que o número de dias informado
         List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.buscarEmprestimosComAtraso(diasAtraso);
