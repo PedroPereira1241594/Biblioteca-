@@ -12,17 +12,37 @@ import java.util.Scanner;
 
 import static Controller.JornalController.jornais;
 
+/**
+ * Classe responsável por gerir a interação com o utilizador para operações relacionadas a Jornais/Revistas.
+ * <p>
+ * Esta classe permite realizar as seguintes operações:
+ * <ul>
+ *     <li>Criar novos jornais/revistas</li>
+ *     <li>Procurar jornais/revistas por ISSN</li>
+ *     <li>Atualizar informações de jornais/revistas</li>
+ *     <li>Eliminar jornais/revistas</li>
+ *     <li>Listar todos os jornais/revistas registados</li>
+ * </ul>
+ */
 public class JornalView {
     private ArrayList<Jornal> jornals;
     private JornalController jornalController;
     private Scanner scanner;
 
+    /**
+     * Construtor para inicializar a classe {@code JornalView}.
+     *
+     * @param jornalController O controlador responsável pelas operações relacionadas a jornais/revistas.
+     * @param jornals          A lista de jornais/revistas disponíveis.
+     */
     public JornalView(JornalController jornalController, ArrayList<Jornal> jornals) {
         this.jornalController = jornalController;
         this.scanner = new Scanner(System.in);
     }
 
-    // Método para exibir o menu de opções
+    /**
+     * Mostra o menu de opções para gestão de jornais/revistas e executa a operação escolhida pelo utilizador.
+     */
     public void exibirMenu() {
         int opcao;
 
@@ -63,7 +83,9 @@ public class JornalView {
         } while (opcao != 0);
     }
 
-    // Método para criar um novo jornal
+    /**
+     * Permite criar um novo jornal/revista com as informações fornecidas pelo utilizador.
+     */
     public void criarJornal() {
         System.out.println("Insira os dados do novo Jornal/Revista:");
 
@@ -92,6 +114,12 @@ public class JornalView {
         jornalController.criarJornal(issn, titulo, categoria, editora, dataPublicacao);
     }
 
+    /**
+     * Lê uma data fornecida pelo utilizador no formato especificado.
+     *
+     * @param formato O formato esperado da data.
+     * @return A data lida como um objeto {@code LocalDate}.
+     */
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
             try {
@@ -103,12 +131,16 @@ public class JornalView {
         }
     }
 
-    // Método para listar todos os jornais
+    /**
+     * Lista todos os jornais/revistas disponíveis.
+     */
     public void listarJornais() {
         jornalController.listarJornais();
     }
 
-    // Método para atualizar um jornal
+    /**
+     * Permite atualizar as informações de um jornal/revista existente.
+     */
     public void atualizarJornal() {
         System.out.print("Introduza o ISSN do jornal/revista a ser atualizado: ");
         String issn = scanner.nextLine();
@@ -133,7 +165,9 @@ public class JornalView {
         jornalController.atualizarJornal(issn, novoIssn, titulo, categoria, editora, dataPublicacao);
     }
 
-    // Método para eliminar um jornal
+    /**
+     * Permite eliminar um jornal/revista a partir do ISSN fornecido pelo utilizador.
+     */
     public void eliminarJornal() {
         System.out.print("Introduza o ISSN do jornal/revista a ser eliminado: ");
         String issn = scanner.nextLine();
@@ -141,7 +175,9 @@ public class JornalView {
         jornalController.eliminarJornal(issn);
     }
 
-    // Método para procurar um jornal por ISSN
+    /**
+     * Permite procurar um jornal/revista pelo ISSN e mostrar os detalhes, se encontrado.
+     */
     public void procurarJornalPorIssn() {
         System.out.print("\nIntroduza o ISSN do jornal/revista que pretende procurar: ");
         String issn = scanner.nextLine();
