@@ -36,7 +36,7 @@ public class Main {
         utenteView.setScanner(new Scanner(System.in));    // Configura o scanner
         UtenteController utenteController = new UtenteController(utentes, utenteView, reservas, emprestimos);
         utenteView.setUtenteController(utenteController); // Configura o controller
-        JornalController jornalController = new JornalController(jornals);
+        JornalController jornalController = new JornalController(jornals, reservas, emprestimos);
         JornalView jornalView = new JornalView(jornalController);
         ReservaController reservaController = new ReservaController(null, reservas, livros, jornals);
         EmprestimosController emprestimosController = new EmprestimosController(reservaController, emprestimos, livros, jornals);

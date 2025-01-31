@@ -1,19 +1,26 @@
 package Controller;
 
+import Model.Emprestimos;
 import Model.Jornal;
 import Model.ItemEmprestavel;
+import Model.Reserva;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JornalController {
-    private static ArrayList<Jornal> jornais; // Lista para armazenar os jornais
+    private static ArrayList<Jornal> jornais;
+    private List<Reserva> reservas; // Adicionada a lista de reservas
+    private List<Emprestimos> emprestimos;// Lista para armazenar os jornais
 
     // Construtor
-    public JornalController(ArrayList<Jornal> jornais) {
+    public JornalController(ArrayList<Jornal> jornais, List<Reserva> reservas, List<Emprestimos> emprestimos) {
         this.jornais = jornais;
+        this.reservas = reservas;
+        this.emprestimos = emprestimos;
     }
 
     // Método para criar um novo jornal ou uma revista
@@ -120,10 +127,44 @@ public class JornalController {
             return;
         }
 
-        // Eliminar o jornal encontrado
-        System.out.println("A eliminar o jornal/revista: " + issn + "...");
-        jornais.remove(jornalEncontrado);
-        System.out.println("Jornal/revista removido com sucesso!");
+        // Verificar se o jornal está associado a alguma reserva
+        boolean jornalReservado = false;
+        for (Reserva reserva : reservas) {
+            for (ItemEmprestavel item : reserva.getItens()) {
+                if (item.getIdentificador().equals(jornalEncontrado.getIssn())) {
+                    jornalReservado = true;
+                    break;
+                }
+            }
+            if (jornalReservado) {
+                break;
+            }
+        }
+
+        // Verificar se o jornal está associado a algum empréstimo ativo
+        boolean jornalEmprestado = false;
+        for (Emprestimos emprestimos : emprestimos) {
+            for (ItemEmprestavel item : emprestimos.getItens()) {
+                if (item.getIdentificador().equals(jornalEncontrado.getIssn())) {
+                    jornalEmprestado = true;
+                    break;
+                }
+            }
+            if (jornalEmprestado) {
+                break;
+            }
+        }
+
+        if (jornalReservado && jornalEmprestado) {
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a uma reserva e a um empréstimo e não pode ser removido.");
+        } else if (jornalEmprestado) {
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a um empréstimo e não pode ser removido.");
+        } else if (jornalReservado) {
+            System.out.println("Erro: O jornal/revista '" + jornalEncontrado.getTitulo() + "' está associado a uma reserva e não pode ser removido.");
+        } else {
+            jornais.remove(jornalEncontrado);
+            System.out.println("Jornal/revista removido com sucesso!");
+        }
     }
 
     // Método para procurar um jornal ou revista pelo ISSN
