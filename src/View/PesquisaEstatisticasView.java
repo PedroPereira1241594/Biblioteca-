@@ -467,7 +467,7 @@ public class PesquisaEstatisticasView {
         scanner.nextLine();
 
         // Procurar empréstimos com atraso maior que o número de dias informado
-        List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.buscarEmprestimosComAtraso(diasAtraso);
+        List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.procurarEmprestimosComAtraso(diasAtraso);
 
         if (emprestimosComAtraso.isEmpty()) {
             System.out.println("Nenhum empréstimo encontrado com atraso superior a " + diasAtraso + " dias.");

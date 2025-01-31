@@ -103,7 +103,7 @@ public class EmprestimosView {
 
             if (utente == null) {
                 System.out.println("Operação cancelada.");
-                return; // Se o utente não for encontrado e o usuário cancelar, a operação é interrompida.
+                return; // Se o utente não for encontrado e o utilizador cancelar, a operação é interrompida.
             }
 
             List<ItemEmprestavel> itensParaEmprestimo = new ArrayList<>(); // Lista para armazenar todos os itens selecionados
@@ -210,7 +210,7 @@ public class EmprestimosView {
         while (utente == null) {
             System.out.print("NIF do Utente: ");
             String nif = scanner.nextLine();
-            utente = utenteController.buscarUtentePorNif(nif);
+            utente = utenteController.procurarUtentePorNif(nif);
 
             if (utente == null) {
                 System.out.println("Erro: Utente com NIF '" + nif + "' não encontrado.");
@@ -225,7 +225,7 @@ public class EmprestimosView {
                 switch (opcao) {
                     case 1:
                         utenteController.adicionarUtente();
-                        utente = utenteController.buscarUtentePorNif(nif);  // Buscar o utente novamente
+                        utente = utenteController.procurarUtentePorNif(nif);  // Pesquisar o utente novamente
                         break;
                     case 2:
                         System.out.println("Tente novamente...");
@@ -257,7 +257,7 @@ public class EmprestimosView {
             while (livro == null) {
                 System.out.print("ISBN do Livro " + (i + 1) + ": ");
                 String isbn = scanner.nextLine();
-                livro = livroController.buscarLivroPorIsbn(isbn);
+                livro = livroController.procurarLivroPorIsbn(isbn);
 
                 if (livro == null) {
                     System.out.println("Erro: Livro não encontrado. O que você deseja realizar?");
@@ -271,7 +271,7 @@ public class EmprestimosView {
                     switch (opcao) {
                         case 1:
                             livroController.adicionarLivro();
-                            livro = livroController.buscarLivroPorIsbn(isbn);  // Buscar o livro novamente após adicionar
+                            livro = livroController.procurarLivroPorIsbn(isbn);  // Pesquisar o livro novamente após adicionar
                             break;
                         case 2:
                             System.out.println("Tente novamente...");
@@ -284,7 +284,7 @@ public class EmprestimosView {
                     }
                 } else if (livrosParaEmprestimo.contains(livro)) {
                     System.out.println("Erro: O livro '" + livro.getNome() + "' já foi adicionado a este empréstimo.");
-                    livro = null;  // Se o livro já foi adicionado, pedimos para o usuário tentar novamente
+                    livro = null;  // Se o livro já foi adicionado, pedimos para o utilizador tentar novamente
                 }
             }
             livrosParaEmprestimo.add(livro);  // Adiciona o livro encontrado ou recém-adicionado à lista
@@ -308,7 +308,7 @@ public class EmprestimosView {
             while (jornal == null) {
                 System.out.print("ISSN do Jornal " + (i + 1) + ": ");
                 String issn = scanner.nextLine();
-                jornal = jornalController.procurarPorIssn(issn);  // Busca o jornal pelo ISSN
+                jornal = jornalController.procurarPorIssn(issn);  // Pesquisar o jornal pelo ISSN
 
                 if (jornal == null) {
                     System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
@@ -321,7 +321,7 @@ public class EmprestimosView {
 
                     switch (opcao) {
                         case 1:
-                            // Caso o usuário queira adicionar um novo jornal
+                            // Caso o utilizador queira adicionar um novo jornal
                             System.out.println("Adicionando um novo jornal...");
                             System.out.print("Informe o ISSN: ");
                             String novoIssn = scanner.nextLine();
@@ -336,7 +336,7 @@ public class EmprestimosView {
                             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                             LocalDate data = LocalDate.parse(dataPublicacao, formato);
                             jornalController.criarJornal(novoIssn, titulo, categoria, editora, data);
-                            jornal = jornalController.procurarPorIssn(novoIssn);  // Busca o jornal novamente após adicionar
+                            jornal = jornalController.procurarPorIssn(novoIssn);  // Pesquisa o jornal novamente após adicionar
                             break;
                         case 2:
                             System.out.println("Tente novamente...");
@@ -349,7 +349,7 @@ public class EmprestimosView {
                     }
                 } else if (jornaisParaEmprestimo.contains(jornal)) {
                     System.out.println("Erro: O jornal '" + jornal.getTitulo() + "' já foi adicionado a este empréstimo.");
-                    jornal = null;  // Se o jornal já foi adicionado, pedimos para o usuário tentar novamente
+                    jornal = null;  // Se o jornal já foi adicionado, pedimos para o utilizador tentar novamente
                 }
             }
             jornaisParaEmprestimo.add(jornal);  // Adiciona o jornal encontrado ou recém-adicionado à lista
@@ -473,7 +473,7 @@ public class EmprestimosView {
         System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
 
-        // Capturar a opção do usuário
+        // Capturar a opção do utilizador
         int opcao;
         try {
             opcao = scanner.nextInt();
@@ -580,7 +580,7 @@ public class EmprestimosView {
         while (livro == null) {
             System.out.print("ISBN do livro a adicionar: ");
             String isbn = scanner.nextLine();
-            livro = livroController.buscarLivroPorIsbn(isbn);
+            livro = livroController.procurarLivroPorIsbn(isbn);
 
             if (livro == null) {
                 System.out.println("Erro: Livro não encontrado. Deseja:");
@@ -594,7 +594,7 @@ public class EmprestimosView {
                 switch (opcao) {
                     case 1 -> {
                         livroController.adicionarLivro();
-                        livro = livroController.buscarLivroPorIsbn(isbn);
+                        livro = livroController.procurarLivroPorIsbn(isbn);
                     }
                     case 2 -> System.out.println("Tente novamente...");
                     case 0 -> {
@@ -639,7 +639,7 @@ public class EmprestimosView {
     private void removerLivroDoEmprestimo(Emprestimos emprestimo) {
         System.out.print("ISBN do livro a remover: ");
         String isbn = scanner.nextLine();
-        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        Livro livro = livroController.procurarLivroPorIsbn(isbn);
 
         if (livro != null && emprestimo.getItens().contains(livro)) {
             emprestimosController.removerItemEmprestimo(emprestimo.getNumero(), livro);

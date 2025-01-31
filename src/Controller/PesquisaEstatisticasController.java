@@ -45,7 +45,7 @@ public class PesquisaEstatisticasController {
         return null; // Retorna null se nenhum jornal for encontrado.
     }
 
-    // Método para buscar empréstimos em um intervalo de datas
+    // Método para pesquisar empréstimos em um intervalo de datas
     public List<Emprestimos> listarEmprestimosPorIntervalo(LocalDate dataInicio, LocalDate dataFim) {
         // Obter lista de empréstimos
         List<Emprestimos> emprestimosAtivos = emprestimosController.listarTodosEmprestimos();
@@ -308,8 +308,8 @@ public class PesquisaEstatisticasController {
         contagens.add(1);
     }
 
-    // Método para buscar os empréstimos com N dias de atraso
-    public List<Emprestimos> buscarEmprestimosComAtraso(int diasAtraso) {
+    // Método para pesquisar os empréstimos com N dias de atraso
+    public List<Emprestimos> procurarEmprestimosComAtraso(int diasAtraso) {
         List<Emprestimos> emprestimosComAtraso = new ArrayList<>();
         LocalDate hoje = LocalDate.now();
 

@@ -243,7 +243,7 @@ public class ReservaView {
         System.out.println("0. Cancelar");
         System.out.print("Escolha uma opção: ");
 
-        // Capturar a opção do usuário
+        // Capturar a opção do utilizador
         int opcao;
         try {
             opcao = scanner.nextInt();
@@ -350,7 +350,7 @@ public class ReservaView {
         while (livro == null) {
             System.out.print("Informe o ISBN do livro: ");
             String isbn = scanner.nextLine();
-            livro = livroController.buscarLivroPorIsbn(isbn);
+            livro = livroController.procurarLivroPorIsbn(isbn);
 
             if (livro == null) {
                 System.out.println("Erro: Livro não encontrado. Deseja:");
@@ -364,7 +364,7 @@ public class ReservaView {
                 switch (opcao) {
                     case 1:
                         livroController.adicionarLivro();
-                        livro = livroController.buscarLivroPorIsbn(isbn);
+                        livro = livroController.procurarLivroPorIsbn(isbn);
                         break;
                     case 2:
                         System.out.println("Tente novamente...");
@@ -416,7 +416,7 @@ public class ReservaView {
         String isbn = scanner.nextLine();
 
         // Procura o livro pelo ISBN
-        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        Livro livro = livroController.procurarLivroPorIsbn(isbn);
         if (livro == null) {
             System.out.println("Erro: Livro com ISBN '" + isbn + "' não encontrado.");
             return;
@@ -694,7 +694,7 @@ public class ReservaView {
         while (utente == null) {
             System.out.print("NIF do Utente: ");
             String nif = scanner.nextLine();
-            utente = utenteController.buscarUtentePorNif(nif);
+            utente = utenteController.procurarUtentePorNif(nif);
 
             if (utente == null) {
                 System.out.println("Erro: Utente com NIF '" + nif + "' não encontrado.");
@@ -706,7 +706,7 @@ public class ReservaView {
                 switch (opcao) {
                     case 1:
                         utenteController.adicionarUtente();
-                        utente = utenteController.buscarUtentePorNif(nif);
+                        utente = utenteController.procurarUtentePorNif(nif);
                         break;
                     case 2:
                         System.out.println("Tente novamente...");
@@ -738,7 +738,7 @@ public class ReservaView {
             while (livro == null) {
                 System.out.print("ISBN do Livro " + (i + 1) + ": ");
                 String isbn = scanner.nextLine();
-                livro = livroController.buscarLivroPorIsbn(isbn);
+                livro = livroController.procurarLivroPorIsbn(isbn);
 
                 if (livro == null) {
                     System.out.println("Erro: Livro não encontrado.");
@@ -750,7 +750,7 @@ public class ReservaView {
                     switch (opcao) {
                         case 1:
                             livroController.adicionarLivro();
-                            livro = livroController.buscarLivroPorIsbn(isbn);
+                            livro = livroController.procurarLivroPorIsbn(isbn);
                             break;
                         case 2:
                             System.out.println("Tente novamente...");

@@ -131,8 +131,8 @@ public class LivroView {
         System.out.print("ISBN do Livro: ");
         String isbn = scanner.nextLine();
 
-        // Chama o método buscarLivroPorIsbn do controller
-        Livro livro = livroController.buscarLivroPorIsbn(isbn);
+        // Chama o método procurarLivroPorIsbn do controller
+        Livro livro = livroController.procurarLivroPorIsbn(isbn);
 
         // Se o livro for encontrado, exibe os detalhes
         if (livro != null) {

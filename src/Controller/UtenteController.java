@@ -225,7 +225,7 @@ public class UtenteController {
      * @param nif O NIF do utente a ser procurado.
      * @return O utente correspondente ao NIF, ou null se não existir.
      */
-    public Utentes buscarUtentePorNif(String nif) {
+    public Utentes procurarUtentePorNif(String nif) {
         for (Utentes utente : utentes) {
             if (utente.getNif().equals(nif)) {
                 return utente;

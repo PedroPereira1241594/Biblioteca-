@@ -6,7 +6,6 @@ import Model.Emprestimos;
 import Model.Reserva;
 import View.LivroView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -201,7 +200,7 @@ public class LivroController {
      * @param isbn O ISBN do livro a ser procurado.
      * @return O livro encontrado ou null se não existir na list.
      */
-    public Livro buscarLivroPorIsbn(String isbn) {
+    public Livro procurarLivroPorIsbn(String isbn) {
         for (ItemEmprestavel item : livros) {
             if (item instanceof Livro && ((Livro) item).getIsbn().equalsIgnoreCase(isbn)) {
                 return (Livro) item;

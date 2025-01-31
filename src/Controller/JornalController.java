@@ -207,7 +207,7 @@ public class JornalController {
 
         // Verifica se o ISSN é existente
         if (issn == null || issn.trim().isEmpty()) {
-            System.out.println("Erro: ISSN inválido para busca.");
+            System.out.println("Erro: ISSN inválido para a pesquisa.");
             return null;
         }
 
