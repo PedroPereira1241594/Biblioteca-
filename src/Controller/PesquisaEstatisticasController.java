@@ -320,7 +320,7 @@ public class PesquisaEstatisticasController {
             LocalDate dataDevolucao = emprestimo.getDataEfetivaDevolucao();
             if (dataDevolucaoPrevista.isBefore(hoje) && dataDevolucao == null) {
                 long atraso = dataDevolucaoPrevista.until(hoje).getDays();
-                if (atraso > diasAtraso) {
+                if (atraso >= diasAtraso) {
                     emprestimosComAtraso.add(emprestimo);
                 }
             }
