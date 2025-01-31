@@ -57,13 +57,13 @@ public class ReservaController {
             return;
         }
 
-        // Verifica se os itens possuem empréstimos ativos
+        /*// Verifica se os itens possuem empréstimos ativos
         for (ItemEmprestavel item : itensParaReserva) {
             if (emprestimosController.itemPossuiEmprestimoAtivo(item, dataInicio, dataFim)) {
                 System.out.println("Erro: O item '" + item.getIdentificador() + "' está emprestado no período solicitado.");
                 return;
             }
-        }
+        }*/
 
         // Atualiza o maiorId com base no array de reservas antes de criar a nova
         this.maiorId = calcularMaiorId(reservas);

@@ -118,14 +118,20 @@ public class ReservaView {
             // Verificar se algum item está emprestado e não pode ser reservado
             for (ItemEmprestavel item : itensParaReserva) {
                 if (item instanceof Livro) {
-                    if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim) && emprestimosController.verificarItemEmprestado(item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataFim);
+                    if (reservaController.verificarItemReservado((Livro) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    } else if (emprestimosController.verificarItemEmprestado((Livro) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O livro com o ISBN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
                         return;
                     }
                 } else if (item instanceof Jornal) {
                     // Para jornais, verifique se já está emprestado ou reservado
-                    if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim) && emprestimosController.verificarItemEmprestado(item, dataInicio, dataFim)) {
-                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período entre " + dataInicio + " e " + dataFim);
+                    if (reservaController.verificarItemReservado((Jornal) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está reservado para o período indicado entre " + dataInicio + " e " + dataFim);
+                        return;
+                    } else if (emprestimosController.verificarItemEmprestado((Jornal) item, dataInicio, dataFim)) {
+                        System.out.println("Erro: O jornal com ISSN: '" + item.getIdentificador() + "' já está emprestado para o período indicado entre " + dataInicio + " e " + dataFim);
                         return;
                     }
                 }
@@ -311,18 +317,24 @@ public class ReservaView {
                         System.out.println("Opção inválida!");
                 }
             } else {
-                // Verificar se o livro já está na reserva sem usar streams
-                boolean jaAdicionado = false;
+                // Verificar se o livro já está na reserva
                 for (ItemEmprestavel item : reserva.getItens()) {
                     if (item instanceof Livro && item.equals(livro)) {
-                        jaAdicionado = true;
+                        System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
+                        livro = null; // Voltar ao loop para tentar novamente
                         break;
                     }
                 }
 
-                if (jaAdicionado) {
-                    System.out.println("Erro: O livro '" + livro.getNome() + "' já está na reserva.");
-                    livro = null; // Voltar ao loop para tentar novamente
+                // Verificar se o livro está reservado ou emprestado para o período indicado
+                if (reservaController.verificarItemReservado(livro, dataInicioReserva, dataFimReserva)) {
+                    System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está reservado para o período indicado entre "
+                            + dataInicioReserva + " e " + dataFimReserva);
+                    return;
+                } else if (emprestimosController.verificarItemEmprestado(livro, dataInicioReserva, dataFimReserva)) {
+                    System.out.println("Erro: O livro com o ISBN: '" + livro.getIdentificador() + "' já está emprestado para o período indicado entre "
+                            + dataInicioReserva + " e " + dataFimReserva);
+                    return;
                 }
             }
         }
@@ -331,6 +343,7 @@ public class ReservaView {
         reservaController.adicionarItemNaReserva(reserva.getNumero(), livro, dataInicioReserva, dataFimReserva);
         System.out.println("Livro adicionado com sucesso à reserva.");
     }
+
 
     private void removerLivroDaReserva(Reserva reserva) {
         System.out.println("\n=== Remover Livro da Reserva ===");
@@ -404,24 +417,32 @@ public class ReservaView {
                 }
             } else {
                 // Verificar se o jornal já está na reserva
-                boolean encontrado = false;
                 for (ItemEmprestavel item : reserva.getItens()) {
                     if (item instanceof Jornal && item.equals(jornal)) {
-                        encontrado = true;
+                        System.out.println("Erro: O jornal '" + jornal.getTitulo() + "' já está na reserva.");
+                        jornal = null;
                         break;
                     }
                 }
 
-                if (encontrado) {
-                    System.out.println("Erro: O jornal '" + jornal.getTitulo() + "' já está na reserva.");
-                    jornal = null;
+                // Verificar se o jornal está reservado ou emprestado para o período indicado
+                if (reservaController.verificarItemReservado(jornal, dataInicioReserva, dataFimReserva)) {
+                    System.out.println("Erro: O jornal com ISSN: '" + jornal.getIdentificador() + "' já está reservado para o período indicado entre "
+                            + dataInicioReserva + " e " + dataFimReserva);
+                    return;
+                } else if (emprestimosController.verificarItemEmprestado(jornal, dataInicioReserva, dataFimReserva)) {
+                    System.out.println("Erro: O jornal com ISSN: '" + jornal.getIdentificador() + "' já está emprestado para o período indicado entre "
+                            + dataInicioReserva + " e " + dataFimReserva);
+                    return;
                 }
             }
         }
 
+        // Adicionar o jornal à reserva
         reservaController.adicionarItemNaReserva(reserva.getNumero(), jornal, dataInicioReserva, dataFimReserva);
         System.out.println("Jornal adicionado com sucesso à reserva.");
     }
+
 
     private void removerJornalDaReserva(Reserva reserva) {
         System.out.print("ISSN do jornal a remover: ");
@@ -673,26 +694,26 @@ public class ReservaView {
                 if (jornal == null) {
                     System.out.println("Erro: Jornal não encontrado. O que você deseja realizar?");
 
-                        System.out.println("1. Adicionar Jornal");
-                        System.out.println("2. Tentar novamente");
-                        System.out.println("0. Cancelar");
-                        System.out.print("Escolha uma opção: ");
-                        opcao = scanner.nextInt();
-                        scanner.nextLine();
+                    System.out.println("1. Adicionar Jornal");
+                    System.out.println("2. Tentar novamente");
+                    System.out.println("0. Cancelar");
+                    System.out.print("Escolha uma opção: ");
+                    opcao = scanner.nextInt();
+                    scanner.nextLine();
 
-                        switch (opcao) {
-                            case 1:
-                                jornalView.criarJornal();
-                                jornal = jornalController.procurarPorIssn(issn);
-                                break;
-                            case 2:
-                                System.out.println("Tente novamente...");
-                                break;
-                            case 0:
-                                return jornais;
-                            default:
-                                System.out.println("Opção inválida! Tente novamente.");
-                        }
+                    switch (opcao) {
+                        case 1:
+                            jornalView.criarJornal();
+                            jornal = jornalController.procurarPorIssn(issn);
+                            break;
+                        case 2:
+                            System.out.println("Tente novamente...");
+                            break;
+                        case 0:
+                            return jornais;
+                        default:
+                            System.out.println("Opção inválida! Tente novamente.");
+                    }
                 } else if (jornais.contains(jornal)) {
                     System.out.println("Erro: O jornal já foi adicionado a esta reserva.");
                     jornal = null;
