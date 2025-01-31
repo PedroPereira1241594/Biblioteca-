@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Classe que apresenta a interface de visualização (View) para operações relacionadas às reservas.
+ * Permite interação com o utilizador para criar, consultar, atualizar e gerir reservas.
+ */
 public class ReservaView {
     private final ReservaController reservaController;
     private final UtenteController utenteController;
@@ -20,7 +23,16 @@ public class ReservaView {
     private final EmprestimosController emprestimosController; // Adicionando o controller de empréstimos
     private final Scanner scanner;
 
-
+    /**
+     * Construtor da classe ReservaView.
+     *
+     * @param reservaController       Controller responsável pelas reservas.
+     * @param utenteController        Controller responsável pelos utentes.
+     * @param livroController         Controller responsável pelos livros.
+     * @param jornalController        Controller responsável pelos jornais.
+     * @param jornalView              View para apresentar de jornais.
+     * @param emprestimosController   Controller responsável pelos empréstimos.
+     */
     public ReservaView(ReservaController reservaController, UtenteController utenteController, LivroController livroController, JornalController jornalController, JornalView jornalView, EmprestimosController emprestimosController) {
         this.reservaController = reservaController;
         this.utenteController = utenteController;
@@ -31,7 +43,18 @@ public class ReservaView {
         this.scanner = new Scanner(System.in);
     }
 
-
+    /**
+     * Mostra o menu principal de reservas, permitindo ao utilizador aceder diversas funcionalidades.
+     * As opções incluem:
+     * <ul>
+     *   <li>Criar Reserva</li>
+     *   <li>Consultar uma reserva em específico pelo id.</li>
+     *   <li>Atualizar uma reserva</li>
+     *   <li>Eliminar uma reserva</li>
+     *   <li>Listar todas reservas da biblioteca</li>
+     *   <li>Sair do menu.</li>
+     * </ul>
+     */
     public void exibirMenu() {
         int opcao;
         do {
@@ -58,6 +81,9 @@ public class ReservaView {
         } while (opcao != 0);
     }
 
+    /**
+     * Cria uma reserva para um utente selecionado, incluindo itens como livros ou jornais no intervalo de datas fornecido pelo utilizador.
+     */
     private void criarReserva() {
         try {
             System.out.println("\n=== Criar Reserva ===");
@@ -141,7 +167,13 @@ public class ReservaView {
         }
     }
 
-
+    /**
+     * Lê e valida uma data inserida pelo utilizador no formato dd/MM/yyyy.
+     * Caso a data seja inválida, solicita novamente ao utilizador.
+     *
+     * @param formato O formato esperado para a data.
+     * @return A data lida e validada.
+     */
     private LocalDate lerData(DateTimeFormatter formato) {
         while (true) {
             try {
@@ -153,6 +185,13 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Permite consultar os detalhes de uma reserva com base no ID fornecido.
+     *
+     * O método solicita ao utilizador o ID da reserva, chama o controlador para
+     * procurar as informações e mostra os detalhes, caso a reserva seja encontrada.
+     * Caso contrário, emite uma mensagem a informar que a reserva não foi encontrada.
+     */
     private void consultarReserva() {
         System.out.println("\n=== Consultar Reserva ===");
         System.out.print("Número da Reserva: ");
@@ -169,6 +208,10 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Permite ao utilizador atualizar uma reserva existente, incluindo alterar
+     * as datas ou os itens associados à reserva.
+     */
     private void atualizarReserva() {
         System.out.println("\n=== Atualizar Reserva ===");
 
@@ -227,6 +270,12 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Atualiza as datas de uma reserva específica, validando os novos valores.
+     *
+     * @param reserva A reserva a ser atualizada.
+     * @param numero  O número identificador da reserva.
+     */
     private void atualizarDatasReserva(Reserva reserva, int numero) {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate novaDataInicio, novaDataFim;
@@ -258,6 +307,13 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Permite modificar os itens(livros ou jornais) de uma reserva, seja adicionando ou removendo itens.
+     *
+     * @param reserva            A reserva a ser modificada.
+     * @param dataInicioReserva  Data de início da reserva.
+     * @param dataFimReserva     Data de fim da reserva.
+     */
     private void modificarItensReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("\nO que você deseja fazer com os itens da reserva?");
         System.out.println("1. Adicionar livro");
@@ -280,6 +336,13 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Adiciona um livro específico a uma reserva existente.
+     *
+     * @param reserva            A reserva onde o livro será adicionado.
+     * @param dataInicioReserva  Data de início da reserva para verificar se está disponível.
+     * @param dataFimReserva     Data de fim da reserva para verificar se está disponível.
+     */
     private void adicionarLivroNaReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         System.out.println("\n=== Adicionar Livro à Reserva ===");
 
@@ -340,6 +403,11 @@ public class ReservaView {
         System.out.println("Livro adicionado com sucesso à reserva.");
     }
 
+    /**
+     * Remove um livro específico de uma reserva existente.
+     *
+     * @param reserva A reserva da qual o livro será removido.
+     */
     private void removerLivroDaReserva(Reserva reserva) {
         System.out.println("\n=== Remover Livro da Reserva ===");
 
@@ -372,6 +440,13 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Adiciona um jornal a uma reserva existente.
+     *
+     * @param reserva           A reserva à qual o jornal será adicionado.
+     * @param dataInicioReserva A data de início da reserva para verificar se está disponível.
+     * @param dataFimReserva    A data de término da reserva para verificar se está disponível.
+     */
     private void adicionarJornalNaReserva(Reserva reserva, LocalDate dataInicioReserva, LocalDate dataFimReserva) {
         Jornal jornal = null;
         while (jornal == null) {
@@ -438,6 +513,11 @@ public class ReservaView {
         System.out.println("Jornal adicionado com sucesso à reserva.");
     }
 
+    /**
+     * Remove um jornal de uma reserva existente.
+     *
+     * @param reserva A reserva da qual o jornal será removido.
+     */
     private void removerJornalDaReserva(Reserva reserva) {
         System.out.print("ISSN do jornal a remover: ");
         String issn = scanner.nextLine();
@@ -464,6 +544,9 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Remove uma reserva existente, caso confirmada pelo utilizador.
+     */
     private void removerReserva() {
         try {
             System.out.println("\n=== Remover Reserva ===");
@@ -504,13 +587,17 @@ public class ReservaView {
         }
     }
 
+    /**
+     * Lista todas as reservas, removendo duplicados e ordenando-as
+     * pelo número da reserva.
+     */
     public void listarReservas() {
-        // Obtém a lista de reservas ativas do controlador
+        // Obtém a lista de reservas ativas do controller
         List<Reserva> reservasAtivas = reservaController.listarTodasReservas();
 
-        // Verifica se existem reservas registradas
+        // Verifica se existem reservas registadas
         if (reservasAtivas == null || reservasAtivas.isEmpty()) {
-            System.out.println("\nNenhuma reserva registrada.");
+            System.out.println("\nNenhuma reserva registada.");
             return;
         }
 
@@ -578,7 +665,7 @@ public class ReservaView {
             }
 
             // Validação das datas
-            String dataRegistro = (reserva.getDataRegisto() != null)
+            String dataRegisto = (reserva.getDataRegisto() != null)
                     ? reserva.getDataRegisto().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                     : "Data desconhecida";
 
@@ -592,10 +679,16 @@ public class ReservaView {
 
             // Exibe as informações da reserva
             System.out.printf("%-10d %-35s %-100s %-25s %-20s %-20s\n",
-                    reserva.getNumero(), utenteNome, itens, dataRegistro, dataInicio, dataFim);
+                    reserva.getNumero(), utenteNome, itens, dataRegisto, dataInicio, dataFim);
         }
     }
 
+    /**
+     * Obtém um utente (utilizador do sistema) a partir do NIF informado. Permite
+     * criar um utente caso o NIF não seja encontrado.
+     *
+     * @return O utente correspondente ao NIF ou {@code null} se a operação for cancelada.
+     */
     private Utentes obterUtente() {
         Utentes utente = null;
         while (utente == null) {
@@ -628,6 +721,12 @@ public class ReservaView {
         return utente;
     }
 
+    /**
+     * Obtém uma lista de livros para reserva a partir dos ISBNs informados.
+     * Permite adicionar novos livros ao sistema, se necessário.
+     *
+     * @return A lista de livros selecionados para reserva.
+     */
     private List<Livro> obterLivros() {
         List<Livro> livros = new ArrayList<>();
         System.out.print("Quantos livros deseja reservar? ");
@@ -671,6 +770,12 @@ public class ReservaView {
         return livros;
     }
 
+    /**
+     * Obtém uma lista de jornais para reserva a partir dos ISSNs informados.
+     * Permite adicionar novos jornais ao sistema, se necessário.
+     *
+     * @return A lista de jornais selecionados para reserva.
+     */
     private List<Jornal> obterJornais() {
         List<Jornal> jornais = new ArrayList<>();
         int opcao;
@@ -718,6 +823,13 @@ public class ReservaView {
         return jornais;
     }
 
+    /**
+     * Solicita ao utilizador a introdução de uma data num formato específico.
+     *
+     * @param mensagem A mensagem a ser apresentada ao solicitar a data.
+     * @param formato  O formato esperado para a data.
+     * @return A data fornecida pelo utilizador.
+     */
     private LocalDate obterData(String mensagem, DateTimeFormatter formato) {
         while (true) {
             try {
@@ -729,7 +841,5 @@ public class ReservaView {
             }
         }
     }
-
-
 
 }

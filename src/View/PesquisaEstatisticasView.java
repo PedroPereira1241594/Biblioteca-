@@ -108,7 +108,7 @@ public class PesquisaEstatisticasView {
                 case 1:
                     System.out.print("\nInsira o ISBN do Livro: ");
                     String ISBN = scanner.nextLine();
-                    Livro livroEncontrado = pesquisaEstatisticasController.pesquisaISBN(ISBN); // Busca pelo ISBN
+                    Livro livroEncontrado = pesquisaEstatisticasController.pesquisaISBN(ISBN); // Procura pelo ISBN
 
                     if (livroEncontrado != null) {
                         System.out.println("\n======== Livro Encontrado ========");
@@ -126,7 +126,7 @@ public class PesquisaEstatisticasView {
                 case 2:
                     System.out.print("\nInsira o ISSN do Jornal: ");
                     String ISSN = scanner.nextLine();
-                    Jornal jornalEncontrado = pesquisaEstatisticasController.pesquisaISSN(ISSN); // Busca pelo ISSN
+                    Jornal jornalEncontrado = pesquisaEstatisticasController.pesquisaISSN(ISSN); // Procurar pelo ISSN
                     if (jornalEncontrado != null) {
                         System.out.println("\n======= Jornal/Revista Encontrado =======");
                         System.out.println("Título: " + jornalEncontrado.getTitulo());
@@ -405,7 +405,7 @@ public class PesquisaEstatisticasView {
             }
         }
 
-        // Buscar todos os empréstimos entre as datas fornecidas
+        // Procurar todos os empréstimos entre as datas fornecidas
         List<Emprestimos> emprestimos = pesquisaEstatisticasController.listarEmprestimosPorIntervalo(dataInicio, dataFim);
 
         // Exibir o total de empréstimos encontrados no intervalo
@@ -446,7 +446,7 @@ public class PesquisaEstatisticasView {
             }
         }
 
-        // Buscar o item mais requisitado no intervalo de datas
+        // Procurar o item mais requisitado no intervalo de datas
         List<String> itemMaisRequisitado = pesquisaEstatisticasController.pesquisarItensMaisRequisitados(dataInicio, dataFim);
 
         // Exibir o resultado
@@ -466,7 +466,7 @@ public class PesquisaEstatisticasView {
         int diasAtraso = scanner.nextInt();
         scanner.nextLine();
 
-        // Buscar empréstimos com atraso maior que o número de dias informado
+        // Procurar empréstimos com atraso maior que o número de dias informado
         List<Emprestimos> emprestimosComAtraso = pesquisaEstatisticasController.buscarEmprestimosComAtraso(diasAtraso);
 
         if (emprestimosComAtraso.isEmpty()) {
