@@ -257,14 +257,16 @@ public class PesquisaEstatisticasController {
         long count = 0;
 
         for (Emprestimos emprestimo : emprestimos) {
-            LocalDate dataEmprestimo = emprestimo.getDataInicio();
+            LocalDate dataInicioEmprestimo = emprestimo.getDataInicio();
+            LocalDate dataFimEmprestimo = (emprestimo.getDataEfetivaDevolucao() != null)
+                    ? emprestimo.getDataEfetivaDevolucao()
+                    : emprestimo.getDataPrevistaDevolucao();
 
-            if (!dataEmprestimo.isBefore(dataInicio) && !dataEmprestimo.isAfter(dataFim)) {
-                LocalDate dataDevolucao = emprestimo.getDataEfetivaDevolucao() != null
-                        ? emprestimo.getDataEfetivaDevolucao()
-                        : emprestimo.getDataPrevistaDevolucao();
+            if (!dataInicioEmprestimo.isBefore(dataInicio) && !dataInicioEmprestimo.isAfter(dataFim) &&
+                    !dataFimEmprestimo.isBefore(dataInicio) && !dataFimEmprestimo.isAfter(dataFim)) {
 
-                long dias = dataEmprestimo.until(dataDevolucao).getDays();
+
+                long dias = dataInicioEmprestimo.until(dataFimEmprestimo).getDays();
                 totalDias += dias;
                 count++;
             }
@@ -388,7 +390,7 @@ public class PesquisaEstatisticasController {
             LocalDate dataDevolucao = emprestimo.getDataEfetivaDevolucao();
             if (dataDevolucaoPrevista.isBefore(hoje) && dataDevolucao == null) {
                 long atraso = dataDevolucaoPrevista.until(hoje).getDays();
-                if (atraso > diasAtraso) {
+                if (atraso >= diasAtraso) {
                     emprestimosComAtraso.add(emprestimo);
                 }
             }
